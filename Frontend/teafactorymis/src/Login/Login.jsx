@@ -9,72 +9,37 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import background from '../Images/background1.jpg';
 import logo from '../Images/logo.png';
 
-// Create a custom theme
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4CAF50', // Green color
+      main: '#4CAF50',
     },
     secondary: {
-      main: '#81C784', // Light green for secondary actions
+      main: '#81C784',
     },
   },
 });
 
-const Login = () => {
+const Login = ({ onLogin }) => { // Accept onLogin prop
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
 
-  const validateForm = () => {
-    // Add form validation logic if needed
-    return true;
-  };
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
 
-    if (validateForm()) {
-      try {
-        const response = await axios.post('http://localhost:8080/user/login', { username, password });
-
-        if (response.status === 200) {
-          const userResponse = response.data;
-          localStorage.setItem('userRole', userResponse.employee.role); 
-          localStorage.setItem('user', JSON.stringify(userResponse));
-
-          // Navigate to the dashboard based on the user role
-          switch (userResponse.employee.role) {
-            case 'Admin':
-              navigate('/AdminDashboard', { state: { user: userResponse } });
-              break;
-            case 'HRAssist':
-              navigate('/HRDashboard', { state: { user: userResponse } });
-              break;
-            case 'InventoryAssist':
-              navigate('/InventoryDashboard', { state: { user: userResponse } });
-              break;
-            case 'SalesAssist':
-              navigate('/SalesDashboard', { state: { user: userResponse } });
-              break;
-            case 'TechnicalAssist':
-              navigate('/TechnicalDashboard', { state: { user: userResponse } });
-              break;
-            default:
-              setLoginError('Unexpected user role');
-              break;
-          }
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setLoginError('Invalid username or password');
-        } else {
-          setLoginError('An error occurred. Please try again later.');
-        }
+    try {
+      const response = await axios.post('http://localhost:8080/user/login', { username, password });
+      if (response.status === 200) {
+        const userResponse = response.data;
+        onLogin(userResponse); // Call onLogin with user data
+        navigate(`/${userResponse.employee.role}Dashboard`); // Navigate to the appropriate dashboard
       }
+    } catch (error) {
+      setLoginError('Invalid username or password');
     }
   };
 

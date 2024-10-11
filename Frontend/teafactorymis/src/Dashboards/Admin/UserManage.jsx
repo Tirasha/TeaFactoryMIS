@@ -1,28 +1,18 @@
-import React from 'react'
-import Sidebar from '../../Component/Sidebar';
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-const UserManage = () => {
+const UserManage = ({ user }) => {
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }} className="app-container">
-      <Sidebar />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1, // Allow this box to grow to fill the available space
-          p: 3, // Padding around the content
-           backgroundColor: '#f5f5f5', // Light gray background for contrast
-          overflowY: 'auto', // Allow vertical scrolling if content overflows
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
-         Manage
-        </Typography>
-       
+    <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh' }}>
+      <Typography variant="h4" gutterBottom>
+        User Management
+      </Typography>
+      <Typography variant="h6">
+        
+      </Typography>
       
-      </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default UserManage
+export default UserManage;

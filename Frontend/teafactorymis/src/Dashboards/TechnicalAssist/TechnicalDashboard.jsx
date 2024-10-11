@@ -4,25 +4,16 @@ import { Box, Typography } from '@mui/material';
 
 const TechnicalDashboard = () => {
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }} className="app-container">
-      <Sidebar />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1, // Allow this box to grow to fill the available space
-          p: 3, // Padding around the content
-           backgroundColor: '#f5f5f5', // Light gray background for contrast
-          overflowY: 'auto', // Allow vertical scrolling if content overflows
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
-      Sales Dashboard
-        </Typography>
-       
+    <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh' }}>
+    <Typography variant="h4" gutterBottom>
+   Technical Dashboard
+    </Typography>
+    <Typography variant="h6">
       
-      </Box>
-    </Box>
-  );
+    </Typography>
+    
+  </Box>
+);
 };
 
 export default TechnicalDashboard
