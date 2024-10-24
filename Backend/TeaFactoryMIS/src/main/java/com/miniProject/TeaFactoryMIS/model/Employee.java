@@ -24,7 +24,7 @@ public class Employee {
     private String role;
 
     @Lob
-    @Column(columnDefinition = "VARBINARY(MAX)")
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] image;
 
     @ManyToOne

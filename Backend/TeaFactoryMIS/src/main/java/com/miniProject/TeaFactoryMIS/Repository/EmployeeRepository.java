@@ -1,4 +1,4 @@
-package com.miniProject.TeaFactoryMIS.Repository;
+package com.miniProject.TeaFactoryMIS.repository;
 
 import com.miniProject.TeaFactoryMIS.model.Employee;
 import com.miniProject.TeaFactoryMIS.model.User;

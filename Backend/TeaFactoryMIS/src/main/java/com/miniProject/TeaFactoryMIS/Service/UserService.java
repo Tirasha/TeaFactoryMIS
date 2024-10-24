@@ -1,9 +1,9 @@
 package com.miniProject.TeaFactoryMIS.Service;
 
-import com.miniProject.TeaFactoryMIS.Repository.EmployeeRepository;
-import com.miniProject.TeaFactoryMIS.Repository.UserRepository;
 import com.miniProject.TeaFactoryMIS.model.Employee;
 import com.miniProject.TeaFactoryMIS.model.User;
+import com.miniProject.TeaFactoryMIS.repository.EmployeeRepository;
+import com.miniProject.TeaFactoryMIS.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
