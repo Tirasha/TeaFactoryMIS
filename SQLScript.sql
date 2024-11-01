@@ -31,3 +31,55 @@ insert into users(user_id,password,username)values
 ("u003", "12345", "Hiru"),
 ("u004", "12345", "Tirasha"),
 ("u005", "12345", "Tharu");
+
+
+
+
+-- Tharu
+-- drop table vehical;
+Create Table vehicle(
+	vehicle_No varchar(50) primary key not null,
+    vehicle_type varchar(255) not null,
+    vehicle_image LONGBLOB not null,
+    vehicle_availability varchar(255) not null,
+    fuel_id varchar(255) not null,
+    FOREIGN KEY (fuel_id) REFERENCES fuel(fuel_id)
+);
+
+Create table machine(
+	machine_id varchar(50) primary key not null,
+    machine_type varchar(255) not null,
+    machine_quantity varchar(255) not null,
+    machine_availablity varchar(255) not null,
+    fuel_id varchar(255) not null,
+    FOREIGN KEY (fuel_id) REFERENCES fuel(fuel_id)
+);
+
+Create table fuel(
+	fuel_id varchar(50) primary key not null,
+    fuel_name varchar(255) not null,
+    fuel_type varchar(255) not null,
+    fuel_quantity varchar(255) not null
+);
+
+
+Insert into vehicle (vehicle_No, vehicle_type, vehicle_image, vehicle_availability, fuel_id) Values 
+('VH001', 'Car', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/car.jpg'), 'Available', 'F001'),
+('VH002', 'Truck', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/truck.jpg'), 'Not Available', 'F002'),
+('VH003', 'Motorcycle', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/motorcycle.jpg'), 'Available', 'F001'),
+('VH004', 'Bus', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/bus.jpg'), 'In Service', 'F003'),
+('VH005', 'Van', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/van.jpg'), 'Available', 'F002');
+
+Insert into machine (machine_id, machine_type, machine_quantity, machine_availablity, fuel_id) Values 
+('MCH001', 'Excavator', '5', 'Available', 'F001'),
+('MCH002', 'Bulldozer', '3', 'In Service', 'F002'),
+('MCH003', 'Crane', '2', 'Available', 'F003'),
+('MCH004', 'Forklift', '10', 'Under Maintenance', 'F001'),
+('MCH005', 'Loader', '7', 'Available', 'F002');
+
+Insert into fuel (fuel_id, fuel_name, fuel_type, fuel_quantity) Values 
+('F001', 'Diesel', 'Liquid', '5000 liters'),
+('F002', 'Petrol', 'Liquid', '3000 liters'),
+('F003', 'Electricity', 'Electric', '2000 kWh'),
+('F004', 'Natural Gas', 'Gas', '1500 cubic meters'),
+('F005', 'Hydrogen', 'Gas', '1000 cubic meters');

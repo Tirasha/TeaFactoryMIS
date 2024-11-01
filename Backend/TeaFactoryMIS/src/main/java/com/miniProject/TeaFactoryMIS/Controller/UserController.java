@@ -1,4 +1,4 @@
-package com.miniProject.TeaFactoryMIS.controller;
+package com.miniProject.TeaFactoryMIS.Controller;
 
 import com.miniProject.TeaFactoryMIS.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

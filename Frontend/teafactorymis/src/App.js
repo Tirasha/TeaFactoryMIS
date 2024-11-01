@@ -8,6 +8,7 @@ import InventoryAssistDashboard from './Dashboards/InventoryAssist/InventoryAssi
 import SalesAssistDashboard from './Dashboards/SalesAssist/SalesAssistDashboard';
 import TechnicalDashboard from './Dashboards/TechnicalAssist/TechnicalDashboard';
 import UserManage from './Dashboards/Admin/UserManage';
+import { Vehical } from './Dashboards/TechnicalAssist/Vehical';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
+                <Route path="/Vehical" element={<Vehical user={user} />} />
               </>
             )}
           </Routes>

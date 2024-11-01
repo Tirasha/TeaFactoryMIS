@@ -38,7 +38,8 @@ const Sidebar = ({ user, onLogout }) => {
         return [{ text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' }];
       
       case 'TechnicalAssist':
-        return [{ text: 'Technical Dashboard', icon: <Dashboard />, path: '/TechnicalDashboard' }];
+        return [{ text: 'Technical Dashboard', icon: <Dashboard />, path: '/TechnicalDashboard' },
+                { text: 'Vehical', icon: <Dashboard />, path: '/Vehical' }];
       
       default:
         return [];
