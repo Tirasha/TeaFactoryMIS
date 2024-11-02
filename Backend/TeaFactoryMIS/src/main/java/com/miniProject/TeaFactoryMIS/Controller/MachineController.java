@@ -1,8 +1,8 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
+import com.miniProject.TeaFactoryMIS.DTO.MachineDTO;
 import com.miniProject.TeaFactoryMIS.DTO.ResponseDTO;
-import com.miniProject.TeaFactoryMIS.DTO.VehicleDTO;
-import com.miniProject.TeaFactoryMIS.Service.VehicleService;
+import com.miniProject.TeaFactoryMIS.Service.MachineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,35 +10,35 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//Controller class for managing vehicles
+//Controller class for managing machines
 
 @RestController
-@RequestMapping(value="/vehicle")
+@RequestMapping(value="/machine")
 @CrossOrigin
 
-public class VehicleController {
+public class MachineController {
     @Autowired
-    private VehicleService vehicleService;
+    private MachineService machineService;
 
     @Autowired
     private ResponseDTO responseDTO;
 
     // Viewing all vehicles
     @GetMapping("/view")
-    public ResponseEntity viewVehicles(){
+    public ResponseEntity viewMachines(){
         try{
-            // Retrieve all vehicles
-            List<VehicleDTO> vehicleDTOList = vehicleService.viewAllVehicles();
+            // Retrieve all machines
+            List<MachineDTO> machineDTOList = machineService.viewAllMachines();
 
             // Check if list is empty
-            if(vehicleDTOList.isEmpty()){
+            if(machineDTOList.isEmpty()){
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("No records of vehicles");
+                responseDTO.setMessage("No records of machines");
             }else{
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully fetched all vehicles");
+                responseDTO.setMessage("Successfully fetched all machines");
             }
-            responseDTO.setContent(vehicleDTOList);
+            responseDTO.setContent(machineDTOList);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){
@@ -52,22 +52,22 @@ public class VehicleController {
         }
     }
 
-    // Searching a vehicle by vehicle_No
-    @GetMapping("/search/{vehicle_No}")
-    public ResponseEntity searchVehicleByID(@PathVariable String vehicle_No){
+    // Searching a machine by machine_id
+    @GetMapping("/search/{machine_id}")
+    public ResponseEntity searchMachineByID(@PathVariable String machine_id){
         try{
-            // Call service layer to search vehicle by vehicle_No
-            VehicleDTO vehicleDTO = vehicleService.searchVehicleByID(vehicle_No);
+            // Call service layer to search machine by machine_id
+            MachineDTO machineDTO = machineService.searchMachineByID(machine_id);
 
-            // Check if vehicle is found
-            if (vehicleDTO==null){
+            // Check if machine is found
+            if (machineDTO==null){
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("No records of the vehicle");
+                responseDTO.setMessage("No records of the machine");
             }else {
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully fetched the vehicle");
+                responseDTO.setMessage("Successfully fetched the machine");
             }
-            responseDTO.setContent(vehicleDTO);
+            responseDTO.setContent(machineDTO);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){
@@ -81,24 +81,24 @@ public class VehicleController {
         }
     }
 
-    // Adding a new vehicle
+    // Adding a new machine
     @PostMapping("/add")
-    public ResponseEntity addVehicle(@RequestBody VehicleDTO vehicleDTO){
+    public ResponseEntity addMachine(@RequestBody MachineDTO machineDTO){
         try{
-            // Call service to add new vehicle
-            String response = vehicleService.addNewVehicle(vehicleDTO);
+            // Call service to add new machine
+            String response = machineService.addNewMachine(machineDTO);
 
             // Check response from service
             if(response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully added vehicle");
-                responseDTO.setContent(vehicleDTO);
+                responseDTO.setMessage("Successfully added machine");
+                responseDTO.setContent(machineDTO);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }
             else{
                 responseDTO.setCode("DUPLICATED");
-                responseDTO.setMessage("Vehicle No already exists");
-                responseDTO.setContent(vehicleDTO);
+                responseDTO.setMessage("Machine id already exists");
+                responseDTO.setContent(machineDTO);
                 return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
             }
         }catch (Exception ex){
@@ -112,24 +112,24 @@ public class VehicleController {
         }
     }
 
-    // Updating a vehicle
+    // Updating a machine
     @PutMapping("/update")
-    public ResponseEntity updateVehicle(@RequestBody VehicleDTO vehicleDTO){
+    public ResponseEntity updateMachine(@RequestBody MachineDTO machineDTO){
         try{
-            // Call service layer to update vehicle
-            String response = vehicleService.updateVehicle(vehicleDTO);
+            // Call service layer to update machine
+            String response = machineService.updateMachine(machineDTO);
 
             // Check response from service
             if(response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully updated the vehicle");
-                responseDTO.setContent(vehicleDTO);
+                responseDTO.setMessage("Successfully updated the machine");
+                responseDTO.setContent(machineDTO);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }
             else{
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("Not found such a vehicle");
-                responseDTO.setContent(vehicleDTO);
+                responseDTO.setMessage("Not found such a machine");
+                responseDTO.setContent(machineDTO);
                 return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
             }
         }catch (Exception ex){
@@ -143,22 +143,22 @@ public class VehicleController {
         }
     }
 
-    // Deleting a vehicle by ID
-    @DeleteMapping("/delete/{vehicle_No}")
-    public ResponseEntity deleteVehicleByID(@PathVariable String vehicle_No){
+    // Deleting a machine by ID
+    @DeleteMapping("/delete/{machine_id}")
+    public ResponseEntity deleteMachineByID(@PathVariable String machine_id){
 
         try{
-            // Call service to delete vehicle by ID
-            String response = vehicleService.deleteVehicleByID(vehicle_No);
+            // Call service to delete machine by ID
+            String response = machineService.deleteMachineByID(machine_id);
             if (response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully deleted the vehicle");
-                responseDTO.setContent(vehicle_No);
+                responseDTO.setMessage("Successfully deleted the machine");
+                responseDTO.setContent(machine_id);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }else{
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("Not found such a vehicle");
-                responseDTO.setContent("Vehicle_No: " + vehicle_No);
+                responseDTO.setMessage("Not found such a machine");
+                responseDTO.setContent("Machine_id: " + machine_id);
                 return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
             }
 
