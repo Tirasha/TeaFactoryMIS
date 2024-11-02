@@ -1,8 +1,8 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
-import com.miniProject.TeaFactoryMIS.DTO.MachineDTO;
+import com.miniProject.TeaFactoryMIS.DTO.FuelDTO;
 import com.miniProject.TeaFactoryMIS.DTO.ResponseDTO;
-import com.miniProject.TeaFactoryMIS.Service.MachineService;
+import com.miniProject.TeaFactoryMIS.Service.FuelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,35 +10,35 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//Controller class for managing machines
+//Controller class for managing fuel
 
 @RestController
-@RequestMapping(value="/machine")
+@RequestMapping(value="/fuel")
 @CrossOrigin
 
-public class MachineController {
+public class FuelController {
     @Autowired
-    private MachineService machineService;
+    private FuelService fuelService;
 
     @Autowired
     private ResponseDTO responseDTO;
 
-    // Viewing all machines
+    // Viewing all fuel
     @GetMapping("/view")
-    public ResponseEntity viewMachines(){
+    public ResponseEntity viewFuel(){
         try{
-            // Retrieve all machines
-            List<MachineDTO> machineDTOList = machineService.viewAllMachines();
+            // Retrieve all fuel
+            List<FuelDTO> fuelDTOList = fuelService.viewAllFuel();
 
             // Check if list is empty
-            if(machineDTOList.isEmpty()){
+            if(fuelDTOList.isEmpty()){
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("No records of machines");
+                responseDTO.setMessage("No records of fuel");
             }else{
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully fetched all machines");
+                responseDTO.setMessage("Successfully fetched all fuel");
             }
-            responseDTO.setContent(machineDTOList);
+            responseDTO.setContent(fuelDTOList);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){
@@ -52,22 +52,22 @@ public class MachineController {
         }
     }
 
-    // Searching a machine by machine_id
-    @GetMapping("/search/{machine_id}")
-    public ResponseEntity searchMachineByID(@PathVariable String machine_id){
+    // Searching a fuel by fuel_id
+    @GetMapping("/search/{fuel_id}")
+    public ResponseEntity searchFuelByID(@PathVariable String fuel_id){
         try{
-            // Call service layer to search machine by machine_id
-            MachineDTO machineDTO = machineService.searchMachineByID(machine_id);
+            // Call service layer to search fuel by fuel_id
+            FuelDTO fuelDTO = fuelService.searchFuelByID(fuel_id);
 
-            // Check if machine is found
-            if (machineDTO==null){
+            // Check if fuel is found
+            if (fuelDTO==null){
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("No records of the machine");
+                responseDTO.setMessage("No records of the fuel");
             }else {
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully fetched the machine");
+                responseDTO.setMessage("Successfully fetched the fuel");
             }
-            responseDTO.setContent(machineDTO);
+            responseDTO.setContent(fuelDTO);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){
@@ -81,24 +81,24 @@ public class MachineController {
         }
     }
 
-    // Adding a new machine
+    // Adding a new fuel
     @PostMapping("/add")
-    public ResponseEntity addMachine(@RequestBody MachineDTO machineDTO){
+    public ResponseEntity addFuel(@RequestBody FuelDTO fuelDTO){
         try{
-            // Call service to add new machine
-            String response = machineService.addNewMachine(machineDTO);
+            // Call service to add new fuel
+            String response = fuelService.addNewFuel(fuelDTO);
 
             // Check response from service
             if(response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully added machine");
-                responseDTO.setContent(machineDTO);
+                responseDTO.setMessage("Successfully added fuel");
+                responseDTO.setContent(fuelDTO);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }
             else{
                 responseDTO.setCode("DUPLICATED");
-                responseDTO.setMessage("Machine id already exists");
-                responseDTO.setContent(machineDTO);
+                responseDTO.setMessage("Fuel id already exists");
+                responseDTO.setContent(fuelDTO);
                 return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
             }
         }catch (Exception ex){
@@ -112,24 +112,24 @@ public class MachineController {
         }
     }
 
-    // Updating a machine
+    // Updating a fuel
     @PutMapping("/update")
-    public ResponseEntity updateMachine(@RequestBody MachineDTO machineDTO){
+    public ResponseEntity updateFuel(@RequestBody FuelDTO fuelDTO){
         try{
-            // Call service layer to update machine
-            String response = machineService.updateMachine(machineDTO);
+            // Call service layer to update fuel
+            String response = fuelService.updateFuel(fuelDTO);
 
             // Check response from service
             if(response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully updated the machine");
-                responseDTO.setContent(machineDTO);
+                responseDTO.setMessage("Successfully updated the fuel");
+                responseDTO.setContent(fuelDTO);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }
             else{
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("Not found such a machine");
-                responseDTO.setContent(machineDTO);
+                responseDTO.setMessage("Not found such a fuel");
+                responseDTO.setContent(fuelDTO);
                 return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
             }
         }catch (Exception ex){
@@ -143,22 +143,22 @@ public class MachineController {
         }
     }
 
-    // Deleting a machine by ID
-    @DeleteMapping("/delete/{machine_id}")
-    public ResponseEntity deleteMachineByID(@PathVariable String machine_id){
+    // Deleting a fuel by ID
+    @DeleteMapping("/delete/{fuel_id}")
+    public ResponseEntity deleteFuelByID(@PathVariable String fuel_id){
 
         try{
-            // Call service to delete machine by ID
-            String response = machineService.deleteMachineByID(machine_id);
+            // Call service to delete fuel by ID
+            String response = fuelService.deleteFuelByID(fuel_id);
             if (response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully deleted the machine");
-                responseDTO.setContent(machine_id);
+                responseDTO.setMessage("Successfully deleted the fuel");
+                responseDTO.setContent(fuel_id);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }else{
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("Not found such a machine");
-                responseDTO.setContent("Machine_id: " + machine_id);
+                responseDTO.setMessage("Not found such a fuel");
+                responseDTO.setContent("Fuel_id: " + fuel_id);
                 return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
             }
 

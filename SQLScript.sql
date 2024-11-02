@@ -36,7 +36,7 @@ insert into users(user_id,password,username)values
 
 
 -- Tharu
--- drop table vehical;
+-- drop table machine; 
 Create Table vehicle(
 	vehicle_No varchar(50) primary key not null,
     vehicle_type varchar(255) not null,
@@ -50,7 +50,7 @@ Create table machine(
 	machine_id varchar(50) primary key not null,
     machine_type varchar(255) not null,
     machine_quantity varchar(255) not null,
-    machine_availablity varchar(255) not null,
+    machine_availability varchar(255) not null,
     fuel_id varchar(255) not null,
     FOREIGN KEY (fuel_id) REFERENCES fuel(fuel_id)
 );
@@ -70,7 +70,7 @@ Insert into vehicle (vehicle_No, vehicle_type, vehicle_image, vehicle_availabili
 ('VH004', 'Bus', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/bus.jpg'), 'In Service', 'F003'),
 ('VH005', 'Van', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/van.jpg'), 'Available', 'F002');
 
-Insert into machine (machine_id, machine_type, machine_quantity, machine_availablity, fuel_id) Values 
+Insert into machine (machine_id, machine_type, machine_quantity, machine_availability, fuel_id) Values 
 ('MCH001', 'Excavator', '5', 'Available', 'F001'),
 ('MCH002', 'Bulldozer', '3', 'In Service', 'F002'),
 ('MCH003', 'Crane', '2', 'Available', 'F003'),

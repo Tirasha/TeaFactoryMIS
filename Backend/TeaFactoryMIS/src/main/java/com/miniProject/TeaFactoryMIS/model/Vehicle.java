@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-@Table(name = "Vehicle")
+@Table(name = "vehicle")
 public class Vehicle {
     @Id
     private String vehicle_No ;
@@ -22,6 +22,9 @@ public class Vehicle {
 
     @Column
     private String vehicle_availability;
+
+    @Column
+    private String fuel_id;
 }
 
 

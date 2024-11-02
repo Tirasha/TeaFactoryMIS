@@ -20,7 +20,7 @@ public class VehicleService {
     private VehicleRepository vehicleRepository;
 
     // ModelMapper for mapping between entities and DTOs
-//    @Autowired
+    @Autowired
     private ModelMapper modelMapper;
 
 

@@ -21,7 +21,7 @@ public class MachineService {
     private MachineRepository machineRepository;
 
     // ModelMapper for mapping between entities and DTOs
-//    @Autowired
+    @Autowired
     private ModelMapper modelMapper;
 
 
@@ -41,7 +41,7 @@ public class MachineService {
             Machine machine = machineRepository.findById(machine_id).orElse(null);
             return modelMapper.map(machine, MachineDTO.class);
         } else {
-            // Return null if vehicle not found
+            // Return null if machine not found
             return null;
         }
     }
