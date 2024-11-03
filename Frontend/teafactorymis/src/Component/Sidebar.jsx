@@ -10,7 +10,7 @@ import {
   Avatar,
   Divider,
 } from '@mui/material';
-import { Home, Assignment, Dashboard, Settings, Logout } from '@mui/icons-material';
+import { Home, Assignment, Dashboard, Settings, Logout, Commute, LocalGasStation, Factory} from '@mui/icons-material';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -39,7 +39,9 @@ const Sidebar = ({ user, onLogout }) => {
       
       case 'TechnicalAssist':
         return [{ text: 'Technical Dashboard', icon: <Dashboard />, path: '/TechnicalDashboard' },
-                { text: 'Vehical', icon: <Dashboard />, path: '/Vehical' }];
+                { text: 'Vehicle', icon: <Commute />, path: '/Vehicle' },
+                { text: 'Machine', icon: <Factory />, path: '/Machine' },
+                { text: 'Fuel', icon: <LocalGasStation />, path: '/Fuel' }];
       
       default:
         return [];

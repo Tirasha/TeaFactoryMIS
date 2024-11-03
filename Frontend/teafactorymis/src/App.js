@@ -7,8 +7,13 @@ import HRAssistDashboard from './Dashboards/HRAssist/HRAssistDashboard';
 import InventoryAssistDashboard from './Dashboards/InventoryAssist/InventoryAssistDashboard';
 import SalesAssistDashboard from './Dashboards/SalesAssist/SalesAssistDashboard';
 import TechnicalDashboard from './Dashboards/TechnicalAssist/TechnicalDashboard';
+import Vehicle  from './Dashboards/TechnicalAssist/Vehicle/Vehicle';
+import VehicleAdd  from './Dashboards/TechnicalAssist/Vehicle/VehicleAdd';
+import VehicleDetails  from './Dashboards/TechnicalAssist/Vehicle/VehicleDetails';
+import { Machine } from './Dashboards/TechnicalAssist/Machine';
+import { Fuel } from './Dashboards/TechnicalAssist/Fuel';
 import UserManage from './Dashboards/Admin/UserManage';
-import { Vehical } from './Dashboards/TechnicalAssist/Vehical';
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,10 +46,16 @@ function App() {
                 <Route path="/HRDashboard" element={<HRAssistDashboard user={user} />} />
                 <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
+
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
-                <Route path="/Vehical" element={<Vehical user={user} />} />
+                <Route path="/Vehicle" element={<Vehicle user={user} />} />
+                <Route path="/VehicleAdd" element={<VehicleAdd user={user} />} />
+                <Route path="/VehicleDetails" element={<VehicleDetails user={user} />} />
+
+                <Route path="/Machine" element={<Machine user={user} />} />
+                <Route path="/Fuel" element={<Fuel user={user} />} />
               </>
-            )}
+            )}  
           </Routes>
         </div>
       </div>

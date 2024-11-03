@@ -36,7 +36,7 @@ insert into users(user_id,password,username)values
 
 
 -- Tharu
--- drop table machine; 
+-- drop table fuel; 
 Create Table vehicle(
 	vehicle_No varchar(50) primary key not null,
     vehicle_type varchar(255) not null,
