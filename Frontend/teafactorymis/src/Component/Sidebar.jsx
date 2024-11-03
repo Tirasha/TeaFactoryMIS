@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore } from '@mui/icons-material'; // Added Expand icons
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 const drawerWidth = 240;
 
 const Sidebar = ({ user, onLogout }) => {
@@ -56,7 +56,11 @@ const Sidebar = ({ user, onLogout }) => {
         return [{ text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryDashboard' }];
       
       case 'SalesAssist':
-        return [{ text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' }];
+        return [
+          { text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' },
+          { text: 'Manage Sales', icon: <ManageAccountsIcon />, path: '/ManageSales' },
+          
+        ];
       
       case 'TechnicalAssist':
         return [{ text: 'Technical Dashboard', icon: <Dashboard />, path: '/TechnicalDashboard' }];
