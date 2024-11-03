@@ -8,6 +8,7 @@ import InventoryAssistDashboard from './Dashboards/InventoryAssist/InventoryAssi
 import SalesAssistDashboard from './Dashboards/SalesAssist/SalesAssistDashboard';
 import TechnicalDashboard from './Dashboards/TechnicalAssist/TechnicalDashboard';
 import UserManage from './Dashboards/Admin/UserManage';
+import ManageSales from './Dashboards/SalesAssist/ManageSales';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -39,7 +40,11 @@ function App() {
                 <Route path="/UserManage" element={<UserManage user={user} />} />
                 <Route path="/HRDashboard" element={<HRAssistDashboard user={user} />} />
                 <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
+
+
+            //SalesAssist
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
+                <Route path="/ManageSales" element={<ManageSales user={user} />} />
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
               </>
             )}
