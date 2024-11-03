@@ -1,12 +1,12 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
 import com.miniProject.TeaFactoryMIS.Repository.InventoryRepository;
+import com.miniProject.TeaFactoryMIS.model.Fertilizer;
 import com.miniProject.TeaFactoryMIS.model.Inventory;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,17 +16,19 @@ public class InventoryController {
     @Autowired
     private InventoryRepository inventoryrepo;
 
-    @PostMapping("/add")
+    @PostMapping("/inventory/add")
     Inventory newInventory(@RequestBody Inventory newInventory)
     {
 
         return inventoryrepo.save(newInventory);
     }
 
-   @GetMapping("/all")
+   @GetMapping("/inventory/all")
     List<Inventory> getAllInventory()
    {
        return inventoryrepo.findAll();
    }
+
+
 
 }

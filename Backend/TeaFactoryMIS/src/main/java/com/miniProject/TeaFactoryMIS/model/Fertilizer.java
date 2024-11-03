@@ -11,10 +11,10 @@ import lombok.Setter;
 public class Fertilizer {
 
     @Id
-    private  String Fer_ID;
-    private  String  Name;
-    private String Type;
-    private String Quantity;
+    private  String fer_id;
+    private  String  name;
+    private String type;
+    private double quantity;
 
 
 }
