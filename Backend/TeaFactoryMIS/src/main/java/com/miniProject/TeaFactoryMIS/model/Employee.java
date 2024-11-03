@@ -14,6 +14,7 @@ public class Employee {
     private String empId;
     private String firstname;
     private String lastname;
+
     @Temporal(TemporalType.DATE)
     private Date dob;
 
@@ -27,10 +28,5 @@ public class Employee {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] image;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
-    private User user;
-
-
-
+    // Remove the user relationship if not needed, or keep it if needed for other logic
 }
