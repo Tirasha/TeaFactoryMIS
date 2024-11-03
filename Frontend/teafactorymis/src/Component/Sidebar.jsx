@@ -70,11 +70,11 @@ const Sidebar = ({ user, onLogout }) => {
         <Box sx={{ padding: 2, textAlign: 'center' }}>
           <Avatar
             src={user?.employee?.Image || '/default-profile.png'}
-            alt={user?.employee?.user?.username || 'User'}
+            alt={user?.user?.username || 'User'}
             sx={{ width: 80, height: 80, margin: '0 auto' }}
           />
           <Typography variant="h6" sx={{ mt: 1 }}>
-            {user?.employee?.user?.username || 'Guest User'}
+            {user?.user?.username || 'Guest User'}
           </Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>
             {userRole}
