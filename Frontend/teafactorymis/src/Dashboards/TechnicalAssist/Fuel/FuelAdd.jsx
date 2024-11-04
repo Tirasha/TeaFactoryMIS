@@ -13,37 +13,29 @@ import {
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import axios from "axios";
 
-export default function VehicleAdd() {
-  const [vehicle_No, setVehicle_No] = useState("");
-  const [vehicle_type, setVehicle_type] = useState("");
-  const [vehicle_image, setVehicle_image] = useState("");
-  const [vehicle_availability, setVehicle_availability] = useState("");
+export default function FuelAdd() {
   const [fuel_id, setFuel_id] = useState("");
+  const [fuel_name, setFuel_name] = useState("");
+  const [fuel_type, setFuel_type] = useState("");
+  const [fuel_quantity, setFuel_quantity] = useState("");
 
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleAddBtn = async () => {
-    if (
-      !vehicle_No ||
-      !vehicle_type ||
-      !vehicle_image ||
-      !vehicle_availability ||
-      !fuel_id
-    ) {
+    if (!fuel_id || !fuel_name || !fuel_type || !fuel_quantity) {
       setError("All fields are required");
       setTimeout(() => setError(""), 2000);
     } else {
       const formData = {
-        vehicle_No,
-        vehicle_type,
-        vehicle_image,
-        vehicle_availability,
         fuel_id,
+        fuel_name,
+        fuel_type,
+        fuel_quantity,
       };
       try {
-        await axios.post("http://localhost:8080/vehicle/add", formData);
-        setTimeout(() => navigate("/VehicleRead"), 3000);
+        await axios.post("http://localhost:8080/fuel/add", formData);
+        setTimeout(() => navigate("/FuelRead"), 3000);
       } catch (err) {
         alert(err.message);
       }
@@ -51,15 +43,14 @@ export default function VehicleAdd() {
   };
 
   const handleBackBtn = () => {
-    navigate("/Vehicle");
+    navigate("/Fuel");
   };
 
   const handleClearBtn = () => {
-    setVehicle_No("");
-    setVehicle_type("");
-    setVehicle_image("");
-    setVehicle_availability("");
     setFuel_id("");
+    setFuel_name("");
+    setFuel_type("");
+    setFuel_quantity("");
   };
 
   return (
@@ -73,7 +64,7 @@ export default function VehicleAdd() {
             <ArrowBackIosNewIcon />{" "}
           </IconButton>{" "}
           <Typography variant="h4" fontWeight="bold" color="textPrimary">
-            Add Vehicle{" "}
+            Add Fuel Type{" "}
           </Typography>{" "}
         </Box>{" "}
         {error && (
@@ -89,50 +80,40 @@ export default function VehicleAdd() {
               {" "}
               <TextField
                 fullWidth
-                label="Vehicle No"
-                variant="outlined"
-                value={vehicle_No}
-                onChange={(e) => setVehicle_No(e.target.value)}
-              />{" "}
-            </Grid>{" "}
-            <Grid item xs={12}>
-              {" "}
-              <TextField
-                fullWidth
-                label="Vehicle Type"
-                variant="outlined"
-                value={vehicle_type}
-                onChange={(e) => setVehicle_type(e.target.value)}
-              />{" "}
-            </Grid>{" "}
-            <Grid item xs={12}>
-              {" "}
-              <TextField
-                fullWidth
-                label="Vehicle Image"
-                variant="outlined"
-                value={vehicle_image}
-                onChange={(e) => setVehicle_image(e.target.value)}
-              />{" "}
-            </Grid>{" "}
-            <Grid item xs={12}>
-              {" "}
-              <TextField
-                fullWidth
-                label="Vehicle Availability"
-                variant="outlined"
-                value={vehicle_availability}
-                onChange={(e) => setVehicle_availability(e.target.value)}
-              />{" "}
-            </Grid>{" "}
-            <Grid item xs={12}>
-              {" "}
-              <TextField
-                fullWidth
                 label="Fuel Id"
                 variant="outlined"
                 value={fuel_id}
                 onChange={(e) => setFuel_id(e.target.value)}
+              />{" "}
+            </Grid>{" "}
+            <Grid item xs={12}>
+              {" "}
+              <TextField
+                fullWidth
+                label="Fuel Name"
+                variant="outlined"
+                value={fuel_name}
+                onChange={(e) => setFuel_name(e.target.value)}
+              />{" "}
+            </Grid>{" "}
+            <Grid item xs={12}>
+              {" "}
+              <TextField
+                fullWidth
+                label="Fuel Type"
+                variant="outlined"
+                value={fuel_type}
+                onChange={(e) => setFuel_type(e.target.value)}
+              />{" "}
+            </Grid>{" "}
+            <Grid item xs={12}>
+              {" "}
+              <TextField
+                fullWidth
+                label="Fuel Quantity"
+                variant="outlined"
+                value={fuel_quantity}
+                onChange={(e) => setFuel_quantity(e.target.value)}
               />{" "}
             </Grid>{" "}
           </Grid>{" "}

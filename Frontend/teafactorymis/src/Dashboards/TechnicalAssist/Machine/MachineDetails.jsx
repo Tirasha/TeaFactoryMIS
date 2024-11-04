@@ -21,43 +21,43 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function VehicleDetails() {
+export default function MachineDetails() {
   const navigate = useNavigate();
   const [tableData, setTableData] = useState([]);
-  const [deleteVehicle, setDeleteVehicle] = useState(false);
+  const [deleteMachine, setDeleteMachine] = useState(false);
   const [modelView, setModelView] = useState(false);
-  const [vehicle_No, setVehicle_No] = useState("");
-  const [vehicle_type, setVehicle_type] = useState("");
-  const [vehicle_image, setVehicle_image] = useState("");
-  const [vehicle_availability, setVehicle_availability] = useState("");
+  const [machine_id, setMachine_id] = useState("");
+  const [machine_type, setMachine_type] = useState("");
+  const [machine_quantity, setMachine_quantity] = useState("");
+  const [machine_availability, setMachine_availability] = useState("");
   const [fuel_id, setFuel_id] = useState("");
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/vehicle/view")
+      .get("http://localhost:8080/machine/view")
       .then((res) => setTableData(res.data.content))
       .catch((err) => alert(err.message));
-  }, [deleteVehicle]);
+  }, [deleteMachine]);
 
-  const handleDeleteBtn = async (vehicle_No) => {
+  const handleDeleteBtn = async (machine_id) => {
     await axios
-      .delete(`http://localhost:8080/vehicle/delete/${vehicle_No}`)
+      .delete(`http://localhost:8080/machine/delete/${machine_id}`)
       .then(() => {
-        setDeleteVehicle((prev) => !prev);
+        setDeleteMachine((prev) => !prev);
         alert("Delete Successfully");
       })
       .catch((err) => alert(err.message));
   };
 
-  const handleEditBtn = async (vehicle_No) => {
+  const handleEditBtn = async (machine_id) => {
     await axios
-      .get(`http://localhost:8080/vehicle/search/${vehicle_No}`)
+      .get(`http://localhost:8080/machine/search/${machine_id}`)
       .then((res) => {
         const data = res.data.content;
-        setVehicle_No(data.vehicle_No);
-        setVehicle_type(data.vehicle_type);
-        setVehicle_image(data.vehicle_image);
-        setVehicle_availability(data.vehicle_availability);
+        setMachine_id(data.machine_id);
+        setMachine_type(data.machine_type);
+        setMachine_quantity(data.machine_quantity);
+        setMachine_availability(data.machine_availability);
         setFuel_id(data.fuel_id);
         setModelView(true);
       })
@@ -66,16 +66,16 @@ export default function VehicleDetails() {
 
   const handleUpdateBtn = async () => {
     const updateData = {
-      vehicle_No,
-      vehicle_type,
-      vehicle_image,
-      vehicle_availability,
+      machine_id,
+      machine_type,
+      machine_quantity,
+      machine_availability,
       fuel_id,
     };
 
     await axios
-      .put("http://localhost:8080/vehicle/update", updateData)
-      .then(() => (window.location.href = "/VehicleDetails"))
+      .put("http://localhost:8080/machine/update", updateData)
+      .then(() => (window.location.href = "/MachineDetails"))
       .catch((err) => alert(err.message));
   };
 
@@ -83,11 +83,11 @@ export default function VehicleDetails() {
     <Box display="flex" flexDirection="column" p={3}>
       <Sidebar />
       <Box display="flex" alignItems="center" mb={3}>
-        <IconButton onClick={() => navigate("/Vehicle")}>
+        <IconButton onClick={() => navigate("/Machine")}>
           <ArrowBackIosNewIcon />
         </IconButton>
         <Typography variant="h4" fontWeight="bold">
-          Vehicle Details
+          Machine Details
         </Typography>
       </Box>
 
@@ -96,33 +96,33 @@ export default function VehicleDetails() {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Vehicle No"
-                value={vehicle_No}
+                label="Machine Id"
+                value={machine_id}
                 fullWidth
                 disabled
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Vehicle Type"
-                value={vehicle_type}
-                onChange={(e) => setVehicle_type(e.target.value)}
+                label="Machine Type"
+                value={machine_type}
+                onChange={(e) => setMachine_type(e.target.value)}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Vehicle Image"
-                value={vehicle_image}
-                onChange={(e) => setVehicle_image(e.target.value)}
+                label="Machine Quantity"
+                value={machine_quantity}
+                onChange={(e) => setMachine_quantity(e.target.value)}
                 fullWidth
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Vehicle Availability"
-                value={vehicle_availability}
-                onChange={(e) => setVehicle_availability(e.target.value)}
+                label="Machine Availability"
+                value={machine_availability}
+                onChange={(e) => setMachine_availability(e.target.value)}
                 fullWidth
               />
             </Grid>
@@ -154,10 +154,10 @@ export default function VehicleDetails() {
             <TableHead>
               <TableRow>
                 <TableCell>No</TableCell>
-                <TableCell>Vehicle No</TableCell>
-                <TableCell>Vehicle Type</TableCell>
-                <TableCell>Vehicle Image</TableCell>
-                <TableCell>Vehicle Availability</TableCell>
+                <TableCell>Machine Id</TableCell>
+                <TableCell>Machine Type</TableCell>
+                <TableCell>Machine Quantity</TableCell>
+                <TableCell>Machine Availability</TableCell>
                 <TableCell>Fuel Id</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
@@ -166,17 +166,17 @@ export default function VehicleDetails() {
               {tableData.map((data, index) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{data.vehicle_No}</TableCell>
-                  <TableCell>{data.vehicle_type}</TableCell>
-                  <TableCell>{data.vehicle_image}</TableCell>
-                  <TableCell>{data.vehicle_availability}</TableCell>
+                  <TableCell>{data.machine_id}</TableCell>
+                  <TableCell>{data.machine_type}</TableCell>
+                  <TableCell>{data.machine_quantity}</TableCell>
+                  <TableCell>{data.machine_availability}</TableCell>
                   <TableCell>{data.fuel_id}</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => handleEditBtn(data.vehicle_No)}>
+                    <IconButton onClick={() => handleEditBtn(data.machine_id)}>
                       <EditIcon />
                     </IconButton>
                     <IconButton
-                      onClick={() => handleDeleteBtn(data.vehicle_No)}
+                      onClick={() => handleDeleteBtn(data.machine_id)}
                     >
                       <DeleteIcon />
                     </IconButton>
