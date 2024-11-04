@@ -15,7 +15,6 @@ import { Fuel } from './Dashboards/TechnicalAssist/Fuel';
 import UserManage from './Dashboards/Admin/UserManage';
 import ManageSales from './Dashboards/SalesAssist/ManageSales';
 
-
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);

@@ -9,7 +9,6 @@ insert into employee(emp_id,category,dob,firstname,house_no,lastname,line_no,nic
 ("e004", "InventoryAssist", "2000-12-04", "Tirasha", "15", "Dinuki", "45", "200085967425", "InventoryAssist",  null),
 ("e005", "SalesAssist", "2000-12-04", "Tharu", "78", "Rashmika", "74", "200074859625", "SalesAssist", null);
 
-
 insert into users(user_id,password,username)values
 ("u001", "12345", "Isuru"),
 ("u002", "12345", "Madhu"),
@@ -68,6 +67,8 @@ Insert into fuel (fuel_id, fuel_name, fuel_type, fuel_quantity) Values
 ('F003', 'Electricity', 'Electric', '2000 kWh'),
 ('F004', 'Natural Gas', 'Gas', '1500 cubic meters'),
 ('F005', 'Hydrogen', 'Gas', '1000 cubic meters');
+
+
 
 insert into users(user_id,password,username,emp_id)values
 ("u001", "12345", "Isuru","e001"),
