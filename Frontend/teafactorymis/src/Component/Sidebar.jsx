@@ -85,7 +85,7 @@ const Sidebar = ({ user, onLogout }) => {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            backgroundColor: '#E8F5E9',
+            backgroundColor: '#4CAF50',
             color: '#1B5E20',
           },
         }}
@@ -117,7 +117,8 @@ const Sidebar = ({ user, onLogout }) => {
                 to={item.path}
                 onClick={item.dropdown ? handleAttendanceClick : null}
                 selected={location.pathname === item.path}
-              >
+              
+            >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
                 {item.dropdown ? (openAttendance ? <ExpandLess /> : <ExpandMore />) : null}
@@ -144,7 +145,7 @@ const Sidebar = ({ user, onLogout }) => {
             </React.Fragment>
           ))}
 
-          <ListItem button onClick={handleLogout}>
+          <ListItem button onClick={handleLogout} >
             <ListItemIcon><Logout /></ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>

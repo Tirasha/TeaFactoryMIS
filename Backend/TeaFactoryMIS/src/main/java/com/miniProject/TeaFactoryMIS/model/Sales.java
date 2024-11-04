@@ -16,12 +16,15 @@ import java.util.Date;
 public class Sales {
 
     @Id
-    private String SalesId;
-    private String TeaType;
-    private Date Date;
-    private int Tea_Quantity;
-    private double Total_Amount;
+    private String salesId;
+    private String teaType;
+    private Date date;
+    private double tea_Quantity;
+    private double total_Amount;
 
+    @ManyToOne
+    @JoinColumn(name = "inventory_id", referencedColumnName = "inventory_id", nullable = false)
+    private Inventory inventory;
 
 
 }
