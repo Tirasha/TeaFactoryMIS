@@ -2,8 +2,6 @@ package com.miniProject.TeaFactoryMIS.Controller;
 
 import com.miniProject.TeaFactoryMIS.Repository.FertilizerRepository;
 import com.miniProject.TeaFactoryMIS.model.Fertilizer;
-import com.miniProject.TeaFactoryMIS.model.Inventory;
-import org.hibernate.id.IdentifierGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

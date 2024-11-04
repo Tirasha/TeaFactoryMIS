@@ -9,12 +9,11 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Inventory {
+public class Inventories {
 
     @Id
-    private String inventory_id;
+    private String inv_id;
     private  String tea_type;
-    private double available_stock;
-    private double price_per_kg;
-
+    private  double available_stock;
+    private  double price_per_kg;
 }
