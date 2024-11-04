@@ -20,6 +20,7 @@ insert into users(user_id,password,username)values
 
 
 -- Tharu
+-- Database Queries related to vehicle, machine and fuel tables
 -- drop table fuel; 
 Create Table vehicle(
 	vehicle_No varchar(50) primary key not null,
@@ -46,7 +47,6 @@ Create table fuel(
     fuel_quantity varchar(255) not null
 );
 
-
 Insert into vehicle (vehicle_No, vehicle_type, vehicle_image, vehicle_availability, fuel_id) Values 
 ('VH001', 'Car', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/car.jpg'), 'Available', 'F001'),
 ('VH002', 'Truck', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/truck.jpg'), 'Not Available', 'F002'),
@@ -67,6 +67,158 @@ Insert into fuel (fuel_id, fuel_name, fuel_type, fuel_quantity) Values
 ('F003', 'Electricity', 'Electric', '2000 kWh'),
 ('F004', 'Natural Gas', 'Gas', '1500 cubic meters'),
 ('F005', 'Hydrogen', 'Gas', '1000 cubic meters');
+
+-- Indexing
+CREATE INDEX index_vehicle_fuel_id ON vehicle(fuel_id);
+CREATE INDEX index_machine_availability ON machine(machine_availability);
+CREATE INDEX index_fuel_name ON fuel(fuel_name);
+
+-- View
+CREATE VIEW available_vehicles AS
+SELECT vehicle_No, vehicle_type, fuel_id
+FROM vehicle
+WHERE vehicle_availability = 'Available';
+
+SELECT * FROM available_vehicles;
+
+CREATE VIEW machine_fuel_details AS
+SELECT m.machine_id, m.machine_type, m.machine_quantity, f.fuel_name, f.fuel_type, f.fuel_quantity
+FROM machine m
+JOIN fuel f ON m.fuel_id = f.fuel_id;
+
+SELECT * FROM machine_fuel_details;
+
+
+-- Function
+Delimiter $$
+CREATE FUNCTION GetTotalMachineQuantity(m_type VARCHAR(255))
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total_quantity INT;
+    SELECT SUM(machine_quantity) INTO total_quantity
+    FROM machine
+    WHERE machine_type = m_type;
+    RETURN IFNULL(total_quantity, 0); -- Returns 0 if no machines of the type exist
+END;
+Delimiter ;
+
+SELECT GetTotalMachineQuantity('Excavator');
+
+
+-- Procudure
+Delimiter $$
+CREATE PROCEDURE AddVehicle(
+    IN v_vehicle_No VARCHAR(50),
+    IN v_vehicle_type VARCHAR(255),
+    IN v_vehicle_image LONGBLOB,
+    IN v_vehicle_availability VARCHAR(255),
+    IN v_fuel_id VARCHAR(255)
+)
+BEGIN
+    INSERT INTO vehicle (vehicle_No, vehicle_type, vehicle_image, vehicle_availability, fuel_id)
+    VALUES (v_vehicle_No, v_vehicle_type, v_vehicle_image, v_vehicle_availability, v_fuel_id);
+END;
+Delimiter ;
+
+CALL AddVehicle();
+
+Delimiter $$
+CREATE PROCEDURE UpdateFuelQuantity(
+    IN f_fuel_id VARCHAR(50),
+    IN f_new_quantity VARCHAR(255)
+)
+BEGIN
+    UPDATE fuel
+    SET machine_quantity = f_new_quantity
+    WHERE machine_id = f_fuel_id;
+END;
+Delimiter ;
+
+CALL UpdateFuelQuantity();
+
+
+-- Stored Procudure
+Delimiter $$
+CREATE PROCEDURE GetAvailableVehiclesByType(
+    IN v_vehicle_type VARCHAR(255)
+)
+BEGIN
+    SELECT vehicle_No, vehicle_type, vehicle_availability, fuel_id
+    FROM vehicle
+    WHERE vehicle_type = v_vehicle_type AND vehicle_availability = 'Available';
+END;
+Delimiter ;
+
+CALL GetAvailableVehiclesByType();
+
+
+-- Stored Procudure with error handling
+Delimiter $$
+CREATE PROCEDURE ReduceFuelQuantityWithErrorHandling(
+    IN f_fuel_id VARCHAR(50),
+    IN f_reduce_amount INT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Error: Failed to update fuel quantity. Please check inputs.' AS ErrorMessage;
+    END;
+
+    START TRANSACTION;
+
+    -- Check if the fuel_id exists and if sufficient quantity is available
+    IF EXISTS (SELECT 1 FROM fuel WHERE fuel_id = f_fuel_id) THEN
+        DECLARE current_quantity INT;
+        SELECT fuel_quantity INTO current_quantity FROM fuel WHERE fuel_id = f_fuel_id;
+
+        IF current_quantity >= f_reduce_amount THEN
+            UPDATE fuel
+            SET fuel_quantity = fuel_quantity - f_reduce_amount
+            WHERE fuel_id = f_fuel_id;
+            COMMIT;
+        ELSE
+            ROLLBACK;
+            SELECT 'Error: Insufficient fuel quantity available.' AS ErrorMessage;
+        END IF;
+    ELSE
+        ROLLBACK;
+        SELECT 'Error: Specified fuel_id does not exist.' AS ErrorMessage;
+    END IF;
+END;
+Delimiter ;
+
+CALL ReduceFuelQuantityWithErrorHandling();
+
+
+-- Triggers
+Delimiter $$
+CREATE TRIGGER trigger_update_fuel_quantity_on_machine_update
+BEFORE UPDATE ON machine                           
+FOR EACH ROW
+BEGIN
+    IF OLD.fuel_id <> NEW.fuel_id THEN
+        -- Decrease quantity from the old fuel_id
+        UPDATE fuel
+        SET fuel_quantity = fuel_quantity + OLD.machine_quantity
+        WHERE fuel_id = OLD.fuel_id;
+
+        -- Increase quantity in the new fuel_id
+        UPDATE fuel
+        SET fuel_quantity = fuel_quantity - NEW.machine_quantity
+        WHERE fuel_id = NEW.fuel_id;
+    END IF;
+END;
+Delimiter ;
+
+UPDATE machine
+SET fuel_id = 'F002', machine_quantity = 10
+WHERE machine_id = 'M001';
+
+
+
+
 
 
 
