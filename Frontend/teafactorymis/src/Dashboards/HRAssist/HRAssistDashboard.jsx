@@ -7,7 +7,7 @@ const HRAssistDashboard = (user) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh' }}>
     <Typography variant="h4" gutterBottom>
-    Hr Assist Dashboard
+      Hr Assist Dashboard
     </Typography>
     <Typography variant="h6">
       

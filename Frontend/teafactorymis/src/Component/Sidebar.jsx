@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   List,
@@ -9,16 +9,25 @@ import {
   Typography,
   Avatar,
   Divider,
+  Collapse,
 } from '@mui/material';
 import { Home, Assignment, Dashboard, Settings, Logout, Commute, LocalGasStation, Factory} from '@mui/icons-material';
+import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore } from '@mui/icons-material'; // Added Expand icons
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 const drawerWidth = 240;
 
 const Sidebar = ({ user, onLogout }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const userRole = user?.employee?.role;
+  
+  // State to control the dropdown for attendance
+  const [openAttendance, setOpenAttendance] = useState(false);
+
+  const handleAttendanceClick = () => {
+    setOpenAttendance(!openAttendance); // Toggle dropdown
+  };
 
   const getSidebarItems = (role) => {
     switch (role) {
@@ -26,16 +35,33 @@ const Sidebar = ({ user, onLogout }) => {
         return [
           { text: 'Dashboard', icon: <Home />, path: '/AdminDashboard' },
           { text: 'Manage Users', icon: <Assignment />, path: '/UserManage' },
+          { text: 'Customers', icon: <People />, path: '/Customers' },
         ];
 
       case 'HRAssist':
-        return [{ text: 'Dashboard', icon: <Dashboard />, path: '/HRAssistDashboard' }];
-      
+        return [
+          { text: 'Dashboard', icon: <Dashboard />, path: '/HRAssistDashboard' },
+          { text: 'Employee', icon: <People />, path: '/Employee' },
+          {
+            text: 'Attendance',
+            icon: <Event />,
+            dropdown: true, // Indicates this item has nested links
+            items: [
+              { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' },
+              { text: 'Factory Workers Attendance', path: '/FactoryWorkersAttendance' },
+            ],
+          },
+        ];
+
       case 'InventoryAssist':
         return [{ text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryDashboard' }];
       
       case 'SalesAssist':
-        return [{ text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' }];
+        return [
+          { text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' },
+          { text: 'Manage Sales', icon: <ManageAccountsIcon />, path: '/ManageSales' },
+          
+        ];
       
       case 'TechnicalAssist':
         return [{ text: 'Technical Dashboard', icon: <Dashboard />, path: '/TechnicalDashboard' },
@@ -49,8 +75,8 @@ const Sidebar = ({ user, onLogout }) => {
   };
 
   const handleLogout = () => {
-    onLogout(); // Call the logout function passed as a prop
-    navigate('/login'); // Navigate to the login page after logout
+    onLogout();
+    navigate('/login');
   };
 
   const sidebarItems = getSidebarItems(userRole);
@@ -73,11 +99,11 @@ const Sidebar = ({ user, onLogout }) => {
         <Box sx={{ padding: 2, textAlign: 'center' }}>
           <Avatar
             src={user?.employee?.Image || '/default-profile.png'}
-            alt={user?.employee?.user?.username || 'User'}
+            alt={user?.user?.username || 'User'}
             sx={{ width: 80, height: 80, margin: '0 auto' }}
           />
           <Typography variant="h6" sx={{ mt: 1 }}>
-            {user?.employee?.user?.username || 'Guest User'}
+            {user?.user?.username || 'Guest User'}
           </Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>
             {userRole}
@@ -88,11 +114,40 @@ const Sidebar = ({ user, onLogout }) => {
 
         <List>
           {sidebarItems.map((item, index) => (
-            <ListItem button component={Link} to={item.path} key={index} selected={location.pathname === item.path}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
+            <React.Fragment key={index}>
+              <ListItem
+                button
+                component={item.path ? Link : 'div'}
+                to={item.path}
+                onClick={item.dropdown ? handleAttendanceClick : null}
+                selected={location.pathname === item.path}
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+                {item.dropdown ? (openAttendance ? <ExpandLess /> : <ExpandMore />) : null}
+              </ListItem>
+
+              {item.dropdown && (
+                <Collapse in={openAttendance} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {item.items.map((subItem, subIndex) => (
+                      <ListItem
+                        key={subIndex}
+                        button
+                        component={Link}
+                        to={subItem.path}
+                        sx={{ pl: 4 }}
+                        selected={location.pathname === subItem.path}
+                      >
+                        <ListItemText primary={subItem.text} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Collapse>
+              )}
+            </React.Fragment>
           ))}
+
           <ListItem button onClick={handleLogout}>
             <ListItemIcon><Logout /></ListItemIcon>
             <ListItemText primary="Logout" />

@@ -13,6 +13,7 @@ import VehicleDetails  from './Dashboards/TechnicalAssist/Vehicle/VehicleDetails
 import { Machine } from './Dashboards/TechnicalAssist/Machine';
 import { Fuel } from './Dashboards/TechnicalAssist/Fuel';
 import UserManage from './Dashboards/Admin/UserManage';
+import ManageSales from './Dashboards/SalesAssist/ManageSales';
 
 
 function App() {
@@ -45,8 +46,11 @@ function App() {
                 <Route path="/UserManage" element={<UserManage user={user} />} />
                 <Route path="/HRDashboard" element={<HRAssistDashboard user={user} />} />
                 <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
-                <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
 
+
+            //SalesAssist
+                <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
+                <Route path="/ManageSales" element={<ManageSales user={user} />} />
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
                 <Route path="/Vehicle" element={<Vehicle user={user} />} />
                 <Route path="/VehicleAdd" element={<VehicleAdd user={user} />} />
