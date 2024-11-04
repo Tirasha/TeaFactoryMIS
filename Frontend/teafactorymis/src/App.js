@@ -14,6 +14,7 @@ import EmpEdit from './Dashboards/HRAssist/EmpEdit';
 import Attendance from './Dashboards/HRAssist/Attendance';
 import FactoryWorkersAttendance from './Dashboards/HRAssist/FactoryWorkersAttendance'; // Importing FactoryWorkersAttendance
 import EstateWorkersAttendance from './Dashboards/HRAssist/EstateWorkersAttendance'; // Importing EstateWorkersAttendance
+import { Basics } from './Dashboards/HRAssist/Basics';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -53,7 +54,7 @@ function App() {
                 {/* Attendance category routes */}
                 <Route path="/EstateWorkersAttendance" element={<EstateWorkersAttendance user={user} />} />
                 <Route path="/FactoryWorkersAttendance" element={<FactoryWorkersAttendance user={user} />} />
-              
+                <Route path='/Basics' element={<Basics user={user}/>}/>
 
                 <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />

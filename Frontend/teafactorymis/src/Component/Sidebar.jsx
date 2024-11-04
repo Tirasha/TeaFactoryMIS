@@ -11,7 +11,7 @@ import {
   Divider,
   Collapse,
 } from '@mui/material';
-import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore } from '@mui/icons-material'; // Added Expand icons
+import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore, MonetizationOn } from '@mui/icons-material'; // Added Expand icons
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -23,43 +23,56 @@ const Sidebar = ({ user, onLogout }) => {
   
   // State to control the dropdown for attendance
   const [openAttendance, setOpenAttendance] = useState(false);
+  const [openSalary, setOpenSalary] = useState(false);
 
   const handleAttendanceClick = () => {
     setOpenAttendance(!openAttendance); // Toggle dropdown
   };
 
+  const handleSalaryClick =() =>{
+    setOpenSalary(!openSalary);
+  }
+
   const getSidebarItems = (role) => {
     switch (role) {
       case 'Admin':
         return [
-          { text: 'Dashboard', icon: <Home />, path: '/AdminDashboard' },
-          { text: 'Manage Users', icon: <Assignment />, path: '/UserManage' },
-          { text: 'Customers', icon: <People />, path: '/Customers' },
+          { text: 'Dashboard', icon: <Home sx={{color:'#FFFFFF'}}/>, path: '/AdminDashboard' },
+          { text: 'Manage Users', icon: <Assignment sx={{color:'#FFFFFF'}}/>, path: '/UserManage' },
+          { text: 'Customers', icon: <People sx={{color:'#FFFFFF'}}/>, path: '/Customers' },
         ];
 
       case 'HRAssist':
         return [
-          { text: 'Dashboard', icon: <Dashboard />, path: '/HRAssistDashboard' },
-          { text: 'Employee', icon: <People />, path: '/Employee' },
+          { text: 'Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/HRAssistDashboard' },
+          { text: 'Employee', icon: <People sx={{color:'#FFFFFF'}}/>, path: '/Employee'},
           {
             text: 'Attendance',
-            icon: <Event />,
+            icon: <Event sx={{color:'#FFFFFF'}}/>,
             dropdown: true, // Indicates this item has nested links
             items: [
               { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' },
               { text: 'Factory Workers Attendance', path: '/FactoryWorkersAttendance' },
             ],
           },
+          {text : 'Salary',
+            icon: <MonetizationOn sx={{color:'#FFFFFF'}}/>,
+            dropdown:true,
+            items:[
+              {text: 'Basics', path: '/Basics'},
+              {text: 'View Salary', path: '/Salary'},
+            ],
+          }
         ];
 
       case 'InventoryAssist':
-        return [{ text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryDashboard' }];
+        return [{ text: 'Inventory Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/InventoryDashboard' }];
       
       case 'SalesAssist':
-        return [{ text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' }];
+        return [{ text: 'Sales Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/SalesDashboard' }];
       
       case 'TechnicalAssist':
-        return [{ text: 'Technical Dashboard', icon: <Dashboard />, path: '/TechnicalDashboard' }];
+        return [{ text: 'Technical Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/TechnicalDashboard' }];
       
       default:
         return [];
@@ -81,8 +94,8 @@ const Sidebar = ({ user, onLogout }) => {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            backgroundColor: '#E8F5E9',
-            color: '#1B5E20',
+            backgroundColor: '#023020',
+            color: '#FFFFFF',
           },
         }}
         variant="permanent"
@@ -140,8 +153,12 @@ const Sidebar = ({ user, onLogout }) => {
             </React.Fragment>
           ))}
 
+          
+
+          
+
           <ListItem button onClick={handleLogout}>
-            <ListItemIcon><Logout /></ListItemIcon>
+            <ListItemIcon><Logout sx={{color:'#FFFFFF'}}/></ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>
         </List>
