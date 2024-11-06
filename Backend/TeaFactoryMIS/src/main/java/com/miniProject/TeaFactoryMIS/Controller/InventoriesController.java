@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class InventoriesController {
 
     @Autowired
@@ -20,7 +21,7 @@ public class InventoriesController {
         return inventoryRepo.save(newinventory);
     }
 
-    @GetMapping("inventory/all")
+    @GetMapping("/inventory/all")
     List<Inventories> getAllInventory()
     {
         return inventoryRepo.findAll();

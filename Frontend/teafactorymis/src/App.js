@@ -8,6 +8,8 @@ import InventoryAssistDashboard from './Dashboards/InventoryAssist/InventoryAssi
 import SalesAssistDashboard from './Dashboards/SalesAssist/SalesAssistDashboard';
 import TechnicalDashboard from './Dashboards/TechnicalAssist/TechnicalDashboard';
 import UserManage from './Dashboards/Admin/UserManage';
+import TeaStock from './Dashboards/InventoryAssist/TeaStock';
+import FertilizerStock from './Dashboards/InventoryAssist/FertilizerStock';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,11 +40,18 @@ function App() {
                 <Route path="/AdminDashboard" element={<AdminDashboard user={user} />} />
                 <Route path="/UserManage" element={<UserManage user={user} />} />
                 <Route path="/HRDashboard" element={<HRAssistDashboard user={user} />} />
-                <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
+
+              {/* inventory routes */}
+                <Route path="/InventoryAssistDashboard" element={<InventoryAssistDashboard user={user} />} />
+                <Route path ="/TeaStock" element={<TeaStock/>}/>
+                <Route path='/FertilizerStock' element={<FertilizerStock/>}/>
+                
               </>
             )}
+            
+        
           </Routes>
         </div>
       </div>
