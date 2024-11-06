@@ -10,7 +10,7 @@ import java.util.Date;
 @Setter
 public class EPFETF {
     @Id
-    private Long epf_etfId;
+    private String epf_etfId;
 
     @ManyToOne
     @JoinColumn(name = "empId", referencedColumnName = "empId", nullable = false)

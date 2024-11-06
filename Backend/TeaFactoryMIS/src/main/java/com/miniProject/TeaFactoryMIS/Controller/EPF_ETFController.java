@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EPF_ETFController {
     @Autowired
     private EPF_ETFRepository epfEtfRepository;
@@ -25,9 +26,21 @@ public class EPF_ETFController {
     }
 
     @GetMapping("/epfetfGetById/{epf_etfId}")
-    EPFETF getEpfEtfById(@PathVariable Long epf_etfId){
+    EPFETF getEpfEtfById(@PathVariable String epf_etfId){
         return epfEtfRepository.findById(epf_etfId)
                 .orElseThrow(()->new EpfEtfNotFoundException(epf_etfId));
+    }
+
+    @DeleteMapping("/epfetfDelete/{epf_etfId}")
+    String deleteEpfEtf(@PathVariable String epf_etfId){
+        if (!epfEtfRepository.existsById(epf_etfId)){
+            throw new EpfEtfNotFoundException(epf_etfId);
+        }
+        else {
+            epfEtfRepository.deleteById(epf_etfId);
+        }
+        return "Epf and Etf detail with ID "+epf_etfId+"has been deleted Succesfully";
+
     }
 
 

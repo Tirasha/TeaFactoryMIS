@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BasicController {
     @Autowired
     private BasicRepository basicRepository;
@@ -26,13 +27,13 @@ public class BasicController {
     }
 
     @GetMapping("/basicGetById/{basicId}")
-    Basics getBasicById(@PathVariable Long basicId){
+    Basics getBasicById(@PathVariable String basicId){
         return basicRepository.findById(basicId)
                 .orElseThrow(()->new BasicNotFoundException(basicId));
     }
 
     @PutMapping("/basicUpdate/{basicId}")
-    Basics updateBasics(@RequestBody Basics newBasics, @PathVariable Long basicId){
+    Basics updateBasics(@RequestBody Basics newBasics, @PathVariable String basicId){
         return basicRepository.findById(basicId)
                 .map(basics -> {
                     basics.setRole(newBasics.getRole());
@@ -43,11 +44,13 @@ public class BasicController {
     }
 
     @DeleteMapping("/basicDelete/{basicId}")
-    String deleteBasics(@PathVariable Long basicId){
+    String deleteBasics(@PathVariable String basicId){
         if (!basicRepository.existsById(basicId)){
             throw new BasicNotFoundException(basicId);
         }
         basicRepository.deleteById(basicId);
         return "Baisc detail with ID "+basicId+"has been deleted Succesfully";
     }
+
+
 }

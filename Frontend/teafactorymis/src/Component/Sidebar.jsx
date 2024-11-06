@@ -24,6 +24,7 @@ const Sidebar = ({ user, onLogout }) => {
   // State to control the dropdown for attendance
   const [openAttendance, setOpenAttendance] = useState(false);
   const [openSalary, setOpenSalary] = useState(false);
+  const [openEpfEtf, setOpenEpfEtf]= useState(false);
 
   const handleAttendanceClick = () => {
     setOpenAttendance(!openAttendance); // Toggle dropdown
@@ -32,6 +33,11 @@ const Sidebar = ({ user, onLogout }) => {
   const handleSalaryClick =() =>{
     setOpenSalary(!openSalary);
   }
+
+  const handleEpfEtfClick = () =>{
+    setOpenEpfEtf(!openEpfEtf);
+  };
+
 
   const getSidebarItems = (role) => {
     switch (role) {
@@ -50,16 +56,21 @@ const Sidebar = ({ user, onLogout }) => {
             text: 'Attendance',
             icon: <Event sx={{color:'#FFFFFF'}}/>,
             dropdown: true, // Indicates this item has nested links
+            onClick: handleAttendanceClick,
+            open:openAttendance,
             items: [
               { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' },
               { text: 'Factory Workers Attendance', path: '/FactoryWorkersAttendance' },
             ],
           },
-          {text : 'Salary',
+          {text : 'Employee Payments',
             icon: <MonetizationOn sx={{color:'#FFFFFF'}}/>,
             dropdown:true,
+            onClick:handleSalaryClick,
+            open:openSalary,
             items:[
               {text: 'Basics', path: '/Basics'},
+              {text: 'EPF and ETF', path: '/EpfEtf'},
               {text: 'View Salary', path: '/Salary'},
             ],
           }
@@ -94,7 +105,7 @@ const Sidebar = ({ user, onLogout }) => {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            backgroundColor: '#023020',
+            backgroundColor: '#4CAF50',
             color: '#FFFFFF',
           },
         }}
@@ -124,16 +135,16 @@ const Sidebar = ({ user, onLogout }) => {
                 button
                 component={item.path ? Link : 'div'}
                 to={item.path}
-                onClick={item.dropdown ? handleAttendanceClick : null}
+                onClick={item.dropdown ? item.onClick : null}
                 selected={location.pathname === item.path}
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
-                {item.dropdown ? (openAttendance ? <ExpandLess /> : <ExpandMore />) : null}
+                {item.dropdown ? (item.open ? <ExpandLess /> : <ExpandMore />) : null}
               </ListItem>
 
               {item.dropdown && (
-                <Collapse in={openAttendance} timeout="auto" unmountOnExit>
+                <Collapse in={item.open} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     {item.items.map((subItem, subIndex) => (
                       <ListItem

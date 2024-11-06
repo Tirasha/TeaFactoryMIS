@@ -12,8 +12,7 @@ import lombok.Setter;
 @Setter
 public class Basics {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long basicId;
+    private String basicId;
     private String role;
     private double basicAmount;
     private double dayPayment;

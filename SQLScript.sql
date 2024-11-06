@@ -15,3 +15,9 @@ insert into users(user_id,password,username,emp_id)values
 ("u003", "12345", "Hiru","e003"),
 ("u004", "12345", "Tirasha","e004"),
 ("u005", "12345", "Tharu","e005");
+
+insert into basics(basic_id,role,basic_amount,day_payment)values
+(1,"HR manager",85000.00,0),
+(2,"HR assist", 45000.00,0),
+(3,"Estate workers",0,900.00);
+

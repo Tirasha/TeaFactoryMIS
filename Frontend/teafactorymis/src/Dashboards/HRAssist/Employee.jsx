@@ -56,7 +56,7 @@ export const Employee = () => {
       </Button>
 
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="employee table">
+        <Table sx={{ minWidth: 650 }} aria-label="employee table" size="small">
           <TableHead>
             <TableRow>
               <TableCell>Employee ID</TableCell>
