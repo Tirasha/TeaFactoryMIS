@@ -25,7 +25,6 @@ public class Salary {
     private Date date;
 
     private double actualAmount;
-    private double epf;
     private double bonus;
     private double ot;
     private double paidAmount;
