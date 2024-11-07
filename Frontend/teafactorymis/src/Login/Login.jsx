@@ -36,8 +36,32 @@ const Login = ({ onLogin }) => { // Accept onLogin prop
       if (response.status === 200) {
         const userResponse = response.data;
         onLogin(userResponse); // Call onLogin with user data
-        navigate(`/${userResponse.employee.role}Dashboard`); // Navigate to the appropriate dashboard
+        const role=userResponse.employee.role;
+
+        switch(role){
+          
+          case'Admin':
+          navigate('/AdminDashboard');
+          break;
+
+          case 'HRAssist':
+          navigate('/HRDashboard');
+          break;
+
+          case 'TechnicalAssist':
+            navigate('/TechnicalDashboard');
+            break;
+          
+          case 'InventoryAssist':
+            navigate('/InventoryDashboard');
+            break;
+
+          case 'SalesAssist':
+            navigate('/SalesDashboard');
+            break;
+         }
       }
+
     } catch (error) {
       setLoginError('Invalid username or password');
     }

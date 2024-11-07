@@ -14,7 +14,7 @@ public class Inventory {
     @Id
     private String inventory_id;
     private  String type;
-    private String available_stock;
+    private double available_stock;
     private double price_per_kg;
 
 }
