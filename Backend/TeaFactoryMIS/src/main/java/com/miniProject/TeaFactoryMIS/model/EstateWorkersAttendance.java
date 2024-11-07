@@ -14,7 +14,7 @@ public class EstateWorkersAttendance {
 
     private LocalDateTime date;
     private String status;
-    private String leaveDate;
+    private String leave_Reason;
 
 
 

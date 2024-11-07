@@ -1,9 +1,12 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
+import com.miniProject.TeaFactoryMIS.Repository.EmployeeRepository;
 import com.miniProject.TeaFactoryMIS.model.Employee;
-import com.miniProject.TeaFactoryMIS.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +19,18 @@ public class EmployeeController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     // Create an employee
     @PostMapping("/create")
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        Employee savedEmployee = employeeRepository.save(employee);
-        return ResponseEntity.ok(savedEmployee);
+    public ResponseEntity<?> createEmployee(@RequestBody Employee employee) {
+        try {
+            Employee savedEmployee = employeeRepository.save(employee);
+            return ResponseEntity.ok(savedEmployee);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body("Employee with this NIC already exists.");
+        }
     }
 
     // Get all employees
@@ -30,12 +40,15 @@ public class EmployeeController {
         return ResponseEntity.ok(employees);
     }
 
-    // Get an employee by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable String id) {
-        Optional<Employee> employee = employeeRepository.findById(id);
-        return employee.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @Transactional
+    @GetMapping("/{empId}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable String empId) {
+        Employee employee = employeeRepository.spGetDetailsByEmpID(empId);
+        if (employee != null) {
+            return ResponseEntity.ok(employee);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // Update an employee by ID
@@ -90,4 +103,28 @@ public class EmployeeController {
 
         return ResponseEntity.ok(nextId);
     }
+
+
+    // Get labour employees (drying employees)
+    @GetMapping("/labour")
+    public ResponseEntity<List<Employee>> getDryingEmployees() {
+        String sql = "SELECT emp_id, firstname, lastname, house_no, line_no, nic, category, role FROM estate_employees_view";
+        List<Employee> dryingEmployees = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Employee employee = new Employee();
+            employee.setEmpId(rs.getString("emp_id"));  // Add emp_id
+            employee.setFirstname(rs.getString("firstname"));
+            employee.setLastname(rs.getString("lastname"));
+            employee.setHouseNo(rs.getString("house_no"));
+            employee.setLineNo(rs.getString("line_no"));
+            employee.setNic(rs.getString("nic"));  // Add nic
+            employee.setCategory(rs.getString("category"));
+            employee.setRole(rs.getString("role"));
+            return employee;
+        });
+        return ResponseEntity.ok(dryingEmployees);
+    }
+
+
+
+
 }

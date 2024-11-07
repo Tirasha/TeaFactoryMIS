@@ -13,7 +13,10 @@ import EmpAdd from './Dashboards/HRAssist/EmpAdd';
 import EmpEdit from './Dashboards/HRAssist/EmpEdit';
 import Attendance from './Dashboards/HRAssist/Attendance';
 import FactoryWorkersAttendance from './Dashboards/HRAssist/FactoryWorkersAttendance'; // Importing FactoryWorkersAttendance
-import EstateWorkersAttendance from './Dashboards/HRAssist/EstateWorkersAttendance'; // Importing EstateWorkersAttendance
+import EstateWorkersAttendance from './Dashboards/HRAssist/EstateWorkersAttendance';
+import AttendanceAddEst from './Dashboards/HRAssist/AttendanceAddEst';
+import AttendanceupdateEs from './Dashboards/HRAssist/AttendanceupdateEs';
+import AttendanceupdateFac from './Dashboards/HRAssist/AttendanceupdateFac';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -53,12 +56,17 @@ function App() {
                 {/* Attendance category routes */}
                 <Route path="/EstateWorkersAttendance" element={<EstateWorkersAttendance user={user} />} />
                 <Route path="/FactoryWorkersAttendance" element={<FactoryWorkersAttendance user={user} />} />
+                <Route path="/AddAttendance" element={<AttendanceAddEst user={user} />} />
               
 
                 <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
-              </>
+                <Route path="/AttendanceupdateEs/:attId" element={<AttendanceupdateEs />} />
+                <Route path="/Attendanceupdatefac/:attId" element={<AttendanceupdateFac />} />
+                
+
+              </> 
             )}
           </Routes>
         </div>
