@@ -3,17 +3,16 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-export const EditBasic = ({ openForm, handleCloseForm, basicId }) => { // Destructure props correctly
+export const EditBasic = ({ openForm, handleCloseForm, basicId, onFormSubmit }) => { // Destructure props correctly
   let navigate = useNavigate();
 
   const [basics, setBasic] = useState({
     basicId: "",
     role: "",
-    basicAmount: "",
     dayPayment: ""
   });
 
-  const { role, basicAmount, dayPayment } = basics;
+  const { role, dayPayment } = basics;
 
   const onChangeInput = (e) => {
     setBasic({ ...basics, [e.target.name]: e.target.value });
@@ -24,6 +23,7 @@ export const EditBasic = ({ openForm, handleCloseForm, basicId }) => { // Destru
     try{
         await axios.put(`http://localhost:8080/basicUpdate/${basicId}`, basics);
         window.alert("Updated successfully...!");
+        onFormSubmit();
         handleCloseForm();
         navigate("/Basics");
       } catch (error) {
@@ -74,15 +74,6 @@ export const EditBasic = ({ openForm, handleCloseForm, basicId }) => { // Destru
             label="Role"
             name="role"
             value={role}
-            onChange={onChangeInput}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField 
-            label="Basic Amount"
-            name="basicAmount"
-            value={basicAmount}
             onChange={onChangeInput}
             fullWidth
             margin="normal"

@@ -17,8 +17,8 @@ public class BasicController {
     private BasicRepository basicRepository;
 
     @PostMapping("/basicAdd")
-    public Basics newBasics(@RequestBody Basics newBasics){
-        return basicRepository.save(newBasics);
+    public Basics newBasic(@RequestBody Basics newBasic){
+        return basicRepository.save(newBasic);
     }
 
     @GetMapping("/basicGetAll")
@@ -37,7 +37,6 @@ public class BasicController {
         return basicRepository.findById(basicId)
                 .map(basics -> {
                     basics.setRole(newBasics.getRole());
-                    basics.setBasicAmount(newBasics.getBasicAmount());
                     basics.setDayPayment(newBasics.getDayPayment());
                     return basicRepository.save(basics);
                 }).orElseThrow(()->new BasicNotFoundException(basicId));

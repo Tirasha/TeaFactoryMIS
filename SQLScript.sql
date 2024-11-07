@@ -17,7 +17,46 @@ insert into users(user_id,password,username,emp_id)values
 ("u005", "12345", "Tharu","e005");
 
 insert into basics(basic_id,role,basic_amount,day_payment)values
-(1,"HR manager",85000.00,0),
-(2,"HR assist", 45000.00,0),
-(3,"Estate workers",0,900.00);
+("b01","HR manager",85000.00,0),
+("b02","HR assist", 45000.00,0),
+("b03","Estate workers",0,900.00);
 
+DELIMITER //
+
+CREATE PROCEDURE CalculateWorkingDays(IN inputEmpId VARCHAR(10))
+BEGIN
+    DECLARE total_working_days INT;
+
+    SELECT COUNT(*) INTO total_working_days
+    FROM estate_workers_attendance
+    WHERE emp_id = inputEmpId  AND status = 'Present';
+
+    SELECT total_working_days;
+END //
+
+DELIMITER ;
+
+
+call CalculateWorkingDays("e006");
+
+CREATE VIEW BasicAmountDetails AS
+SELECT basic_id, role, basic_amount
+FROM Basics where basic_amount!=0;
+
+select * from BasicAmountDetails;
+
+CREATE VIEW DayPaymentDetails AS
+SELECT basic_id, role, day_payment
+FROM Basics where day_payment!=0;
+
+select * from DayPaymentDetails;
+
+CREATE VIEW EstateWorkers AS
+SELECT * from employee where category="Estate Workers";
+
+select * from EstateWorkers;
+
+CREATE VIEW FactoryWorkers AS
+SELECT * from employee where category="Factory Workers";
+
+select * from FactoryWorkers;

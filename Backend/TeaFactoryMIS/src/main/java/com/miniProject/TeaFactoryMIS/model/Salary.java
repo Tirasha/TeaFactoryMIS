@@ -5,29 +5,32 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 public class Salary {
     @Id
-    private String salaryId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long salaryId;
     @ManyToOne
     @JoinColumn(name = "emp_id", referencedColumnName = "empId", nullable = false)
     private Employee employee;
 
-    @ManyToOne
-    @JoinColumn(name="basicId", referencedColumnName = "basicId", nullable = false)
-    private Basics basics;
-
+    private String role;
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date start_date;
+    @Temporal(TemporalType.DATE)
+    private Date end_date;
+    private int total_working_days;
+    private double day_payment;
+    private double salary;
+    @Temporal(TemporalType.DATE)
+    private Date salary_paid_date;
 
-    private double actualAmount;
-    private double bonus;
-    private double ot;
-    private double paidAmount;
+
+
 
 
 }

@@ -3,18 +3,17 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-export const AddBasic = ({ openForm, handleCloseForm }) => { // Destructure props correctly
+export const AddBasic = ({ openForm, handleCloseForm, onFormSubmit }) => { // Destructure props correctly
   let navigate = useNavigate();
   const [basicTable,setBasicTable]=useState([]);
 
   const [basics, setBasic] = useState({
     basicId: "",
     role: "",
-    basicAmount: "",
     dayPayment: ""
   });
 
-  const { basicId, role, basicAmount, dayPayment } = basics;
+  const { basicId, role, dayPayment } = basics;
 
   const fetchLastBasicId = async () => {
     try {
@@ -44,7 +43,7 @@ export const AddBasic = ({ openForm, handleCloseForm }) => { // Destructure prop
     try {
       await axios.post("http://localhost:8080/basicAdd", basics);
       navigate("/Basics");
-      loadBasics();
+      onFormSubmit();
       handleCloseForm(); // Close the modal after submission
       
     } catch (error) {
@@ -88,15 +87,6 @@ export const AddBasic = ({ openForm, handleCloseForm }) => { // Destructure prop
             label="Role"
             name="role"
             value={role}
-            onChange={onChangeInput}
-            fullWidth
-            margin="normal"
-            required
-          />
-          <TextField 
-            label="Basic Amount"
-            name="basicAmount"
-            value={basicAmount}
             onChange={onChangeInput}
             fullWidth
             margin="normal"

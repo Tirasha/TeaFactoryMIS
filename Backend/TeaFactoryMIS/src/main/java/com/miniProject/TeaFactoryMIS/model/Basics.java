@@ -14,7 +14,6 @@ public class Basics {
     @Id
     private String basicId;
     private String role;
-    private double basicAmount;
     private double dayPayment;
 
 }

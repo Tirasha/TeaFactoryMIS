@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const AddEpfEtf = ({ openForm, handleCloseForm }) => {
     let navigate = useNavigate();
+    const [employee,setEmployee]=useState([]);
+
     const [epfetf,setEpfEtf]=useState({
         epf_etfId:"",
         empId:"",
@@ -18,7 +20,7 @@ export const AddEpfEtf = ({ openForm, handleCloseForm }) => {
 
     const fetchLastEpfEtfId = async () => {
         try {
-          const result = await axios.get("http://localhost:8080/basicGetAll");
+          const result = await axios.get("http://localhost:8080/epfetfGet");
           const lastEpfEtf = result.data[result.data.length - 1];
           const lastEpfEtfId = lastEpfEtf ? parseInt(lastEpfEtf.epf_etfId.slice(2)) : 0;
           const newEpfEtfId = `ep${String(lastEpfEtfId + 1).padStart(2, '0')}`;
@@ -33,7 +35,13 @@ export const AddEpfEtf = ({ openForm, handleCloseForm }) => {
     
       useEffect(() => {
         fetchLastEpfEtfId();
+       // loadEmployee();
       }, []);
+
+      // const loadEmployee= async()=>{
+      //   const result=await axios.get("http://localhost:8080/api/employees/all");
+      //   setEmployee(result.data);
+      // }
 
       const onChangeInput = (e) => {
         setEpfEtf({ ...epfetf, [e.target.name]: e.target.value });
@@ -43,6 +51,7 @@ export const AddEpfEtf = ({ openForm, handleCloseForm }) => {
         e.preventDefault();
         try {
           await axios.post("http://localhost:8080/epfetfAdd", epfetf);
+          console.log(epfetf);
           navigate("/EpfEtf");
           handleCloseForm(); // Close the modal after submission
           

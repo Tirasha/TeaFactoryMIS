@@ -19,6 +19,7 @@ import { Salary } from './Dashboards/HRAssist/Salary';
 import EpfEtf from './Dashboards/HRAssist/EpfEtf';
 import { AddBasic } from './Dashboards/HRAssist/AddBasic';
 import { EditBasic } from './Dashboards/HRAssist/EditBasic';
+import { AddSalary } from './Dashboards/HRAssist/AddSalary';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -63,6 +64,7 @@ function App() {
                 <Route path='/EpfEtf' element={<EpfEtf user={user}/>}/>
                 <Route path='/addBasic' element={<AddBasic user={user}/>}/>
                 <Route path='/editBasic/:basicId' element={<EditBasic user={user}/>}/>
+                <Route path='/addSalary' element={<AddSalary user={user}/>}/>
 
                 <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />

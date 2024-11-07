@@ -99,7 +99,6 @@ export const Basics = () => {
             <TableRow>
               <TableCell>Basic ID</TableCell>
               <TableCell>Role</TableCell>
-              <TableCell>Basic Amount</TableCell>
               <TableCell>Day Payment</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -109,7 +108,6 @@ export const Basics = () => {
               <TableRow key={basics.basicId}>
                 <TableCell>{basics.basicId}</TableCell>
                 <TableCell>{basics.role}</TableCell>
-                <TableCell>{basics.basicAmount}</TableCell>
                 <TableCell>{basics.dayPayment}</TableCell>
                 <TableCell>
                   <Button variant="contained" style={{ backgroundColor: '#00AB66', marginRight: "10px" }} onClick={() => handleEditClick(`${basics.basicId}`)}>
@@ -125,8 +123,8 @@ export const Basics = () => {
         </Table>
       </TableContainer>
 
-      <AddBasic openForm={openAddForm} handleCloseForm={handleCloseAddForm} />
-      <EditBasic  openForm={openEditForm}   handleCloseForm={handleCloseEditForm}   basicId={selectedBasicId} />
+      <AddBasic openForm={openAddForm} handleCloseForm={handleCloseAddForm} onFormSubmit={loadBasics} />
+      <EditBasic  openForm={openEditForm}   handleCloseForm={handleCloseEditForm}   basicId={selectedBasicId} onFormSubmit={loadBasics} />
     </Box>
   )
 };
