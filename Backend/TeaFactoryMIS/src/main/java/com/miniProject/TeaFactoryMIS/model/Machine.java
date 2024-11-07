@@ -11,20 +11,21 @@ import lombok.Setter;
 @Getter
 @Setter
 
-@Table(name = "machine")
+@Table(name = "All_machines")
 public class Machine {
     @Id
+    @Column(name = "machine_id")
     private String machine_id;
 
-    @Column
+    @Column(name = "machine_type")
     private String machine_type;
 
-    @Column
+    @Column(name = "machine_quantity")
     private String machine_quantity;
 
-    @Column
+    @Column(name = "machine_availability")
     private String machine_availability;
 
-    @Column
-    private String fuel_id;
+    @Column(name = "fuel_name")
+    private String fuel_name;
 }

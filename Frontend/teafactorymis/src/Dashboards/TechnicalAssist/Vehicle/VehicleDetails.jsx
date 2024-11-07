@@ -15,6 +15,7 @@ import {
   Paper,
   IconButton,
   Grid,
+  Input,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -30,7 +31,7 @@ export default function VehicleDetails() {
   const [vehicle_type, setVehicle_type] = useState("");
   const [vehicle_image, setVehicle_image] = useState("");
   const [vehicle_availability, setVehicle_availability] = useState("");
-  const [fuel_id, setFuel_id] = useState("");
+  const [fuel_name, setFuel_name] = useState("");
 
   useEffect(() => {
     axios
@@ -39,6 +40,16 @@ export default function VehicleDetails() {
       .catch((err) => alert(err.message));
   }, [deleteVehicle]);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setVehicle_image(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const handleDeleteBtn = async (vehicle_No) => {
     await axios
       .delete(`http://localhost:8080/vehicle/delete/${vehicle_No}`)
@@ -58,7 +69,7 @@ export default function VehicleDetails() {
         setVehicle_type(data.vehicle_type);
         setVehicle_image(data.vehicle_image);
         setVehicle_availability(data.vehicle_availability);
-        setFuel_id(data.fuel_id);
+        setFuel_name(data.fuel_name);
         setModelView(true);
       })
       .catch((err) => alert(err.message));
@@ -70,7 +81,7 @@ export default function VehicleDetails() {
       vehicle_type,
       vehicle_image,
       vehicle_availability,
-      fuel_id,
+      fuel_name,
     };
 
     await axios
@@ -110,14 +121,44 @@ export default function VehicleDetails() {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 label="Vehicle Image"
                 value={vehicle_image}
                 onChange={(e) => setVehicle_image(e.target.value)}
                 fullWidth
               />
+            </Grid> */}
+
+            <Grid container spacing={3}>
+              {" "}
+              <Grid item xs={12} sm={6}>
+                {" "}
+                <TextField
+                  label="Vehicle Image"
+                  value={vehicle_image}
+                  onChange={(e) => setVehicle_image(e.target.value)}
+                  fullWidth
+                />{" "}
+              </Grid>{" "}
+              <Grid item xs={12} sm={6}>
+                {" "}
+                <Input
+                  type="file"
+                  onChange={handleImageChange}
+                  inputProps={{ accept: "image/png, image/jpeg" }}
+                  fullWidth
+                />{" "}
+                {vehicle_image && (
+                  <img
+                    src={vehicle_image}
+                    alt="Vehicle Image"
+                    style={{ width: "100%", marginTop: "10px" }}
+                  />
+                )}{" "}
+              </Grid>{" "}
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Vehicle Availability"
@@ -126,11 +167,12 @@ export default function VehicleDetails() {
                 fullWidth
               />
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Fuel Id"
-                value={fuel_id}
-                onChange={(e) => setFuel_id(e.target.value)}
+                label="Fuel Name"
+                value={fuel_name}
+                onChange={(e) => setFuel_name(e.target.value)}
                 fullWidth
               />
             </Grid>
@@ -158,7 +200,7 @@ export default function VehicleDetails() {
                 <TableCell>Vehicle Type</TableCell>
                 <TableCell>Vehicle Image</TableCell>
                 <TableCell>Vehicle Availability</TableCell>
-                <TableCell>Fuel Id</TableCell>
+                <TableCell>Fuel Name</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
@@ -170,16 +212,22 @@ export default function VehicleDetails() {
                   <TableCell>{data.vehicle_type}</TableCell>
                   <TableCell>{data.vehicle_image}</TableCell>
                   <TableCell>{data.vehicle_availability}</TableCell>
-                  <TableCell>{data.fuel_id}</TableCell>
+                  <TableCell>{data.fuel_name}</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => handleEditBtn(data.vehicle_No)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleDeleteBtn(data.vehicle_No)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    <Button>
+                      <IconButton
+                        onClick={() => handleEditBtn(data.vehicle_No)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Button>
+                    <Button>
+                      <IconButton
+                        onClick={() => handleDeleteBtn(data.vehicle_No)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

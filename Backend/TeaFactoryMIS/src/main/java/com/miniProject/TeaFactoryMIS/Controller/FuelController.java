@@ -52,12 +52,12 @@ public class FuelController {
         }
     }
 
-    // Searching a fuel by fuel_id
-    @GetMapping("/search/{fuel_id}")
-    public ResponseEntity searchFuelByID(@PathVariable String fuel_id){
+    // Searching a fuel by fuel_name
+    @GetMapping("/search/{fuel_name}")
+    public ResponseEntity<String> searchFuelByName(@PathVariable String fuel_name){
         try{
-            // Call service layer to search fuel by fuel_id
-            FuelDTO fuelDTO = fuelService.searchFuelByID(fuel_id);
+            // Call service layer to search fuel by fuel_name
+            FuelDTO fuelDTO = fuelService.searchFuelByName(fuel_name);
 
             // Check if fuel is found
             if (fuelDTO==null){
@@ -83,7 +83,7 @@ public class FuelController {
 
     // Adding a new fuel
     @PostMapping("/add")
-    public ResponseEntity addFuel(@RequestBody FuelDTO fuelDTO){
+    public ResponseEntity<String> addFuel(@RequestBody FuelDTO fuelDTO){
         try{
             // Call service to add new fuel
             String response = fuelService.addNewFuel(fuelDTO);
@@ -114,7 +114,7 @@ public class FuelController {
 
     // Updating a fuel
     @PutMapping("/update")
-    public ResponseEntity updateFuel(@RequestBody FuelDTO fuelDTO){
+    public ResponseEntity<String> updateFuel(@RequestBody FuelDTO fuelDTO){
         try{
             // Call service layer to update fuel
             String response = fuelService.updateFuel(fuelDTO);
@@ -145,7 +145,7 @@ public class FuelController {
 
     // Deleting a fuel by ID
     @DeleteMapping("/delete/{fuel_id}")
-    public ResponseEntity deleteFuelByID(@PathVariable String fuel_id){
+    public ResponseEntity<String> deleteFuelByID(@PathVariable String fuel_id){
 
         try{
             // Call service to delete fuel by ID

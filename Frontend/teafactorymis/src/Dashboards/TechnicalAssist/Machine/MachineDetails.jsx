@@ -30,7 +30,7 @@ export default function MachineDetails() {
   const [machine_type, setMachine_type] = useState("");
   const [machine_quantity, setMachine_quantity] = useState("");
   const [machine_availability, setMachine_availability] = useState("");
-  const [fuel_id, setFuel_id] = useState("");
+  const [fuel_name, setFuel_name] = useState("");
 
   useEffect(() => {
     axios
@@ -58,7 +58,7 @@ export default function MachineDetails() {
         setMachine_type(data.machine_type);
         setMachine_quantity(data.machine_quantity);
         setMachine_availability(data.machine_availability);
-        setFuel_id(data.fuel_id);
+        setFuel_name(data.fuel_name);
         setModelView(true);
       })
       .catch((err) => alert(err.message));
@@ -70,7 +70,7 @@ export default function MachineDetails() {
       machine_type,
       machine_quantity,
       machine_availability,
-      fuel_id,
+      fuel_name,
     };
 
     await axios
@@ -128,9 +128,9 @@ export default function MachineDetails() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Fuel Id"
-                value={fuel_id}
-                onChange={(e) => setFuel_id(e.target.value)}
+                label="Fuel Name"
+                value={fuel_name}
+                onChange={(e) => setFuel_name(e.target.value)}
                 fullWidth
               />
             </Grid>
@@ -158,7 +158,7 @@ export default function MachineDetails() {
                 <TableCell>Machine Type</TableCell>
                 <TableCell>Machine Quantity</TableCell>
                 <TableCell>Machine Availability</TableCell>
-                <TableCell>Fuel Id</TableCell>
+                <TableCell>Fuel Name</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
@@ -170,7 +170,7 @@ export default function MachineDetails() {
                   <TableCell>{data.machine_type}</TableCell>
                   <TableCell>{data.machine_quantity}</TableCell>
                   <TableCell>{data.machine_availability}</TableCell>
-                  <TableCell>{data.fuel_id}</TableCell>
+                  <TableCell>{data.fuel_name}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleEditBtn(data.machine_id)}>
                       <EditIcon />

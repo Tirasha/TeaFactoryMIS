@@ -15,5 +15,5 @@ public class MachineDTO {
     private String machine_type;
     private String machine_quantity;
     private String machine_availability;
-    private String fuel_id;
+    private String fuel_name;
 }

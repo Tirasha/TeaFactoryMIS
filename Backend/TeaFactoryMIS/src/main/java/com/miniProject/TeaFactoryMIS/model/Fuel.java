@@ -14,14 +14,15 @@ import lombok.Setter;
 @Table(name = "fuel")
 public class Fuel {
     @Id
+    @Column(name = "fuel_id")
     private String fuel_id;
 
-    @Column
+    @Column(name = "fuel_name")
     private String fuel_name;
 
-    @Column
+    @Column(name = "fuel_type")
     private String fuel_type;
 
-    @Column
+    @Column(name = "fuel_quantity")
     private String fuel_quantity;
 }

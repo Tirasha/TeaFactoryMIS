@@ -8,23 +8,24 @@ import lombok.Setter;
 @Getter
 @Setter
 
-@Table(name = "vehicle")
+@Table(name = "All_vehicles")
 public class Vehicle {
     @Id
+    @Column(name = "vehicle_No")
     private String vehicle_No ;
 
-    @Column
+    @Column(name = "vehicle_type")
     private String vehicle_type;
 
     @Lob
     @Column(name = "vehicle_image", length = 1000)
     private byte[] vehicle_image;
 
-    @Column
+    @Column(name = "vehicle_availability")
     private String vehicle_availability;
 
-    @Column
-    private String fuel_id;
+    @Column(name = "fuel_name")
+    private String fuel_name;
 }
 
 

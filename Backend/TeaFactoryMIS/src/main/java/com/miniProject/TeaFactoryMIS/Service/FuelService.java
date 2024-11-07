@@ -33,18 +33,27 @@ public class FuelService {
         return modelMapper.map(fuelList, new TypeToken<List<FuelDTO>>(){}.getType());
     }
 
-    // Search and return a fuel by their ID from the fuel table.
-    public FuelDTO searchFuelByID(String fuel_id){
+    // Search and return a fuel by their name from the fuel table.
+    public FuelDTO searchFuelByName(String fuel_name){
         // Check if fuel exists
-        if (fuelRepository.existsById(fuel_id)){
+        if (fuelRepository.existsById(fuel_name)){
             // Retrieve machine from repository and map to DTO
-            Fuel fuel = fuelRepository.findById(fuel_id).orElse(null);
+            Fuel fuel = fuelRepository.findByFuelName(fuel_name).orElse(null);
             return modelMapper.map(fuel, FuelDTO.class);
         } else {
             // Return null if fuel not found
             return null;
         }
     }
+
+//    public FuelDTO searchFuelByName(String fuel_name) {
+//        Fuel fuel = fuelRepository.findByFuelName(fuel_name).orElse(null);
+//        if (fuel != null) {
+//            return modelMapper.map(fuel, FuelDTO.class);
+//        } else {
+//            return null;
+//        }
+//    }
 
     // Save a new fuel in the fuel table.
     public String addNewFuel(FuelDTO fuelDTO){
