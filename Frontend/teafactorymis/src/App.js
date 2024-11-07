@@ -7,15 +7,12 @@ import HRAssistDashboard from './Dashboards/HRAssist/HRAssistDashboard';
 import InventoryAssistDashboard from './Dashboards/InventoryAssist/InventoryAssistDashboard';
 import SalesAssistDashboard from './Dashboards/SalesAssist/SalesAssistDashboard';
 import TechnicalDashboard from './Dashboards/TechnicalAssist/TechnicalDashboard';
-import Vehicle  from './Dashboards/TechnicalAssist/Vehicle/Vehicle';
 import VehicleAdd  from './Dashboards/TechnicalAssist/Vehicle/VehicleAdd';
 import VehicleDetails  from './Dashboards/TechnicalAssist/Vehicle/VehicleDetails';
 
-import Machine from './Dashboards/TechnicalAssist/Machine/Machine';
 import MachineAdd  from './Dashboards/TechnicalAssist/Machine/MachineAdd';
 import MachineDetails  from './Dashboards/TechnicalAssist/Machine/MachineDetails';
 
-import Fuel from './Dashboards/TechnicalAssist/Fuel/Fuel';
 import FuelAdd  from './Dashboards/TechnicalAssist/Fuel/FuelAdd';
 import FuelDetails  from './Dashboards/TechnicalAssist/Fuel/FuelDetails';
 import UserManage from './Dashboards/Admin/UserManage';
@@ -57,15 +54,13 @@ function App() {
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
                 <Route path="/ManageSales" element={<ManageSales user={user} />} />
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
-                <Route path="/Vehicle" element={<Vehicle user={user} />} />
+                
                 <Route path="/VehicleAdd" element={<VehicleAdd user={user} />} />
                 <Route path="/VehicleDetails" element={<VehicleDetails user={user} />} />
 
-                <Route path="/Machine" element={<Machine user={user} />} />
                 <Route path="/MachineAdd" element={<MachineAdd user={user} />} />
                 <Route path="/MachineDetails" element={<MachineDetails user={user} />} />
 
-                <Route path="/Fuel" element={<Fuel user={user} />} />
                 <Route path="/FuelAdd" element={<FuelAdd user={user} />} />
                 <Route path="/FuelDetails" element={<FuelDetails user={user} />} />
               </>

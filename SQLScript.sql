@@ -1,7 +1,7 @@
 create database TeaFactoryMIS;
 use TeaFactoryMIS;
 
-
+drop database TeaFactoryMIS;
 insert into employee(emp_id,category,dob,firstname,house_no,lastname,line_no,nic,role,image)values
 ("e001", "Administrator", "2000-12-04", "Isuru", "10", "Ganga", "160", "200012457898" , "Admin", null),
 ("e002", "HR", "2000-12-04", "Madhusha", "111", "Thiyagaraja", "120", "200085967485", "HRAssist", null),
@@ -21,7 +21,7 @@ insert into users(user_id,password,username)values
 
 -- Tharu
 -- Database Queries related to vehicle, machine and fuel tables
--- drop table fuel; 
+-- drop table vehicle; 
 Create Table vehicle(
 	vehicle_No varchar(50) primary key not null,
     vehicle_type varchar(255) not null,
@@ -51,15 +51,15 @@ Insert into vehicle (vehicle_No, vehicle_type, vehicle_image, vehicle_availabili
 ('VH001', 'Car', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/car.jpg'), 'Available', 'F001'),
 ('VH002', 'Truck', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/truck.jpg'), 'Not Available', 'F002'),
 ('VH003', 'Motorcycle', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/motorcycle.jpg'), 'Available', 'F001'),
-('VH004', 'Bus', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/bus.jpg'), 'In Service', 'F003'),
+('VH004', 'Bus', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/bus.jpg'), 'Not Available', 'F003'),
 ('VH005', 'Van', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/van.jpg'), 'Available', 'F002');
 
 Insert into machine (machine_id, machine_type, machine_quantity, machine_availability, fuel_id) Values 
-('MCH001', 'Excavator', '5', 'Available', 'F001'),
-('MCH002', 'Bulldozer', '3', 'In Service', 'F002'),
-('MCH003', 'Crane', '2', 'Available', 'F003'),
-('MCH004', 'Forklift', '10', 'Under Maintenance', 'F001'),
-('MCH005', 'Loader', '7', 'Available', 'F002');
+('MCH001', 'Withering Troughs', '5', 'Available', 'F001'),
+('MCH002', 'Roller Machines ', '6', 'Available', 'F002'),
+('MCH003', 'Fermentation Units ', '5', 'Available', 'F003'),
+('MCH004', 'Dryers ', '7', 'Available', 'F001'),
+('MCH005', 'Grading Machines ', '6', 'Available', 'F002');
 
 Insert into fuel (fuel_id, fuel_name, fuel_type, fuel_quantity) Values 
 ('F001', 'Diesel', 'Liquid', '5000 liters'),
@@ -69,10 +69,11 @@ Insert into fuel (fuel_id, fuel_name, fuel_type, fuel_quantity) Values
 ('F005', 'Hydrogen', 'Gas', '1000 cubic meters');
 
 -- Indexing
-CREATE INDEX idx_fuel_name ON fuel(fuel_name);
+CREATE INDEX idx_fuel_name ON fuel(fuel_name); 
+DESC fuel;
 
 -- View
--- DROP table All_vehicles; 
+-- drop view technical_dashboard_counts;
 CREATE VIEW All_vehicles AS
 SELECT vehicle.vehicle_No, vehicle.vehicle_type, vehicle.vehicle_image, vehicle.vehicle_availability, fuel.fuel_name
 FROM vehicle
@@ -87,33 +88,35 @@ JOIN fuel ON machine.fuel_id = fuel.fuel_id;
 
 SELECT * FROM All_machines;
 
+CREATE VIEW technical_dashboard_counts AS
+SELECT 
+    (SELECT COUNT(*) FROM vehicle) AS vehicleCount,
+    (SELECT COUNT(*) FROM machine) AS machineTypeCount,
+    (SELECT COUNT(*) FROM fuel) AS fuelTypeCount;
+
+SELECT * FROM technical_dashboard_counts;
+
 
 -- Triggers
--- Delimiter $$
--- CREATE TRIGGER trigger_update_fuel_quantity_on_machine_update
--- BEFORE UPDATE ON machine                           
--- FOR EACH ROW
--- BEGIN
---     IF OLD.fuel_id <> NEW.fuel_id THEN
---         -- Decrease quantity from the old fuel_id
---         UPDATE fuel
---         SET fuel_quantity = fuel_quantity + OLD.machine_quantity
---         WHERE fuel_id = OLD.fuel_id;
+Delimiter $$
+CREATE TRIGGER insert_vehicle
+AFTER INSERT ON vehicle
+FOR EACH ROW
+BEGIN
+    INSERT INTO vehicle ( vehicle_No, vehicle_type, vehicle_image, vehicle_availability, fuel_id ) VALUES 
+    ( NEW.vehicle_No, NEW.vehicle_type, NEW.vehicle_image, NEW.vehicle_availability, NEW.fuel_id );
+END;
+Delimiter ;
 
---         -- Increase quantity in the new fuel_id
---         UPDATE fuel
---         SET fuel_quantity = fuel_quantity - NEW.machine_quantity
---         WHERE fuel_id = NEW.fuel_id;
---     END IF;
--- END;
--- Delimiter ;
-
--- UPDATE machine
--- SET fuel_id = 'F002', machine_quantity = 10
--- WHERE machine_id = 'M001';
-
-
-
+Delimiter $$
+CREATE TRIGGER insert_machine
+AFTER INSERT ON machine
+FOR EACH ROW
+BEGIN
+    INSERT INTO machine ( machine_id, machine_type, machine_quantity, machine_availability, fuel_id ) VALUES 
+    ( NEW.machine_id, NEW.machine_type, NEW.machine_quantity, NEW.machine_availability, NEW.fuel_id );
+END;
+Delimiter ;
 
 
 

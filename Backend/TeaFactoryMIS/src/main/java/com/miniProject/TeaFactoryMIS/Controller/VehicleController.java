@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Map;
 
-//Controller class for managing vehicles
 
 @RestController
 @RequestMapping(value="/vehicle")
@@ -27,10 +26,8 @@ public class VehicleController {
     @GetMapping("/view")
     public ResponseEntity viewVehicles(){
         try{
-            // Retrieve all vehicles
-            List<VehicleDTO> vehicleDTOList = vehicleService.viewAllVehicles();
+            List<Map<String, Object>> vehicleDTOList = vehicleService.viewAllVehicles();
 
-            // Check if list is empty
             if(vehicleDTOList.isEmpty()){
                 responseDTO.setCode("NO_DATA_FOUND");
                 responseDTO.setMessage("No records of vehicles");
@@ -43,8 +40,6 @@ public class VehicleController {
 
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
-
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -56,10 +51,8 @@ public class VehicleController {
     @GetMapping("/search/{vehicle_No}")
     public ResponseEntity searchVehicleByID(@PathVariable String vehicle_No){
         try{
-            // Call service layer to search vehicle by vehicle_No
             VehicleDTO vehicleDTO = vehicleService.searchVehicleByID(vehicle_No);
 
-            // Check if vehicle is found
             if (vehicleDTO==null){
                 responseDTO.setCode("NO_DATA_FOUND");
                 responseDTO.setMessage("No records of the vehicle");
@@ -73,7 +66,6 @@ public class VehicleController {
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -83,32 +75,27 @@ public class VehicleController {
 
     // Adding a new vehicle
     @PostMapping("/add")
-    public ResponseEntity addVehicle(@RequestBody VehicleDTO vehicleDTO){
-        try{
-            // Call service to add new vehicle
+    public ResponseEntity<ResponseDTO> addVehicle(@RequestBody VehicleDTO vehicleDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
             String response = vehicleService.addNewVehicle(vehicleDTO);
-
-            // Check response from service
-            if(response.equals("SUCCESS")){
+            if ("SUCCESS".equals(response)) {
                 responseDTO.setCode("SUCCESS");
                 responseDTO.setMessage("Successfully added vehicle");
                 responseDTO.setContent(vehicleDTO);
-                return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
-            }
-            else{
+                return new ResponseEntity<>(responseDTO, HttpStatus.ACCEPTED);
+            } else {
                 responseDTO.setCode("DUPLICATED");
                 responseDTO.setMessage("Vehicle No already exists");
                 responseDTO.setContent(vehicleDTO);
-                return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
+                return new ResponseEntity<>(responseDTO, HttpStatus.CONFLICT);
             }
-        }catch (Exception ex){
-            System.out.println("ERROR: "+ex.getMessage());
-
-            // Handle exceptions
+        } catch (Exception ex) {
+            System.out.println("ERROR: " + ex.getMessage());
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -116,10 +103,8 @@ public class VehicleController {
     @PutMapping("/update")
     public ResponseEntity updateVehicle(@RequestBody VehicleDTO vehicleDTO){
         try{
-            // Call service layer to update vehicle
             String response = vehicleService.updateVehicle(vehicleDTO);
 
-            // Check response from service
             if(response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
                 responseDTO.setMessage("Successfully updated the vehicle");
@@ -135,7 +120,6 @@ public class VehicleController {
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -148,7 +132,6 @@ public class VehicleController {
     public ResponseEntity deleteVehicleByID(@PathVariable String vehicle_No){
 
         try{
-            // Call service to delete vehicle by ID
             String response = vehicleService.deleteVehicleByID(vehicle_No);
             if (response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
@@ -165,7 +148,6 @@ public class VehicleController {
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);

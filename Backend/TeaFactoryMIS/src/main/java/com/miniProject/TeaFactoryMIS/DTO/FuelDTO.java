@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Data Transfer Object (DTO) class for Fuel
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

@@ -1,16 +1,14 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
-import com.miniProject.TeaFactoryMIS.DTO.FuelDTO;
 import com.miniProject.TeaFactoryMIS.DTO.ResponseDTO;
 import com.miniProject.TeaFactoryMIS.Service.FuelService;
+import com.miniProject.TeaFactoryMIS.model.Fuel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-//Controller class for managing fuel
 
 @RestController
 @RequestMapping(value="/fuel")
@@ -27,24 +25,21 @@ public class FuelController {
     @GetMapping("/view")
     public ResponseEntity viewFuel(){
         try{
-            // Retrieve all fuel
-            List<FuelDTO> fuelDTOList = fuelService.viewAllFuel();
+            List<Fuel> fuelList = fuelService.viewAllFuel();
 
-            // Check if list is empty
-            if(fuelDTOList.isEmpty()){
+            if(fuelList.isEmpty()){
                 responseDTO.setCode("NO_DATA_FOUND");
                 responseDTO.setMessage("No records of fuel");
             }else{
                 responseDTO.setCode("SUCCESS");
                 responseDTO.setMessage("Successfully fetched all fuel");
             }
-            responseDTO.setContent(fuelDTOList);
+            responseDTO.setContent(fuelList);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -56,24 +51,21 @@ public class FuelController {
     @GetMapping("/search/{fuel_name}")
     public ResponseEntity<String> searchFuelByName(@PathVariable String fuel_name){
         try{
-            // Call service layer to search fuel by fuel_name
-            FuelDTO fuelDTO = fuelService.searchFuelByName(fuel_name);
+            Fuel fuel = fuelService.searchFuelByName(fuel_name);
 
-            // Check if fuel is found
-            if (fuelDTO==null){
+            if (fuel==null){
                 responseDTO.setCode("NO_DATA_FOUND");
                 responseDTO.setMessage("No records of the fuel");
             }else {
                 responseDTO.setCode("SUCCESS");
                 responseDTO.setMessage("Successfully fetched the fuel");
             }
-            responseDTO.setContent(fuelDTO);
+            responseDTO.setContent(fuel);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -83,28 +75,25 @@ public class FuelController {
 
     // Adding a new fuel
     @PostMapping("/add")
-    public ResponseEntity<String> addFuel(@RequestBody FuelDTO fuelDTO){
+    public ResponseEntity<String> addFuel(@RequestBody Fuel fuel){
         try{
-            // Call service to add new fuel
-            String response = fuelService.addNewFuel(fuelDTO);
+            String response = fuelService.addNewFuel(fuel);
 
-            // Check response from service
             if(response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
                 responseDTO.setMessage("Successfully added fuel");
-                responseDTO.setContent(fuelDTO);
+                responseDTO.setContent(fuel);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }
             else{
                 responseDTO.setCode("DUPLICATED");
                 responseDTO.setMessage("Fuel id already exists");
-                responseDTO.setContent(fuelDTO);
+                responseDTO.setContent(fuel);
                 return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
             }
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -114,28 +103,25 @@ public class FuelController {
 
     // Updating a fuel
     @PutMapping("/update")
-    public ResponseEntity<String> updateFuel(@RequestBody FuelDTO fuelDTO){
+    public ResponseEntity<String> updateFuel(@RequestBody Fuel fuel){
         try{
-            // Call service layer to update fuel
-            String response = fuelService.updateFuel(fuelDTO);
+            String response = fuelService.updateFuel(fuel);
 
-            // Check response from service
             if(response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
                 responseDTO.setMessage("Successfully updated the fuel");
-                responseDTO.setContent(fuelDTO);
+                responseDTO.setContent(fuel);
                 return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
             }
             else{
                 responseDTO.setCode("NO_DATA_FOUND");
                 responseDTO.setMessage("Not found such a fuel");
-                responseDTO.setContent(fuelDTO);
+                responseDTO.setContent(fuel);
                 return new ResponseEntity(responseDTO,HttpStatus.BAD_REQUEST);
             }
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -148,7 +134,6 @@ public class FuelController {
     public ResponseEntity<String> deleteFuelByID(@PathVariable String fuel_id){
 
         try{
-            // Call service to delete fuel by ID
             String response = fuelService.deleteFuelByID(fuel_id);
             if (response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
@@ -165,7 +150,6 @@ public class FuelController {
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);

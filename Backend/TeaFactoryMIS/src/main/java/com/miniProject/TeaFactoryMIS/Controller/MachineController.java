@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Map;
 
-//Controller class for managing machines
 
 @RestController
 @RequestMapping(value="/machine")
@@ -27,24 +26,21 @@ public class MachineController {
     @GetMapping("/view")
     public ResponseEntity viewMachines(){
         try{
-            // Retrieve all machines
-            List<MachineDTO> machineDTOList = machineService.viewAllMachines();
+            List<Map<String, Object>> machineList = machineService.viewAllMachines();
 
-            // Check if list is empty
-            if(machineDTOList.isEmpty()){
+            if(machineList.isEmpty()){
                 responseDTO.setCode("NO_DATA_FOUND");
                 responseDTO.setMessage("No records of machines");
             }else{
                 responseDTO.setCode("SUCCESS");
                 responseDTO.setMessage("Successfully fetched all machines");
             }
-            responseDTO.setContent(machineDTOList);
+            responseDTO.setContent(machineList);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -56,10 +52,8 @@ public class MachineController {
     @GetMapping("/search/{machine_id}")
     public ResponseEntity searchMachineByID(@PathVariable String machine_id){
         try{
-            // Call service layer to search machine by machine_id
             MachineDTO machineDTO = machineService.searchMachineByID(machine_id);
 
-            // Check if machine is found
             if (machineDTO==null){
                 responseDTO.setCode("NO_DATA_FOUND");
                 responseDTO.setMessage("No records of the machine");
@@ -73,7 +67,6 @@ public class MachineController {
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -83,32 +76,29 @@ public class MachineController {
 
     // Adding a new machine
     @PostMapping("/add")
-    public ResponseEntity addMachine(@RequestBody MachineDTO machineDTO){
-        try{
-            // Call service to add new machine
+    public ResponseEntity<ResponseDTO> addMachine(@RequestBody MachineDTO machineDTO)
+    {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
             String response = machineService.addNewMachine(machineDTO);
-
-            // Check response from service
-            if(response.equals("SUCCESS")){
+            if ("SUCCESS".equals(response))
+            {
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully added machine");
+                responseDTO.setMessage("Successfully added vehicle");
                 responseDTO.setContent(machineDTO);
-                return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
-            }
-            else{
+                return new ResponseEntity<>(responseDTO, HttpStatus.ACCEPTED);
+            } else {
                 responseDTO.setCode("DUPLICATED");
-                responseDTO.setMessage("Machine id already exists");
+                responseDTO.setMessage("Vehicle No already exists");
                 responseDTO.setContent(machineDTO);
-                return new ResponseEntity(responseDTO,HttpStatus.CONFLICT);
+                return new ResponseEntity<>(responseDTO, HttpStatus.CONFLICT);
             }
-        }catch (Exception ex){
-            System.out.println("ERROR: "+ex.getMessage());
-
-            // Handle exceptions
+        } catch (Exception ex) {
+            System.out.println("ERROR: " + ex.getMessage());
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
-            return new ResponseEntity(responseDTO,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -116,10 +106,8 @@ public class MachineController {
     @PutMapping("/update")
     public ResponseEntity updateMachine(@RequestBody MachineDTO machineDTO){
         try{
-            // Call service layer to update machine
             String response = machineService.updateMachine(machineDTO);
 
-            // Check response from service
             if(response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
                 responseDTO.setMessage("Successfully updated the machine");
@@ -135,7 +123,6 @@ public class MachineController {
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);
@@ -148,7 +135,6 @@ public class MachineController {
     public ResponseEntity deleteMachineByID(@PathVariable String machine_id){
 
         try{
-            // Call service to delete machine by ID
             String response = machineService.deleteMachineByID(machine_id);
             if (response.equals("SUCCESS")){
                 responseDTO.setCode("SUCCESS");
@@ -165,7 +151,6 @@ public class MachineController {
         }catch (Exception ex){
             System.out.println("ERROR: "+ex.getMessage());
 
-            // Handle exceptions
             responseDTO.setCode("ERROR");
             responseDTO.setMessage(ex.getMessage());
             responseDTO.setContent(null);

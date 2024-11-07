@@ -18,7 +18,7 @@ public class Fuel {
     private String fuel_id;
 
     @Column(name = "fuel_name")
-    private String fuel_name;
+    private String fuelName;
 
     @Column(name = "fuel_type")
     private String fuel_type;
@@ -26,3 +26,4 @@ public class Fuel {
     @Column(name = "fuel_quantity")
     private String fuel_quantity;
 }
+

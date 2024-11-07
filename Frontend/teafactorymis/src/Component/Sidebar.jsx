@@ -106,9 +106,54 @@ const Sidebar = ({ user, onLogout }) => {
             icon: <Dashboard />,
             path: "/TechnicalDashboard",
           },
-          { text: "Vehicle", icon: <Commute />, path: "/Vehicle" },
-          { text: "Machine", icon: <Factory />, path: "/Machine" },
-          { text: "Fuel", icon: <LocalGasStation />, path: "/Fuel" },
+          {
+            text: "Vehicle",
+            icon: <Commute />,
+            dropdown: true, // Indicates this item has nested links
+            items: [
+              {
+                text: "Add Vehicle",
+                path: "/VehicleAdd",
+              },
+              {
+                text: "View Vehicle Details",
+                path: "/VehicleDetails",
+              },
+            ],
+          },
+          {
+            text: "Machine",
+            icon: <Factory />,
+            dropdown: true, // Indicates this item has nested links
+            items: [
+              {
+                text: "Add Machine",
+                path: "/MachineAdd",
+              },
+              {
+                text: "View Machine Details",
+                path: "/MachineDetails",
+              },
+            ],
+          },
+          {
+            text: "Fuel",
+            icon: <LocalGasStation />,
+            dropdown: true, // Indicates this item has nested links
+            items: [
+              {
+                text: "Add Fuel Type",
+                path: "/FuelAdd",
+              },
+              {
+                text: "View Fuel Types",
+                path: "/FuelDetails",
+              },
+            ],
+          },
+          // { text: "Vehicle", icon: <Commute />, path: "/Vehicle" },
+          // { text: "Machine", icon: <Factory />, path: "/Machine" },
+          // { text: "Fuel", icon: <LocalGasStation />, path: "/Fuel" },
         ];
 
       default:

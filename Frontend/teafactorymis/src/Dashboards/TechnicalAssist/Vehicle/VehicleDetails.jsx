@@ -121,14 +121,6 @@ export default function VehicleDetails() {
                 fullWidth
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                label="Vehicle Image"
-                value={vehicle_image}
-                onChange={(e) => setVehicle_image(e.target.value)}
-                fullWidth
-              />
-            </Grid> */}
 
             <Grid container spacing={3}>
               {" "}
