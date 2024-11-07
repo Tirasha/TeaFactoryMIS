@@ -9,7 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Inventories {
+public class Inventory {
 
     @Id
     private String inventory_id;

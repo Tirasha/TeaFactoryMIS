@@ -1,7 +1,6 @@
 package com.miniProject.TeaFactoryMIS.Service;
 
-import com.miniProject.TeaFactoryMIS.Repository.InventoriesRepository;
-import com.miniProject.TeaFactoryMIS.model.Inventories;
+import com.miniProject.TeaFactoryMIS.Repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -13,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class InventoriesService {
+public class InventoryService {
 
     @Autowired
-    private InventoriesRepository inventoryRepo;
+    private InventoryRepository inventoryRepo;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

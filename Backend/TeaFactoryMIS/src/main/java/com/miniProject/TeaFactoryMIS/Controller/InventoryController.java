@@ -1,9 +1,9 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
 import com.miniProject.TeaFactoryMIS.Exception.InventoryNotFoundException;
-import com.miniProject.TeaFactoryMIS.Repository.InventoriesRepository;
-import com.miniProject.TeaFactoryMIS.Service.InventoriesService;
-import com.miniProject.TeaFactoryMIS.model.Inventories;
+import com.miniProject.TeaFactoryMIS.Repository.InventoryRepository;
+import com.miniProject.TeaFactoryMIS.Service.InventoryService;
+import com.miniProject.TeaFactoryMIS.model.Inventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +13,13 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*",allowedHeaders = "*")
-public class InventoriesController {
+public class InventoryController {
 
     @Autowired
-    private InventoriesRepository inventoryRepo;
+    private InventoryRepository inventoryRepo;
 
     @Autowired
-    private InventoriesService inventoryServ;
+    private InventoryService inventoryServ;
 
 
     @GetMapping("/inventory/tea_stock_summary")
@@ -43,33 +43,33 @@ public class InventoriesController {
 
 
     @PostMapping("/inventory/add/new")
-    Inventories addNewInvntory(@RequestBody Inventories newinventory)
+    Inventory addNewInvntory(@RequestBody Inventory newinventory)
     {
         return inventoryRepo.save(newinventory);
     }
 
     @GetMapping("/inventory/all")
-    List<Inventories> getAllInventory()
+    List<Inventory> getAllInventory()
     {
         return inventoryRepo.findAll();
     }
 
     @GetMapping("/inventory/get/{inventory_id}")
-    Inventories getInventoryById(@PathVariable String inventory_id)
+    Inventory getInventoryById(@PathVariable String inventory_id)
     {
         return inventoryRepo.findById(inventory_id)
                 .orElseThrow(()-> new InventoryNotFoundException(inventory_id));
     }
 
     @PutMapping("/inventory/edit/{inventory_id}")
-    Inventories updateInventory(@RequestBody Inventories newinventory,@PathVariable String inventory_id)
+    Inventory updateInventory(@RequestBody Inventory newinventory, @PathVariable String inventory_id)
     {
         return  inventoryRepo.findById(inventory_id)
-                .map(inventories -> {
-                    inventories.setTea_type(newinventory.getTea_type());
-                    inventories.setAvailable_stock(newinventory.getAvailable_stock());
-                    inventories.setPrice_per_kg(newinventory.getPrice_per_kg());
-                    return inventoryRepo.save(inventories);
+                .map(inventory -> {
+                    inventory.setTea_type(newinventory.getTea_type());
+                    inventory.setAvailable_stock(newinventory.getAvailable_stock());
+                    inventory.setPrice_per_kg(newinventory.getPrice_per_kg());
+                    return inventoryRepo.save(inventory);
                 }).orElseThrow(()-> new InventoryNotFoundException(inventory_id));
 
     }
