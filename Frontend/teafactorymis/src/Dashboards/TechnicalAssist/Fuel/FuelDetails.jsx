@@ -33,7 +33,7 @@ export default function FuelDetails() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/fuel/view")
+      .get(`http://localhost:8080/fuel/view`)
       .then((res) => setTableData(res.data.content))
       .catch((err) => alert(err.message));
   }, [deleteFuel]);
@@ -71,8 +71,8 @@ export default function FuelDetails() {
     };
 
     await axios
-      .put("http://localhost:8080/fuel/update", updateData)
-      .then(() => (window.location.href = "/FuelDetails"))
+      .put(`http://localhost:8080/fuel/update`, updateData)
+      .then(() => (window.location.href = "/TechnicalDashboard"))
       .catch((err) => alert(err.message));
   };
 
@@ -80,7 +80,7 @@ export default function FuelDetails() {
     <Box display="flex" flexDirection="column" p={3}>
       <Sidebar />
       <Box display="flex" alignItems="center" mb={3}>
-        <IconButton onClick={() => navigate("/Fuel")}>
+        <IconButton onClick={() => navigate("/TechnicalDashboard")}>
           <ArrowBackIosNewIcon />
         </IconButton>
         <Typography variant="h4" fontWeight="bold">

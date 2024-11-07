@@ -1,8 +1,10 @@
 package com.miniProject.TeaFactoryMIS.Service;
 
 import com.miniProject.TeaFactoryMIS.DTO.FuelDTO;
+import com.miniProject.TeaFactoryMIS.DTO.VehicleDTO;
 import com.miniProject.TeaFactoryMIS.Repository.FuelRepository;
 import com.miniProject.TeaFactoryMIS.model.Fuel;
+import com.miniProject.TeaFactoryMIS.model.Vehicle;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -29,10 +31,19 @@ public class FuelService {
     }
 
     // Search and return a fuel by their name from the fuel table.
-    public Fuel searchFuelByName(String fuel_name){
-        if (fuelRepository.existsById(fuel_name)){
-            Fuel fuel = fuelRepository.findByFuelName(fuel_name).orElse(null);
-            return modelMapper.map(fuel, Fuel.class);
+//    public Fuel searchFuelByName(String fuel_name){
+//        if (fuelRepository.existsById(fuel_name)){
+//            Fuel fuel = fuelRepository.findByFuelName(fuel_name).orElse(null);
+//            return modelMapper.map(fuel, Fuel.class);
+//        } else {
+//            return null;
+//        }
+//    }
+
+    public FuelDTO searchFuelByID(String fuel_id){
+        if (fuelRepository.existsById(fuel_id)){
+            Fuel fuel = fuelRepository.findById(fuel_id).orElse(null);
+            return modelMapper.map(fuel, FuelDTO.class);
         } else {
             return null;
         }

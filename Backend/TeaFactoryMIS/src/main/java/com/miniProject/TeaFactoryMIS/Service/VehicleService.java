@@ -48,7 +48,7 @@ public class VehicleService {
             Vehicle vehicle = new Vehicle();
             vehicle.setVehicle_No(vehicleDTO.getVehicle_No());
             vehicle.setVehicle_type(vehicleDTO.getVehicle_type());
-            vehicle.setVehicle_image(vehicleDTO.getVehicle_image());
+//            vehicle.setVehicle_image(vehicleDTO.getVehicle_image());
             vehicle.setVehicle_availability(vehicleDTO.getVehicle_availability());
             vehicle.setFuel_id(vehicleDTO.getFuel_id());
 

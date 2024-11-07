@@ -25,7 +25,7 @@ insert into users(user_id,password,username)values
 Create Table vehicle(
 	vehicle_No varchar(50) primary key not null,
     vehicle_type varchar(255) not null,
-    vehicle_image LONGBLOB not null,
+    vehicle_image BLOB not null,
     vehicle_availability varchar(255) not null,
     fuel_id varchar(255) not null,
     FOREIGN KEY (fuel_id) REFERENCES fuel(fuel_id)

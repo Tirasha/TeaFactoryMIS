@@ -1,6 +1,8 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
+import com.miniProject.TeaFactoryMIS.DTO.FuelDTO;
 import com.miniProject.TeaFactoryMIS.DTO.ResponseDTO;
+import com.miniProject.TeaFactoryMIS.DTO.VehicleDTO;
 import com.miniProject.TeaFactoryMIS.Service.FuelService;
 import com.miniProject.TeaFactoryMIS.model.Fuel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,19 +50,44 @@ public class FuelController {
     }
 
     // Searching a fuel by fuel_name
-    @GetMapping("/search/{fuel_name}")
-    public ResponseEntity<String> searchFuelByName(@PathVariable String fuel_name){
-        try{
-            Fuel fuel = fuelService.searchFuelByName(fuel_name);
+//    @GetMapping("/search/{fuel_name}")
+//    public ResponseEntity<String> searchFuelByName(@PathVariable String fuel_name){
+//        try{
+//            Fuel fuel = fuelService.searchFuelByName(fuel_name);
+//
+//            if (fuel==null){
+//                responseDTO.setCode("NO_DATA_FOUND");
+//                responseDTO.setMessage("No records of the fuel");
+//            }else {
+//                responseDTO.setCode("SUCCESS");
+//                responseDTO.setMessage("Successfully fetched the fuel");
+//            }
+//            responseDTO.setContent(fuel);
+//            return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+//
+//        }catch (Exception ex){
+//            System.out.println("ERROR: "+ex.getMessage());
+//
+//            responseDTO.setCode("ERROR");
+//            responseDTO.setMessage(ex.getMessage());
+//            responseDTO.setContent(null);
+//            return new ResponseEntity(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
-            if (fuel==null){
+    @GetMapping("/search/{fuel_id}")
+    public ResponseEntity searchFuelByID(@PathVariable String fuel_id){
+        try{
+            FuelDTO fuelDTO = fuelService.searchFuelByID(fuel_id);
+
+            if (fuelDTO==null){
                 responseDTO.setCode("NO_DATA_FOUND");
-                responseDTO.setMessage("No records of the fuel");
+                responseDTO.setMessage("No records of the vehicle");
             }else {
                 responseDTO.setCode("SUCCESS");
-                responseDTO.setMessage("Successfully fetched the fuel");
+                responseDTO.setMessage("Successfully fetched the vehicle");
             }
-            responseDTO.setContent(fuel);
+            responseDTO.setContent(fuelDTO);
             return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
 
         }catch (Exception ex){

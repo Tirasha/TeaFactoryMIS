@@ -34,8 +34,8 @@ export default function FuelAdd() {
         fuel_quantity,
       };
       try {
-        await axios.post("http://localhost:8080/fuel/add", formData);
-        setTimeout(() => navigate("/FuelRead"), 3000);
+        await axios.post(`http://localhost:8080/fuel/add`, formData);
+        setTimeout(() => navigate("/TechnicalDashboard"), 3000);
       } catch (err) {
         alert(err.message);
       }
@@ -43,7 +43,7 @@ export default function FuelAdd() {
   };
 
   const handleBackBtn = () => {
-    navigate("/Fuel");
+    navigate("/TechnicalDashboard");
   };
 
   const handleClearBtn = () => {

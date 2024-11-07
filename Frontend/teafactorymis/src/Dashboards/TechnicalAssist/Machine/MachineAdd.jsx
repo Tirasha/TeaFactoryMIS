@@ -42,8 +42,8 @@ export default function MachineAdd() {
         fuel_id,
       };
       try {
-        await axios.post("http://localhost:8080/machine/add", formData);
-        setTimeout(() => navigate("/MachineRead"), 3000);
+        await axios.post(`http://localhost:8080/machine/add`, formData);
+        setTimeout(() => navigate("/TechnicalDashboard"), 3000);
       } catch (err) {
         alert(err.message);
       }
@@ -51,7 +51,7 @@ export default function MachineAdd() {
   };
 
   const handleBackBtn = () => {
-    navigate("/Machine");
+    navigate("/TechnicalDashboard");
   };
 
   const handleClearBtn = () => {

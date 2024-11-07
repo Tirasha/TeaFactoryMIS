@@ -30,11 +30,12 @@ export default function MachineDetails() {
   const [machine_type, setMachine_type] = useState("");
   const [machine_quantity, setMachine_quantity] = useState("");
   const [machine_availability, setMachine_availability] = useState("");
+  const [fuel_id, setFuel_id] = useState("");
   const [fuel_name, setFuel_name] = useState("");
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/machine/view")
+      .get(`http://localhost:8080/machine/view`)
       .then((res) => setTableData(res.data.content))
       .catch((err) => alert(err.message));
   }, [deleteMachine]);
@@ -70,12 +71,12 @@ export default function MachineDetails() {
       machine_type,
       machine_quantity,
       machine_availability,
-      fuel_name,
+      fuel_id,
     };
 
     await axios
-      .put("http://localhost:8080/machine/update", updateData)
-      .then(() => (window.location.href = "/MachineDetails"))
+      .put(`http://localhost:8080/machine/update`, updateData)
+      .then(() => (window.location.href = "/TechnicalDashboard"))
       .catch((err) => alert(err.message));
   };
 
@@ -83,7 +84,7 @@ export default function MachineDetails() {
     <Box display="flex" flexDirection="column" p={3}>
       <Sidebar />
       <Box display="flex" alignItems="center" mb={3}>
-        <IconButton onClick={() => navigate("/Machine")}>
+        <IconButton onClick={() => navigate("/TechnicalDashboard")}>
           <ArrowBackIosNewIcon />
         </IconButton>
         <Typography variant="h4" fontWeight="bold">
@@ -128,9 +129,9 @@ export default function MachineDetails() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Fuel Name"
-                value={fuel_name}
-                onChange={(e) => setFuel_name(e.target.value)}
+                label="Fuel Id"
+                value={fuel_id}
+                onChange={(e) => setFuel_id(e.target.value)}
                 fullWidth
               />
             </Grid>

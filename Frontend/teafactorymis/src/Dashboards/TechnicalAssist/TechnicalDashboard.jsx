@@ -10,16 +10,16 @@ const TechnicalDashboard = () => {
     fuelTypeCount: 5,
   });
 
-  useEffect(() => {
-    axios
-      .get("/technical-dashboard/counts")
-      .then((response) => {
-        setCounts(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("/technical-dashboard/counts")
+  //     .then((response) => {
+  //       setCounts(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // }, []);
 
   return (
     <Box
@@ -55,7 +55,7 @@ const TechnicalDashboard = () => {
           <Typography variant="h5" gutterBottom>
             Vehicle Count
           </Typography>
-          <Typography variant="h6">{counts.vehicleCount}</Typography>
+          {/* <Typography variant="h6">{counts.vehicleCount}</Typography> */}
         </Box>
 
         {/* Machine Type Count Box */}
@@ -73,7 +73,7 @@ const TechnicalDashboard = () => {
           <Typography variant="h5" gutterBottom>
             Machine Type Count
           </Typography>
-          <Typography variant="h6">{counts.machineTypeCount}</Typography>
+          {/* <Typography variant="h6">{counts.machineTypeCount}</Typography> */}
         </Box>
 
         {/* Fuel Type Count Box */}
@@ -91,7 +91,7 @@ const TechnicalDashboard = () => {
           <Typography variant="h5" gutterBottom>
             Fuel Type Count
           </Typography>
-          <Typography variant="h6">{counts.fuelTypeCount}</Typography>
+          {/* <Typography variant="h6">{counts.fuelTypeCount}</Typography> */}
         </Box>
       </Box>
     </Box>

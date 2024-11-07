@@ -29,27 +29,28 @@ export default function VehicleDetails() {
   const [modelView, setModelView] = useState(false);
   const [vehicle_No, setVehicle_No] = useState("");
   const [vehicle_type, setVehicle_type] = useState("");
-  const [vehicle_image, setVehicle_image] = useState("");
+  // const [vehicle_image, setVehicle_image] = useState("");
   const [vehicle_availability, setVehicle_availability] = useState("");
+  const [fuel_id, setFuel_id] = useState("");
   const [fuel_name, setFuel_name] = useState("");
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/vehicle/view")
+      .get(`http://localhost:8080/vehicle/view`)
       .then((res) => setTableData(res.data.content))
       .catch((err) => alert(err.message));
   }, [deleteVehicle]);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setVehicle_image(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setVehicle_image(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
   const handleDeleteBtn = async (vehicle_No) => {
     await axios
       .delete(`http://localhost:8080/vehicle/delete/${vehicle_No}`)
@@ -67,7 +68,7 @@ export default function VehicleDetails() {
         const data = res.data.content;
         setVehicle_No(data.vehicle_No);
         setVehicle_type(data.vehicle_type);
-        setVehicle_image(data.vehicle_image);
+        // setVehicle_image(data.vehicle_image);
         setVehicle_availability(data.vehicle_availability);
         setFuel_name(data.fuel_name);
         setModelView(true);
@@ -79,14 +80,14 @@ export default function VehicleDetails() {
     const updateData = {
       vehicle_No,
       vehicle_type,
-      vehicle_image,
+      // vehicle_image,
       vehicle_availability,
-      fuel_name,
+      fuel_id,
     };
 
     await axios
-      .put("http://localhost:8080/vehicle/update", updateData)
-      .then(() => (window.location.href = "/VehicleDetails"))
+      .put(`http://localhost:8080/vehicle/update`, updateData)
+      .then(() => (window.location.href = "/TechnicalDashboard"))
       .catch((err) => alert(err.message));
   };
 
@@ -94,7 +95,7 @@ export default function VehicleDetails() {
     <Box display="flex" flexDirection="column" p={3}>
       <Sidebar />
       <Box display="flex" alignItems="center" mb={3}>
-        <IconButton onClick={() => navigate("/Vehicle")}>
+        <IconButton onClick={() => navigate("/TechnicalDashboard")}>
           <ArrowBackIosNewIcon />
         </IconButton>
         <Typography variant="h4" fontWeight="bold">
@@ -122,34 +123,24 @@ export default function VehicleDetails() {
               />
             </Grid>
 
-            <Grid container spacing={3}>
-              {" "}
-              <Grid item xs={12} sm={6}>
-                {" "}
-                <TextField
-                  label="Vehicle Image"
-                  value={vehicle_image}
-                  onChange={(e) => setVehicle_image(e.target.value)}
-                  fullWidth
-                />{" "}
-              </Grid>{" "}
-              <Grid item xs={12} sm={6}>
-                {" "}
-                <Input
-                  type="file"
-                  onChange={handleImageChange}
-                  inputProps={{ accept: "image/png, image/jpeg" }}
-                  fullWidth
-                />{" "}
-                {vehicle_image && (
-                  <img
-                    src={vehicle_image}
-                    alt="Vehicle Image"
-                    style={{ width: "100%", marginTop: "10px" }}
-                  />
-                )}{" "}
-              </Grid>{" "}
-            </Grid>
+            {/* <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1" sx={{ color: "grey.700" }}>
+                Vehicle Image
+              </Typography>
+              <Input
+                type="file"
+                onChange={handleImageChange}
+                inputProps={{ accept: "image/png, image/jpeg" }}
+                fullWidth
+              />
+              {vehicle_image && (
+                <img
+                  src={vehicle_image}
+                  alt="Vehicle"
+                  style={{ width: "100%", marginTop: "10px" }}
+                />
+              )}
+            </Grid> */}
 
             <Grid item xs={12} sm={6}>
               <TextField
@@ -190,7 +181,7 @@ export default function VehicleDetails() {
                 <TableCell>No</TableCell>
                 <TableCell>Vehicle No</TableCell>
                 <TableCell>Vehicle Type</TableCell>
-                <TableCell>Vehicle Image</TableCell>
+                {/* <TableCell>Vehicle Image</TableCell> */}
                 <TableCell>Vehicle Availability</TableCell>
                 <TableCell>Fuel Name</TableCell>
                 <TableCell>Action</TableCell>
@@ -202,7 +193,7 @@ export default function VehicleDetails() {
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{data.vehicle_No}</TableCell>
                   <TableCell>{data.vehicle_type}</TableCell>
-                  <TableCell>{data.vehicle_image}</TableCell>
+                  {/* <TableCell>{data.vehicle_image}</TableCell> */}
                   <TableCell>{data.vehicle_availability}</TableCell>
                   <TableCell>{data.fuel_name}</TableCell>
                   <TableCell>
