@@ -34,6 +34,13 @@ const Sidebar = ({ user, onLogout }) => {
     }));
   };
 
+  const [inventory,setInventory]=useState(false);
+
+  const handleInventoryClick = () => {
+    setInventory(!inventory); // Toggle dropdown
+  };
+  
+
   const getSidebarItems = (role) => {
     switch (role) {
       case 'Admin':
@@ -59,7 +66,19 @@ const Sidebar = ({ user, onLogout }) => {
         ];
 
       case 'InventoryAssist':
-        return [{ text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryDashboard' }];
+        return [
+          { text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryAssistDashboard' },
+          {
+            text: 'Inventory',
+            icon: <Event/>,
+            dropdown: true, // Indicates this item has nested links
+            items: [
+              { text: 'Tea Stock', path: '/TeaStock' },
+              { text: 'Fertilizer Stock', path: '/FertilizerStock' },
+            ],
+          },
+
+        ];
       
       case 'SalesAssist':
         return [
@@ -101,7 +120,7 @@ const Sidebar = ({ user, onLogout }) => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             backgroundColor: '#4CAF50',
-            color: '#FFFFFF',
+            color: '#ffffff',
           },
         }}
         variant="permanent"

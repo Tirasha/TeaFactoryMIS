@@ -13,8 +13,7 @@ public class Inventory {
 
     @Id
     private String inventory_id;
-    private  String type;
-    private double available_stock;
-    private double price_per_kg;
-
+    private  String tea_type;
+    private  double available_stock;
+    private  double price_per_kg;
 }
