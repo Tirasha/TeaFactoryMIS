@@ -8,8 +8,8 @@ import InventoryAssistDashboard from './Dashboards/InventoryAssist/InventoryAssi
 import SalesAssistDashboard from './Dashboards/SalesAssist/SalesAssistDashboard';
 import TechnicalDashboard from './Dashboards/TechnicalAssist/TechnicalDashboard';
 import UserManage from './Dashboards/Admin/UserManage';
-import TeaStock from './Dashboards/InventoryAssist/TeaStock';
-import FertilizerStock from './Dashboards/InventoryAssist/FertilizerStock';
+import TeaStock from './Dashboards/InventoryAssist/Tea_Stock/TeaStock'
+import FertilizerStock from './Dashboards/InventoryAssist/Fertilizer_Stock/FertilizerStock';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

@@ -6,7 +6,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
-import Add_Edit_Forum from './Add_Edit_Forum';
+import Add_Inventotry from './Add_Inventotry';
+import Edit_Inventory from './Edit_Inventory';
+import Delete_History from'./Delete_History';
+
 
 const InventoryAssistDashboard = () => {
   const [rows, setRows] = useState([]);
@@ -16,6 +19,9 @@ const InventoryAssistDashboard = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false); 
   const [itemToDelete, setItemToDelete] = useState(null);
   const [editItem,setEditItem] = useState(null);
+  const [openEditForm,setOpenEditForm] =useState(false);
+  const [deleteHistoryData, setDeleteHistoryData] = useState([]); // New state for delete history data
+  const [openDeleteHistory, setOpenDeleteHistory] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:8080/inventory/all')
@@ -28,22 +34,39 @@ const InventoryAssistDashboard = () => {
       });
   }, []);
 
+  const fetchDeleteHistory = () => {
+    axios.get('http://localhost:8080/inventory/delete_history_tea')
+      .then(response => setDeleteHistoryData(response.data))
+      .catch(error => setError('There was an error fetching the delete history!'));
+  };
+
+
   const filteredRows = rows.filter(row =>
     row.tea_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
     row.inv_id.toString().includes(searchTerm) 
   );
 
   //open to add inventory forum
-  const handleOpenForm =(item = null)=>{
-    setEditItem(item);
+  const handleOpenForm = () => {
     setOpenForm(true);
-  }
+  };
 
   //close to add inventory forum
   const handleCloseForm =()=>{
-    setEditItem(null);
     setOpenForm(false);
   }
+
+  //edit inventory
+  const handleOpenEditForm = (item) => {
+    setEditItem(item);
+    setOpenEditForm(true);
+  };
+
+  //close edit inventory 
+  const handleCloseEditForm = () => {
+    setEditItem(null);
+    setOpenEditForm(false);
+  };
 
   const handleOpenDeleteDialog = (item) => {
     console.log('Delete icon clicked', item); // Debug log
@@ -59,10 +82,10 @@ const InventoryAssistDashboard = () => {
 
   const handleDeleteItem = () => {
     if (itemToDelete) {
-      axios.delete(`http://localhost:8080/inventory/delete/${itemToDelete.inv_id}`)
+      axios.delete(`http://localhost:8080/inventory/delete/${itemToDelete.inventory_id}`)
         .then(response => {
           // Remove the deleted item from the local state
-          setRows(rows.filter(row => row.inv_id !== itemToDelete.inv_id));
+          setRows(rows.filter(row => row.inventory_id !== itemToDelete.inventory_id));
           // Close the dialog
           handleCloseDeleteDialog();
         })
@@ -83,6 +106,15 @@ const InventoryAssistDashboard = () => {
       });
   };
 
+  const handleOpenDeleteHistory = () => {
+    fetchDeleteHistory();  // Fetch delete history when modal opens
+    setOpenDeleteHistory(true);
+  };
+
+  const handleCloseDeleteHistory = () =>
+     setOpenDeleteHistory(false);
+
+ 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh' }}>
       <Typography variant="h4" gutterBottom>
@@ -102,7 +134,7 @@ const InventoryAssistDashboard = () => {
           ),
         }}
       />
-       <Button variant="contained" sx={{ ml: 42, height: '50px',width:'150px',fontWeight:'bold',backgroundColor:'#77DD77' }} onClick={handleOpenForm}>Add Tea Stock  </Button>
+       <Button variant="contained" sx={{ ml: 42, height: '50px',width:'150px',fontWeight:'bold', backgroundColor:'#77DD77' }} onClick={handleOpenForm}>Add Tea Stock  </Button>
       </Typography>
       {error && <Typography color="error">{error}</Typography>}
       <TableContainer component={Paper}>
@@ -118,13 +150,13 @@ const InventoryAssistDashboard = () => {
           </TableHead>
           <TableBody>
             {filteredRows.map((row, index) => (
-              <TableRow key={row.inv_id || index}>
-                <TableCell>{row.inv_id}</TableCell>
+              <TableRow key={row.inventory_id || index}>
+                <TableCell>{row.inventory_id}</TableCell>
                 <TableCell>{row.tea_type}</TableCell>
-                <TableCell>{row.available_stock}</TableCell>
-                <TableCell>{row.price_per_kg}</TableCell>
+                <TableCell>{row.available_stock}kg</TableCell>
+                <TableCell>Rs:{row.price_per_kg}</TableCell>
                 <TableCell>
-                <Button variant="contained" sx={{ ml:1,fontWeight:'bold',backgroundColor:'#77DD77'}} onClick={() => handleOpenForm(row)}> 
+                <Button variant="contained" sx={{ ml:1,fontWeight:'bold',backgroundColor:'#77DD77'}} onClick={() => handleOpenEditForm(row)}> 
                 <EditIcon style={{color:"black"}}/></Button>
                    <Button variant="contained" sx={{ ml:1,fontWeight:'bold',backgroundColor:'#77DD77'}} onClick={() => handleOpenDeleteDialog(row)}> 
                      <DeleteIcon style={{color:"black"}}/></Button> 
@@ -134,7 +166,20 @@ const InventoryAssistDashboard = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Add_Edit_Forum openForm ={openForm} handleCloseForm ={handleCloseForm} onFormSubmit={handleRefreshData} editItem={editItem}/>
+      <Box marginTop={'40px'} >
+      <Button variant="contained" sx={{ ml:4,fontWeight:'bold',backgroundColor:'#77DD77'}}onClick={handleOpenDeleteHistory}>
+              Watch delete history
+            </Button>
+      </Box>
+            
+      <Add_Inventotry openForm ={openForm} handleCloseForm ={handleCloseForm} onFormSubmit={handleRefreshData}/>
+      <Edit_Inventory 
+          OpenEditForm={openEditForm} 
+          handleCloseEditForm={handleCloseEditForm} 
+          onFormSubmit={handleRefreshData} 
+          editItem={editItem}
+        />
+        
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
@@ -151,6 +196,11 @@ const InventoryAssistDashboard = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Delete_History 
+        open={openDeleteHistory} 
+        handleClose={handleCloseDeleteHistory} 
+        deleteHistoryData={deleteHistoryData} 
+      />
     </Box>
   );
 };

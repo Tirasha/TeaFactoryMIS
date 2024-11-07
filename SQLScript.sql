@@ -15,3 +15,60 @@ insert into users(user_id,password,username,emp_id)values
 ("u003", "12345", "Hiru","e003"),
 ("u004", "12345", "Tirasha","e004"),
 ("u005", "12345", "Tharu","e005");
+
+select * from inventories;
+
+
+-- get the total tock of available tea stock from tea inventory
+DELIMITER ;
+CALL Tea_Stock_Summary(@total_Tea_stock);
+SELECT @total_Tea_stock AS TotalTeaStock;
+drop procedure Tea_Stock_Summary;
+DELIMITER //
+
+-- view to get type and stock of tea
+CREATE VIEW Tea_Stock_Summary AS
+SELECT tea_type, available_stock
+FROM inventories;
+
+drop view Tea_Stock_Summary;
+select * from Tea_Stock_Summary;
+
+-- view to get the fertilizer name and quntity
+CREATE VIEW  Fertilizer_Summary AS
+	select name,quantity from fertilizer;
+    
+select * from Fertilizer_Summary;
+
+-- triger for delete tea
+
+delimiter //
+create trigger delete_history_tea
+after delete 
+on inventories for each row
+begin
+insert into delete_history_tea(inventory_id,tea_type,available_stock,price_per_kg,deleted_time) 
+values (old.inventory_id,old.tea_type,old.available_stock,old.price_per_kg, now());
+end //
+delimiter ;
+
+drop trigger delete_history_tea;
+delete from inventories where inventory_id='inv005';
+select * from delete_history_tea;
+
+-- delete trigger for fertilizer 
+
+delimiter //
+create trigger delete_history_fertilizer
+after delete 
+on fertilizer for each row
+begin
+insert into deleted_fertilizer_history(fer_id,name,quantity,deleted_time) 
+values (old.fer_id,old.name,old.quantity, now());
+end //
+delimiter ;
+
+drop trigger delete_history_fertilizer;
+delete from fertilizer where fer_id='fer002';
+select * from deleted_fertilizer_history;
+

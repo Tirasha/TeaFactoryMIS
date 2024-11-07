@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Inventories {
 
     @Id
-    private String inv_id;
+    private String inventory_id;
     private  String tea_type;
     private  double available_stock;
     private  double price_per_kg;

@@ -6,8 +6,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
-import Add_Edit_Fertilizer from './Add_Edit_Fertilizer';
-
+import Add_Fertilizer from './Add_Fertilizer';
+import Edit_Fertilizer from './Edit_Fertilizer';
+import Deleted_Fertilizer_History from './Deleted_Fertilizer_History';
 
 
 function FertilizerStock() {
@@ -18,7 +19,9 @@ function FertilizerStock() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false); 
   const [itemToDelete, setItemToDelete] = useState(null);
   const [editItem,setEditItem] = useState(null);
-
+  const [openEditForm,setOpenEditForm] =useState(false);
+  const [deleteHistoryData, setDeleteHistoryData] = useState([]); // New state for delete history data
+  const [openDeleteHistory, setOpenDeleteHistory] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:8080/fertilizer/all')
@@ -30,23 +33,39 @@ function FertilizerStock() {
         setError('There was an error fetching the data!');
       });
   }, []);
+
+  const fetchDeleteHistory = () => {
+    axios.get('http://localhost:8080/fertilizer/deleted_fertilizer_history')
+      .then(response => setDeleteHistoryData(response.data))
+      .catch(error => setError('There was an error fetching the delete history!'));
+  };
+
   const filteredRows = rows.filter(row =>
     row.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.fer_id.toString().includes(searchTerm) ||
-    row.type.toString().includes(searchTerm)
+    row.fer_id.toString().includes(searchTerm) 
   );
   
   //open forum
-  const handleOpenForm=(item =null)=>{
-    setEditItem(item);
+  const handleOpenForm=()=>{
     setOpenForm(true);
   }
 
   //close forum
   const handleCloseForm =()=>{
-    setEditItem(null);
     setOpenForm(false);
   }
+
+  const handleOpenEditForm = (item) => {
+    setEditItem(item);
+    setOpenEditForm(true);
+  };
+
+  //close edit inventory 
+  const handleCloseEditForm = () => {
+    setEditItem(null);
+    setOpenEditForm(false);
+  };
+
 
     // Open the delete confirmation dialog
     const handleOpenDeleteDialog = (item) => {
@@ -87,6 +106,14 @@ function FertilizerStock() {
         });
     };
   
+    const handleOpenDeleteHistory = () => {
+      fetchDeleteHistory();  // Fetch delete history when modal opens
+      setOpenDeleteHistory(true);
+    };
+  
+    const handleCloseDeleteHistory = () =>
+       setOpenDeleteHistory(false);
+
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh' }}>
@@ -116,7 +143,6 @@ function FertilizerStock() {
             <TableRow sx={{ backgroundColor: '#77DD77' }}>
               <TableCell>Fertilizer ID</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Fertilizer Type</TableCell>
               <TableCell>Available Quantity(kg)</TableCell>
               <TableCell> </TableCell>
             </TableRow>
@@ -126,10 +152,9 @@ function FertilizerStock() {
               <TableRow key={row.fer_id || index}>
                 <TableCell>{row.fer_id}</TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{row.quantity}</TableCell>
+                <TableCell>{row.quantity}kg</TableCell>
                 <TableCell >
-                <Button variant="contained" sx={{ ml:1,fontWeight:'bold',backgroundColor:'#77DD77'}} onClick={() => handleOpenForm(row)}> 
+                <Button variant="contained" sx={{ ml:1,fontWeight:'bold',backgroundColor:'#77DD77'}} onClick={() => handleOpenEditForm(row)}> 
                 <EditIcon style={{color:"black"}}/></Button>
                 <Button variant="contained" sx={{ ml:1,fontWeight:'bold',backgroundColor:'#77DD77'}} onClick={() => handleOpenDeleteDialog(row)}> 
                   <DeleteIcon style={{color:"black"}}/></Button> </TableCell>
@@ -138,7 +163,23 @@ function FertilizerStock() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Add_Edit_Fertilizer openForm={openForm} handleCloseForm={handleCloseForm} onFormSubmit={handleRefreshData} editItem ={editItem}/>
+      <Box marginTop={'40px'} >
+      <Button variant="contained" sx={{ ml:4,fontWeight:'bold',backgroundColor:'#77DD77'}}onClick={handleOpenDeleteHistory}>
+              Watch delete history
+            </Button>
+      </Box>
+
+      <Add_Fertilizer 
+          openForm={openForm} 
+          handleCloseForm={handleCloseForm} 
+          onFormSubmit={handleRefreshData}/>
+
+      <Edit_Fertilizer 
+           openEditForm={openEditForm} // Make sure this matches the prop name in Edit_Fertilizer
+           handleCloseEditForm={handleCloseEditForm}
+           onFormSubmit={handleRefreshData}
+          editItem={editItem}
+        />
 
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
         <DialogTitle>Confirm Deletion</DialogTitle>
@@ -156,6 +197,11 @@ function FertilizerStock() {
           </Button>
         </DialogActions>
       </Dialog>
+      <Deleted_Fertilizer_History 
+        open={openDeleteHistory} 
+        handleClose={handleCloseDeleteHistory} 
+        deleteHistoryData={deleteHistoryData} 
+      />
     </Box>
   );
 }

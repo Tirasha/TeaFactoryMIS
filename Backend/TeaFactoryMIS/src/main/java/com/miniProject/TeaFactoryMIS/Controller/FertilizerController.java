@@ -1,11 +1,14 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
 import com.miniProject.TeaFactoryMIS.Repository.FertilizerRepository;
+import com.miniProject.TeaFactoryMIS.Service.FertilizerService;
 import com.miniProject.TeaFactoryMIS.model.Fertilizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*",allowedHeaders = "*")
@@ -14,6 +17,21 @@ public class FertilizerController {
     @Autowired
     private FertilizerRepository fertilizeRepo;
 
+    @Autowired
+    private FertilizerService fertilizerService;
+
+    @GetMapping("/fertilizer/Fertilizer_stock_summary")
+    public ResponseEntity<List<Map<String, Object>>> getFertilizerStockSummary(){
+        List<Map<String,Object>> fertilizerSummary =fertilizerService.getFertilizerStockSummary();
+        return ResponseEntity.ok(fertilizerSummary);
+    }
+
+
+    @GetMapping("/fertilizer/deleted_fertilizer_history")
+    public ResponseEntity<List<Map<String, Object>>> getDeletedFertilizer(){
+        List<Map<String,Object>> Deletedfertilizer =fertilizerService.getDeletedFertilizer();
+        return ResponseEntity.ok(Deletedfertilizer);
+    }
     @PostMapping("/fertilizer/add")
     Fertilizer newFertilizer (@RequestBody Fertilizer newFertilizer)
     {
@@ -40,7 +58,6 @@ public class FertilizerController {
                 .map(fertilizer -> {
                     fertilizer.setName(newFertilizer.getName());
                     fertilizer.setQuantity(newFertilizer.getQuantity());
-                    fertilizer.setType(newFertilizer.getType());
                     return  fertilizeRepo.save(fertilizer);
                 }).orElseThrow(()-> new NullPointerException(fer_id));
     }
