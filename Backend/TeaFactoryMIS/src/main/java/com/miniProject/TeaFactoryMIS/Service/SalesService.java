@@ -6,11 +6,15 @@ import com.miniProject.TeaFactoryMIS.model.Inventory;
 import com.miniProject.TeaFactoryMIS.model.Sales;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+
 
 @Service
 public class SalesService {
@@ -20,6 +24,9 @@ public class SalesService {
 
     @Autowired
     private InventoryRepository inventoryRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Transactional
     public Sales addSale(Sales sale) {
@@ -45,5 +52,26 @@ public class SalesService {
         return salesRepository.findAll();
     }
 
+    public List<Map<String, Object>> getSalesData(){
+        String sql="SELECT * FROM ViewAllSales";
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    public Sales updateSales(String salesId,Sales UpdatedSale){
+        Sales existingSale=salesRepository.findById(salesId).orElseThrow(()->new RuntimeException("Sale not found"));
+
+         existingSale.setTea_Quantity(UpdatedSale.getTea_Quantity());
+         existingSale.setTeaType(UpdatedSale.getTeaType());
+         existingSale.setInventory(UpdatedSale.getInventory());
+
+
+         return salesRepository.save(existingSale);
+    }
+
+
+    public List<Map<String,Object>> getSalesHistory(){
+        String sql="SELECT * FROM deleted_sales";
+        return jdbcTemplate.queryForList(sql);
+    }
 
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardContent, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import WysiwygIcon from '@mui/icons-material/Wysiwyg';   //view 
 const ManageSales = () => {
     const [selectedAction, setSelectedAction] = useState(null);
     const [inventoryData, setInventoryData] = useState([]);
@@ -76,20 +77,22 @@ const ManageSales = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 sx={{ mb: 3 }}
+                size='small'
+            
             />
-            <TableContainer component={Paper} sx={{ mt: 2 }}>
-                <Table>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth:650}} size="small" >
                     <TableHead>
-                        <TableRow>
-                            <TableCell>Inventory ID</TableCell>
-                            <TableCell>Type</TableCell>
+                        <TableRow sx={{  backgroundColor:'#77DD77'}}>
+                            <TableCell >Inventory ID</TableCell>
+                            <TableCell >Type</TableCell>
                             <TableCell>Available Stock (kg)</TableCell>
                             <TableCell>Price per kg</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {filteredInventory.map((item) => (
-                            <TableRow key={item.inventory_id}>
+                            <TableRow key={item.inventory_id} >
                                 <TableCell>{item.inventory_id}</TableCell>
                                 <TableCell>{item.type}</TableCell>
                                 <TableCell>{item.available_stock}</TableCell>
@@ -106,12 +109,14 @@ const ManageSales = () => {
         switch (selectedAction) {
             case 'add':
                 return (
-                    <Box component="form" onSubmit={handleFormSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3, padding:3, backgroundColor:'#f0f0f0'}}>
+                    <Box component="form" onSubmit={handleFormSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3, padding:3, backgroundColor:'#f0f0f0', width:'500px' }}>
                         <TextField
                             label="Inventory ID"
                             name="inventory_id"
                             value={formData.inventory_id}
                             onChange={handleInputChange}
+                            size="small"
+
                         />
                         <TextField
                             label="Tea Quantity (kg)"
@@ -119,29 +124,34 @@ const ManageSales = () => {
                             type="number"
                             value={formData.tea_Quantity}
                             onChange={handleInputChange}
-                            size="small" 
-                fullWidth
-                sx={{ fontFamily: 'Calibri', fontSize: '16px', height: '48px' }}
+                            size="small"
+                            width="50%"
+                            
+                
+                      sx={{ fontFamily: 'Calibri',  height: '48px' }}
                         />
                         <TextField
                             label="Tea Type"
                             name="teaType"
                             value={formData.teaType}
                             onChange={handleInputChange}
+                            size="small"
+                            
                         />
                         <TextField
                             label="Sales ID"
                             name="salesId"
                             value={formData.salesId}
                             onChange={handleInputChange}
+                             size="small"
                         />
-                        <Button variant="contained" color="primary" type="submit">
+                        <Button  type="submit">
                             Add Sale
                         </Button>
                     </Box>
                 );
             case 'view':
-                return <Typography variant="body1">Here, you can view all sales records.</Typography>;
+                return <Typography variant="body1">view all sales </Typography>;
             case 'update':
                 return <Typography variant="body1">Here, you can update existing sales records.</Typography>;
             default:
@@ -151,7 +161,7 @@ const ManageSales = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh', fontFamily: 'Calibri' }}>
-            <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }}>Manage Sales</Typography>
+            {/* <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }}>Manage Sales</Typography> */}
             <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
                 <Card
                     sx={{
@@ -165,7 +175,8 @@ const ManageSales = () => {
                     onClick={() => setSelectedAction('add')}
                 >
                     <CardContent>
-                        <Typography variant="h6">Add Sales</Typography>
+                        <Typography variant="h6" ><NoteAddIcon/>
+                        Add Sales</Typography>
                     </CardContent>
                 </Card>
 
@@ -202,7 +213,7 @@ const ManageSales = () => {
                 </Card>
             </Box>
 
-            <Box sx={{ mt: 5, p: 4, backgroundColor: '#ffffff', borderRadius: 2, boxShadow: 2, backdropFilter: 'blur(8px)' }}>
+            <Box sx={{ mt: 5, p: 4, borderRadius: 2, boxShadow: 2, backdropFilter: 'blur(8px)' }}>
                 {selectedAction === 'add' && renderInventoryTable()}
                 {renderContent()}
             </Box>
