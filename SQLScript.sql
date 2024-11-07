@@ -18,6 +18,27 @@ insert into users(user_id,password,username,emp_id)values
 
 
 
+INSERT INTO inventory(inventory_id,available_stock,price_per_kg,type) VALUES
+('I001', 26, 300, 'Pekoe'),
+('I002', 95, 600, 'B.O.P'),
+('I003', 183, 100, 'B.O.P.F');
+
+INSERT INTO deleted_sales (history_id, deleted_at,inventory_id,sales_id,tea_type,tea_quantity) VALUES
+(1, '2024-11-07 11:05:06.000000', 'I002', 'S003', 'B.O.P', 5),
+(2, '2024-11-07 12:09:21.000000', 'I002', 'S006', 'B.O.P', 2),
+(3, '2024-11-07 19:13:35.000000', 'I003', 'S007', 'B.O.P.F', 3);
+
+INSERT INTO sales (sales_id, date,tea_type,tea_quantity,total_amount,inventory_id) VALUES
+('S001', '2024-10-06 05:30:00.000000', 'Pekoe', 10, 3000, 'I001'),
+('S002', '2024-11-10 09:08:35.653000', 'Pekoe', 17, 5100, 'I001'),
+('S003', '2024-09-10 11:05:50.143000', 'Pekoe', 4, 1200, 'I001'),
+('S004', '2024-08-07 11:06:14.710000', 'B.O.P', 7, 4200, 'I002'),
+('S005', '2024-07-19 11:07:28.832000', 'B.O.P.F', 5, 500, 'I003'),
+('S006', '2024-11-11 16:55:53.923000', 'B.O.P.F', 10, 1000, 'I003'),
+('S008', '2024-11-07 16:58:04.717000', 'B.O.P', 6, 3600, 'I002'),
+('S009', '2024-11-07 16:58:38.704000', 'Pekoe', 6, 1800, 'I001'),
+('S010', '2024-11-07 17:03:00.931000', 'B.O.P', 5, 3000, 'I002');
+
 create view ViewAllSales as 
 select s.sales_id as salesId,
 s.tea_type as teaType,
