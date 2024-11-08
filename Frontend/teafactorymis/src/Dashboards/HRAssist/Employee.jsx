@@ -95,23 +95,23 @@ export const Employee = () => {
           onChange={(e) => setEmpId(e.target.value)} // Handle input change for empId
           sx={{ width: '250px', mr: 1 }}
         />
-        <Button variant="contained" color="primary" onClick={handleFilterEmployee}>
+        <Button variant="contained"  onClick={handleFilterEmployee} sx={{backgroundColor:"#77DD77"}}>
           Search Employee
         </Button>
       </Box>
 
       <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-        <Button variant="contained" color="primary" onClick={handleAddEmployee}>
+        <Button variant="contained" sx={{backgroundColor:"#77DD77"}} onClick={handleAddEmployee}>
           Add Employee
         </Button>
-        <Button variant="contained" color="secondary" onClick={handleToggleLabourEmployees}>
+        <Button variant="contained" sx={{backgroundColor:"#77DD77"}} onClick={handleToggleLabourEmployees}>
           {showLabourEmployees ? 'Show Estate Employees' : 'Show Estate Employees'}
         </Button>
       </Box>
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="employee table">
-          <TableHead>
+          <TableHead sx={{backgroundColor:"#77DD77"}}>
             <TableRow>
               <TableCell>Employee ID</TableCell>
               <TableCell>First Name</TableCell>
@@ -138,10 +138,10 @@ export const Employee = () => {
                 <TableCell>{employee.category}</TableCell>
                 <TableCell>{employee.role}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleUpdateEmployee(employee)}>
+                  <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleUpdateEmployee(employee)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton color="secondary" onClick={() => handleDeleteEmployee(employee.empId)}>
+                  <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleDeleteEmployee(employee.empId)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

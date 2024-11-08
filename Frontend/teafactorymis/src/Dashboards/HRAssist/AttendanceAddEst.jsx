@@ -127,7 +127,7 @@ export default function AttendanceAddEst() {
           margin="normal"
           required
         />
-        <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+        <Button variant="contained" sx={{backgroundColor:"#77DD77"}}  type="submit">
           Add Attendance
         </Button>
       </form>

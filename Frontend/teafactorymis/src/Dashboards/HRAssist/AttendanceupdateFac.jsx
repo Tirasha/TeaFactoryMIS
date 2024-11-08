@@ -124,7 +124,7 @@ export default function AttendanceupdateFac() {
           required
         />
 
-        <Button variant="contained" color="primary" type="submit" fullWidth sx={{ mt: 2 }}>
+        <Button variant="contained" sx={{backgroundColor:"#77DD77"}} type="submit">
           Update Attendance
         </Button>
       </form>

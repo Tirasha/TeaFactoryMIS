@@ -101,7 +101,7 @@ export default function AttendanceupdateEs() {
           margin="normal"
           required
         />
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        <Button type="submit" variant="contained" sx={{backgroundColor:"#77DD77"}} >
           Update Attendance
         </Button>
       </form>

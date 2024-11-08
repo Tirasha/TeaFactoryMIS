@@ -80,18 +80,18 @@ const FactoryWorkersAttendance = () => {
           onChange={(e) => setAttId(e.target.value)} // Update attId state
           sx={{ width: '250px', mr: 1 }}
         />
-        <Button variant="contained" color="primary" onClick={handleFilterAttendance}>
+        <Button variant="contained" sx={{backgroundColor:"#77DD77"}} onClick={handleFilterAttendance}>
           Search Attendance
         </Button>
       </Box>
 
-      <Button variant="contained" color="primary" onClick={handleAddAttendance} sx={{ mb: 2 }}>
+      <Button variant="contained" sx={{backgroundColor:"#77DD77"}} onClick={handleAddAttendance} >
         Add Attendance
       </Button>
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="attendance table">
-          <TableHead>
+          <TableHead sx={{backgroundColor:"#77DD77"}}>
             <TableRow>
               <TableCell>Attendance ID</TableCell>
               <TableCell>Employee ID</TableCell>
