@@ -47,12 +47,12 @@ Create table fuel(
     fuel_quantity varchar(255) not null
 );
 
-Insert into vehicle (vehicle_No, vehicle_type, vehicle_image, vehicle_availability, fuel_id) Values 
-('VH001', 'Car', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/car.jpg'), 'Available', 'F001'),
-('VH002', 'Truck', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/truck.jpg'), 'Not Available', 'F002'),
-('VH003', 'Motorcycle', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/motorcycle.jpg'), 'Available', 'F001'),
-('VH004', 'Bus', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/bus.jpg'), 'Not Available', 'F003'),
-('VH005', 'Van', LOAD_FILE('D:/TeaFactory/TeaFactoryMIS/Images/van.jpg'), 'Available', 'F002');
+Insert into vehicle (vehicle_No, vehicle_type, vehicle_availability, fuel_id) Values 
+('VH001', 'Car',  'Available', 'F001'),
+('VH002', 'Truck',  'Not Available', 'F002'),
+('VH003', 'Motorcycle',  'Available', 'F001'),
+('VH004', 'Bus', 'Not Available', 'F003'),
+('VH005', 'Van',  'Available', 'F002');
 
 Insert into machine (machine_id, machine_type, machine_quantity, machine_availability, fuel_id) Values 
 ('MCH001', 'Withering Troughs', '5', 'Available', 'F001'),
@@ -75,7 +75,7 @@ DESC fuel;
 -- View
 -- drop view technical_dashboard_counts;
 CREATE VIEW All_vehicles AS
-SELECT vehicle.vehicle_No, vehicle.vehicle_type, vehicle.vehicle_image, vehicle.vehicle_availability, fuel.fuel_name
+SELECT vehicle.vehicle_No, vehicle.vehicle_type, vehicle.vehicle_availability, fuel.fuel_name
 FROM vehicle
 JOIN fuel ON vehicle.fuel_id = fuel.fuel_id;
 
@@ -103,8 +103,8 @@ CREATE TRIGGER insert_vehicle
 AFTER INSERT ON vehicle
 FOR EACH ROW
 BEGIN
-    INSERT INTO vehicle ( vehicle_No, vehicle_type, vehicle_image, vehicle_availability, fuel_id ) VALUES 
-    ( NEW.vehicle_No, NEW.vehicle_type, NEW.vehicle_image, NEW.vehicle_availability, NEW.fuel_id );
+    INSERT INTO vehicle ( vehicle_No, vehicle_type, vehicle_availability, fuel_id ) VALUES 
+    ( NEW.vehicle_No, NEW.vehicle_type, NEW.vehicle_availability, NEW.fuel_id );
 END;
 Delimiter ;
 
