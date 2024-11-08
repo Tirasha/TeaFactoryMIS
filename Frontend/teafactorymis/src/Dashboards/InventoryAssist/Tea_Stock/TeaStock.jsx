@@ -43,7 +43,7 @@ const InventoryAssistDashboard = () => {
 
   const filteredRows = rows.filter(row =>
     row.tea_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    row.inv_id.toString().includes(searchTerm) 
+    row.inventory_id.toString().includes(searchTerm) 
   );
 
   //open to add inventory forum
@@ -134,7 +134,7 @@ const InventoryAssistDashboard = () => {
           ),
         }}
       />
-       <Button variant="contained" sx={{ ml: 42, height: '50px',width:'150px',fontWeight:'bold', backgroundColor:'#77DD77' }} onClick={handleOpenForm}>Add Tea Stock  </Button>
+       <Button variant="contained" sx={{ ml: 32, height: '50px',width:'150px',fontWeight:'bold', backgroundColor:'#77DD77' }} onClick={handleOpenForm}>Add Tea Stock  </Button>
       </Typography>
       {error && <Typography color="error">{error}</Typography>}
       <TableContainer component={Paper}>

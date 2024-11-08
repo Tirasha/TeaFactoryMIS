@@ -134,7 +134,7 @@ function FertilizerStock() {
           ),
         }}
       />
-      <Button variant="contained" sx={{ ml: 35, height: '50px',width:'200px',fontWeight:'bold',backgroundColor:'#77DD77',alignItems:'spacebetween' }} onClick={handleOpenForm}>Add Fertilizer Stock  </Button>
+      <Button variant="contained" sx={{ ml: 32, height: '50px',width:'200px',fontWeight:'bold',backgroundColor:'#77DD77',alignItems:'spacebetween' }} onClick={handleOpenForm}>Add Fertilizer Stock  </Button>
       </Typography>
       {error && <Typography color="error">{error}</Typography>}
       <TableContainer component={Paper}>
