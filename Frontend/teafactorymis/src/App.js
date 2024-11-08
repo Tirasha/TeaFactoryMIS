@@ -9,6 +9,15 @@ import InventoryAssistDashboard from './Dashboards/InventoryAssist/InventoryAssi
 import SalesAssistDashboard from './Dashboards/SalesAssist/SalesAssistDashboard';
 import TechnicalDashboard from './Dashboards/TechnicalAssist/TechnicalDashboard';
 import UserManage from './Dashboards/Admin/UserManage';
+import { Employee } from './Dashboards/HRAssist/Employee';
+import EmpAdd from './Dashboards/HRAssist/EmpAdd';
+import EmpEdit from './Dashboards/HRAssist/EmpEdit';
+import Attendance from './Dashboards/HRAssist/Attendance';
+import FactoryWorkersAttendance from './Dashboards/HRAssist/FactoryWorkersAttendance'; // Importing FactoryWorkersAttendance
+import EstateWorkersAttendance from './Dashboards/HRAssist/EstateWorkersAttendance';
+import AttendanceAddEst from './Dashboards/HRAssist/AttendanceAddEst';
+import AttendanceupdateEs from './Dashboards/HRAssist/AttendanceupdateEs';
+import AttendanceupdateFac from './Dashboards/HRAssist/AttendanceupdateFac';
 import TeaStock from './Dashboards/InventoryAssist/Tea_Stock/TeaStock'
 import FertilizerStock from './Dashboards/InventoryAssist/Fertilizer_Stock/FertilizerStock';
 import ManageSales from './Dashboards/SalesAssist/ManageSales';
@@ -61,12 +70,29 @@ function App() {
                 <Route path="/AdminDashboard" element={<AdminDashboard user={user} />} />
                 <Route path="/UserManage" element={<UserManage user={user} />} />
                 <Route path="/HRDashboard" element={<HRAssistDashboard user={user} />} />
+                <Route path="/Employee" element={<Employee user={user} />} />
+                <Route path="/AddEmployee" element={<EmpAdd user={user} />} />
+                <Route path="/EditEmployee/:empId" element={<EmpEdit />} /> 
+                <Route path="/Attendance" element={<Attendance user={user} />} />
+                
+                {/* Attendance category routes */}
+                <Route path="/EstateWorkersAttendance" element={<EstateWorkersAttendance user={user} />} />
+                <Route path="/FactoryWorkersAttendance" element={<FactoryWorkersAttendance user={user} />} />
+                <Route path="/AddAttendance" element={<AttendanceAddEst user={user} />} />
+              
+
+                <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
                 <Route path="/ManageSales" element={<ManageSales user={user} />} />
                 <Route path="/AddSales" element={<AddSales user={user} />} />
                 <Route path="/ViewSales" element={<ViewSales user={user} />} />
                 <Route path="/UpdateSales" element={<UpdateSales user={user} />} />
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
+                <Route path="/AttendanceupdateEs/:attId" element={<AttendanceupdateEs />} />
+                <Route path="/Attendanceupdatefac/:attId" element={<AttendanceupdateFac />} />
+                
+
+              
 
               {/* inventory routes */}
                 <Route path="/InventoryAssistDashboard" element={<InventoryAssistDashboard user={user} />} />
