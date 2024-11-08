@@ -8,6 +8,14 @@ import HRAssistDashboard from './Dashboards/HRAssist/HRAssistDashboard';
 import InventoryAssistDashboard from './Dashboards/InventoryAssist/InventoryAssistDashboard';
 import SalesAssistDashboard from './Dashboards/SalesAssist/SalesAssistDashboard';
 import TechnicalDashboard from './Dashboards/TechnicalAssist/TechnicalDashboard';
+import VehicleAdd  from './Dashboards/TechnicalAssist/Vehicle/VehicleAdd';
+import VehicleDetails  from './Dashboards/TechnicalAssist/Vehicle/VehicleDetails';
+
+import MachineAdd  from './Dashboards/TechnicalAssist/Machine/MachineAdd';
+import MachineDetails  from './Dashboards/TechnicalAssist/Machine/MachineDetails';
+
+import FuelAdd  from './Dashboards/TechnicalAssist/Fuel/FuelAdd';
+import FuelDetails  from './Dashboards/TechnicalAssist/Fuel/FuelDetails';
 import UserManage from './Dashboards/Admin/UserManage';
 import { Employee } from './Dashboards/HRAssist/Employee';
 import EmpAdd from './Dashboards/HRAssist/EmpAdd';
@@ -88,6 +96,17 @@ function App() {
                 <Route path="/ViewSales" element={<ViewSales user={user} />} />
                 <Route path="/UpdateSales" element={<UpdateSales user={user} />} />
                 <Route path="/TechnicalDashboard" element={<TechnicalDashboard user={user} />} />
+                
+                <Route path="/VehicleAdd" element={<VehicleAdd user={user} />} />
+                <Route path="/VehicleDetails" element={<VehicleDetails user={user} />} />
+
+                <Route path="/MachineAdd" element={<MachineAdd user={user} />} />
+                <Route path="/MachineDetails" element={<MachineDetails user={user} />} />
+
+                <Route path="/FuelAdd" element={<FuelAdd user={user} />} />
+                <Route path="/FuelDetails" element={<FuelDetails user={user} />} />
+              
+            
                 <Route path="/AttendanceupdateEs/:attId" element={<AttendanceupdateEs />} />
                 <Route path="/Attendanceupdatefac/:attId" element={<AttendanceupdateFac />} />
                 
