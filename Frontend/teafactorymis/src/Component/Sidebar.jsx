@@ -13,6 +13,14 @@ import {
 } from '@mui/material';
 import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore, MonetizationOn } from '@mui/icons-material'; // Added Expand icons
 import { useLocation, Link, useNavigate } from 'react-router-dom';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import TableViewIcon from '@mui/icons-material/TableView';
+import UpdateIcon from '@mui/icons-material/Update';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import Commute from '@mui/icons-material/Commute';
+import Factory from '@mui/icons-material/Factory';
+import LocalGasStation from '@mui/icons-material/LocalGasStation';
+import logo from '../Images/logo.png';
 
 const drawerWidth = 240;
 
@@ -23,20 +31,18 @@ const Sidebar = ({ user, onLogout }) => {
   
   // State to control the dropdown for attendance
   const [openAttendance, setOpenAttendance] = useState(false);
-  const [openSalary, setOpenSalary] = useState(false);
-  const [openEpfEtf, setOpenEpfEtf]= useState(false);
+  const [openMenus, setOpenMenus] = useState({});
 
   const handleAttendanceClick = () => {
     setOpenAttendance(!openAttendance); // Toggle dropdown
   };
 
-  const handleSalaryClick =() =>{
-    setOpenSalary(!openSalary);
-  }
-
-  const handleEpfEtfClick = () =>{
-    setOpenEpfEtf(!openEpfEtf);
-  };
+  const handleMenuClick = (menu) => {
+    setOpenMenus((prevState) => ({
+      ...prevState,
+      [menu]: !prevState[menu],
+    }));
+  };
 
 
   const getSidebarItems = (role) => {
@@ -62,29 +68,91 @@ const Sidebar = ({ user, onLogout }) => {
               { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' },
               { text: 'Factory Workers Attendance', path: '/FactoryWorkersAttendance' },
             ],
-          },
-          {text : 'Employee Payments',
-            icon: <MonetizationOn sx={{color:'#FFFFFF'}}/>,
-            dropdown:true,
-            onClick:handleSalaryClick,
-            open:openSalary,
-            items:[
-              {text: 'Basics', path: '/Basics'},
-              {text: 'EPF and ETF', path: '/EpfEtf'},
-              {text: 'View Salary', path: '/Salary'},
-            ],
           }
         ];
 
-      case 'InventoryAssist':
-        return [{ text: 'Inventory Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/InventoryDashboard' }];
+        case 'InventoryAssist':
+          return [
+            { text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryAssistDashboard' },
+            {
+              text: 'Inventory',
+              icon: <Event/>,
+              dropdown: true, // Indicates this item has nested links
+              items: [
+                { text: 'Tea Stock', path: '/TeaStock' },
+                { text: 'Fertilizer Stock', path: '/FertilizerStock' },
+              ],
+            },
+  
+          ];
+        case 'SalesAssist':
+          return [
+            { text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' },
+            {
+              text: 'Manage Sales',
+              icon: <ManageAccountsIcon />,
+              dropdown: true,
+              items: [
+                { text: 'Add Sales', icon: <NoteAddIcon />, path: '/AddSales' },
+                { text: 'View Sales', icon: <TableViewIcon />, path: '/ViewSales' },
+                { text: 'Update Sales', icon: <UpdateIcon />, path: '/UpdateSales' },
+              ],
+            },
+            
+          ];
       
-      case 'SalesAssist':
-        return [{ text: 'Sales Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/SalesDashboard' }];
-      
-      case 'TechnicalAssist':
-        return [{ text: 'Technical Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/TechnicalDashboard' }];
-      
+  case "TechnicalAssist":
+    return [
+      {
+        text: "Technical Dashboard",
+        icon: <Dashboard />,
+        path: "/TechnicalDashboard",
+      },
+      {
+        text: "Vehicle",
+        icon: <Commute />,
+        dropdown: true, // Indicates this item has nested links
+        items: [
+          {
+            text: "Add Vehicle",
+            path: "/VehicleAdd",
+          },
+          {
+            text: "View Vehicle Details",
+            path: "/VehicleDetails",
+          },
+        ],
+      },
+      {
+        text: "Machine",
+        icon: <Factory />,
+        dropdown: true, // Indicates this item has nested links
+            items: [
+              {
+                text: "Add Machine",
+                path: "/MachineAdd",
+              },
+              {
+                text: "View Machine Details",
+                path: "/MachineDetails",
+              },
+            ],
+          },
+          {
+            text: "Fuel",
+            icon: <LocalGasStation />,
+            dropdown: true, // Indicates this item has nested links
+            items: [
+              {
+                text: "Add Fuel Type",
+                path: "/FuelAdd",
+              },
+              {
+                text: "View Fuel Types",
+                path: "/FuelDetails",
+              },
+            ],
+          },]
       default:
         return [];
     }
@@ -113,15 +181,16 @@ const Sidebar = ({ user, onLogout }) => {
         anchor="left"
       >
         <Box sx={{ padding: 2, textAlign: 'center' }}>
+      
           <Avatar
-            src={user?.employee?.Image || '/default-profile.png'}
+            src={logo}
             alt={user?.user?.username || 'User'}
             sx={{ width: 80, height: 80, margin: '0 auto' }}
           />
           <Typography variant="h6" sx={{ mt: 1 }}>
             {user?.user?.username || 'Guest User'}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'gray' }}>
+          <Typography variant="body2" sx={{ color: 'black' }}>
             {userRole}
           </Typography>
         </Box>
@@ -135,16 +204,31 @@ const Sidebar = ({ user, onLogout }) => {
                 button
                 component={item.path ? Link : 'div'}
                 to={item.path}
-                onClick={item.dropdown ? item.onClick : null}
+                onClick={item.dropdown ? () => handleMenuClick(item.text) : null}
                 selected={location.pathname === item.path}
+                sx={{
+                  color: location.pathname === item.path ? '#1B5E20' : '#FFFFFF',
+                  backgroundColor: location.pathname === item.path ? '#A5D6A7' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: '#81C784',
+                    color: '#FFFFFF',
+                  },
+                  transition: 'background-color 0.3s, color 0.3s',
+                }}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemIcon
+                  sx={{
+                    color: location.pathname === item.path ? '#1B5E20' : '#FFFFFF',
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
                 <ListItemText primary={item.text} />
-                {item.dropdown ? (item.open ? <ExpandLess /> : <ExpandMore />) : null}
+                {item.dropdown ? (openMenus[item.text] ? <ExpandLess /> : <ExpandMore />) : null}
               </ListItem>
 
               {item.dropdown && (
-                <Collapse in={item.open} timeout="auto" unmountOnExit>
+                <Collapse in={openMenus[item.text]} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     {item.items.map((subItem, subIndex) => (
                       <ListItem
@@ -152,9 +236,21 @@ const Sidebar = ({ user, onLogout }) => {
                         button
                         component={Link}
                         to={subItem.path}
-                        sx={{ pl: 4 }}
+                        sx={{
+                          pl: 4,
+                          color: location.pathname === subItem.path ? '#1B5E20' : '#FFFFFF',
+                          backgroundColor: location.pathname === subItem.path ? '#A5D6A7' : 'transparent',
+                          '&:hover': {
+                            backgroundColor: '#81C784',
+                            color: '#FFFFFF',
+                          },
+                          transition: 'background-color 0.3s, color 0.3s',
+                        }}
                         selected={location.pathname === subItem.path}
                       >
+                        <ListItemIcon sx={{ color: location.pathname === subItem.path ? '#1B5E20' : '#FFFFFF' }}>
+                          {subItem.icon}
+                        </ListItemIcon>
                         <ListItemText primary={subItem.text} />
                       </ListItem>
                     ))}
@@ -164,12 +260,19 @@ const Sidebar = ({ user, onLogout }) => {
             </React.Fragment>
           ))}
 
-          
-
-          
-
-          <ListItem button onClick={handleLogout}>
-            <ListItemIcon><Logout sx={{color:'#FFFFFF'}}/></ListItemIcon>
+<ListItem
+            button
+            onClick={handleLogout}
+            sx={{
+              color: '#FFFFFF',
+              '&:hover': {
+                backgroundColor: '#388E3C',
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: '#FFFFFF' }}>
+              <Logout />
+            </ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>
         </List>
