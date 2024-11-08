@@ -11,9 +11,13 @@ import {
   Divider,
   Collapse,
 } from '@mui/material';
-import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore } from '@mui/icons-material'; // Added Expand icons
+import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore } from '@mui/icons-material';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import TableViewIcon from '@mui/icons-material/TableView';
+import UpdateIcon from '@mui/icons-material/Update';
+import logo from '../Images/logo.png';
 const drawerWidth = 240;
 
 const Sidebar = ({ user, onLogout }) => {
@@ -21,12 +25,21 @@ const Sidebar = ({ user, onLogout }) => {
   const navigate = useNavigate();
   const userRole = user?.employee?.role;
   
-  // State to control the dropdown for attendance
-  const [openAttendance, setOpenAttendance] = useState(false);
+  const [openMenus, setOpenMenus] = useState({});
 
-  const handleAttendanceClick = () => {
-    setOpenAttendance(!openAttendance); // Toggle dropdown
+  const handleMenuClick = (menu) => {
+    setOpenMenus((prevState) => ({
+      ...prevState,
+      [menu]: !prevState[menu],
+    }));
   };
+
+  const [inventory,setInventory]=useState(false);
+
+  const handleInventoryClick = () => {
+    setInventory(!inventory); // Toggle dropdown
+  };
+  
 
   const getSidebarItems = (role) => {
     switch (role) {
@@ -44,7 +57,7 @@ const Sidebar = ({ user, onLogout }) => {
           {
             text: 'Attendance',
             icon: <Event />,
-            dropdown: true, // Indicates this item has nested links
+            dropdown: true,
             items: [
               { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' },
               { text: 'Factory Workers Attendance', path: '/FactoryWorkersAttendance' },
@@ -53,10 +66,35 @@ const Sidebar = ({ user, onLogout }) => {
         ];
 
       case 'InventoryAssist':
-        return [{ text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryDashboard' }];
+        return [
+          { text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryAssistDashboard' },
+          {
+            text: 'Inventory',
+            icon: <Event/>,
+            dropdown: true, // Indicates this item has nested links
+            items: [
+              { text: 'Tea Stock', path: '/TeaStock' },
+              { text: 'Fertilizer Stock', path: '/FertilizerStock' },
+            ],
+          },
+
+        ];
       
       case 'SalesAssist':
-        return [{ text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' }];
+        return [
+          { text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' },
+          {
+            text: 'Manage Sales',
+            icon: <ManageAccountsIcon />,
+            dropdown: true,
+            items: [
+              { text: 'Add Sales', icon: <NoteAddIcon />, path: '/AddSales' },
+              { text: 'View Sales', icon: <TableViewIcon />, path: '/ViewSales' },
+              { text: 'Update Sales', icon: <UpdateIcon />, path: '/UpdateSales' },
+            ],
+          },
+          
+        ];
       
       case 'TechnicalAssist':
         return [{ text: 'Technical Dashboard', icon: <Dashboard />, path: '/TechnicalDashboard' }];
@@ -81,23 +119,24 @@ const Sidebar = ({ user, onLogout }) => {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            backgroundColor: '#E8F5E9',
-            color: '#1B5E20',
+            backgroundColor: '#4CAF50',
+            color: '#ffffff',
           },
         }}
         variant="permanent"
         anchor="left"
       >
         <Box sx={{ padding: 2, textAlign: 'center' }}>
+      
           <Avatar
-            src={user?.employee?.Image || '/default-profile.png'}
+            src={logo}
             alt={user?.user?.username || 'User'}
             sx={{ width: 80, height: 80, margin: '0 auto' }}
           />
           <Typography variant="h6" sx={{ mt: 1 }}>
             {user?.user?.username || 'Guest User'}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'gray' }}>
+          <Typography variant="body2" sx={{ color: 'black' }}>
             {userRole}
           </Typography>
         </Box>
@@ -111,16 +150,31 @@ const Sidebar = ({ user, onLogout }) => {
                 button
                 component={item.path ? Link : 'div'}
                 to={item.path}
-                onClick={item.dropdown ? handleAttendanceClick : null}
+                onClick={item.dropdown ? () => handleMenuClick(item.text) : null}
                 selected={location.pathname === item.path}
+                sx={{
+                  color: location.pathname === item.path ? '#1B5E20' : '#FFFFFF',
+                  backgroundColor: location.pathname === item.path ? '#A5D6A7' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: '#81C784',
+                    color: '#FFFFFF',
+                  },
+                  transition: 'background-color 0.3s, color 0.3s',
+                }}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemIcon
+                  sx={{
+                    color: location.pathname === item.path ? '#1B5E20' : '#FFFFFF',
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
                 <ListItemText primary={item.text} />
-                {item.dropdown ? (openAttendance ? <ExpandLess /> : <ExpandMore />) : null}
+                {item.dropdown ? (openMenus[item.text] ? <ExpandLess /> : <ExpandMore />) : null}
               </ListItem>
 
               {item.dropdown && (
-                <Collapse in={openAttendance} timeout="auto" unmountOnExit>
+                <Collapse in={openMenus[item.text]} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     {item.items.map((subItem, subIndex) => (
                       <ListItem
@@ -128,9 +182,21 @@ const Sidebar = ({ user, onLogout }) => {
                         button
                         component={Link}
                         to={subItem.path}
-                        sx={{ pl: 4 }}
+                        sx={{
+                          pl: 4,
+                          color: location.pathname === subItem.path ? '#1B5E20' : '#FFFFFF',
+                          backgroundColor: location.pathname === subItem.path ? '#A5D6A7' : 'transparent',
+                          '&:hover': {
+                            backgroundColor: '#81C784',
+                            color: '#FFFFFF',
+                          },
+                          transition: 'background-color 0.3s, color 0.3s',
+                        }}
                         selected={location.pathname === subItem.path}
                       >
+                        <ListItemIcon sx={{ color: location.pathname === subItem.path ? '#1B5E20' : '#FFFFFF' }}>
+                          {subItem.icon}
+                        </ListItemIcon>
                         <ListItemText primary={subItem.text} />
                       </ListItem>
                     ))}
@@ -140,8 +206,19 @@ const Sidebar = ({ user, onLogout }) => {
             </React.Fragment>
           ))}
 
-          <ListItem button onClick={handleLogout}>
-            <ListItemIcon><Logout /></ListItemIcon>
+<ListItem
+            button
+            onClick={handleLogout}
+            sx={{
+              color: '#FFFFFF',
+              '&:hover': {
+                backgroundColor: '#388E3C',
+              },
+            }}
+          >
+            <ListItemIcon sx={{ color: '#FFFFFF' }}>
+              <Logout />
+            </ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>
         </List>

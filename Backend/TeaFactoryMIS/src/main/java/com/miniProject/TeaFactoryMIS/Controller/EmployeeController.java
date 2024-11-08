@@ -2,6 +2,7 @@ package com.miniProject.TeaFactoryMIS.Controller;
 
 import com.miniProject.TeaFactoryMIS.Repository.EmployeeRepository;
 import com.miniProject.TeaFactoryMIS.model.Employee;
+import com.miniProject.TeaFactoryMIS.Repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/employees")
+@CrossOrigin(origins = "*")
 public class EmployeeController {
 
     @Autowired
