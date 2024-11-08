@@ -123,7 +123,7 @@ export default function FuelDetails() {
             <Button
               variant="contained"
               onClick={handleUpdateBtn}
-              sx={{ mr: 2 }}
+              sx={{backgroundColor:"#77DD77"}}
             >
               Update
             </Button>

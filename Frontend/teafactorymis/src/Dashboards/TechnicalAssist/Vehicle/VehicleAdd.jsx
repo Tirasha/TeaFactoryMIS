@@ -159,7 +159,7 @@ export default function VehicleAdd() {
             <Button variant="outlined" color="warning" onClick={handleClearBtn}>
               Clear
             </Button>
-            <Button variant="contained" color="primary" onClick={handleAddBtn}>
+            <Button variant="contained" sx={{backgroundColor:"#77DD77"}} onClick={handleAddBtn}>
               Register
             </Button>
           </Box>
