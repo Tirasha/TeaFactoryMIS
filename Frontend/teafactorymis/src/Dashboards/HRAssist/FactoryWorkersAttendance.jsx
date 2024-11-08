@@ -111,10 +111,10 @@ const FactoryWorkersAttendance = () => {
                 <TableCell>{new Date(attendance.check_in).toLocaleString()}</TableCell>
                 <TableCell>{new Date(attendance.check_out).toLocaleString()}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleUpdateAttendance(attendance)}>
+                  <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleUpdateAttendance(attendance)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton color="secondary" onClick={() => handleDeleteAttendance(attendance.attId)}>
+                  <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleDeleteAttendance(attendance.attId)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

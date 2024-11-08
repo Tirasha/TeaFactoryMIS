@@ -13,7 +13,7 @@ import {
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import axios from "axios";
 
-export default function FuelAdd() {
+export default function FuelAdd() { 
   const [fuel_id, setFuel_id] = useState("");
   const [fuel_name, setFuel_name] = useState("");
   const [fuel_type, setFuel_type] = useState("");

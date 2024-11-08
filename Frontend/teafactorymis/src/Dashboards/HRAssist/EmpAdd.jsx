@@ -142,7 +142,7 @@ export default function EmpAdd() {
           fullWidth
           margin="normal"
         />
-        <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+        <Button variant="contained" color="primary" type="submit" sx={{ mt: 2,backgroundColor:"#77DD77" }}>
           Add Employee
         </Button>
       </form>

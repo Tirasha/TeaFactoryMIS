@@ -53,12 +53,12 @@ export default function EstateWorkersAttendance() {
     navigate(`/AttendanceupdateEs/${attendance.attId}`);
   };
 
-  const handleDeleteAttendance = (id) => {
+  const handleDeleteAttendance = (attId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
     if (confirmDelete) {
-      axios.delete(`/api/attendance/delete/${id}`)
+       axios.delete(`/api/attendance/delete/${attId}`)
         .then(response => {
-          setAttendanceData(attendanceData.filter(attendance => attendance.attId !== id));
+          setAttendanceData(attendanceData.filter(attendance => attendance.attId !== attId));
           alert('Attendance record deleted successfully!');
         })
         .catch(error => {
@@ -99,12 +99,12 @@ export default function EstateWorkersAttendance() {
           onChange={(e) => setMonth(e.target.value)}
           sx={{ width: '200px', mr: 1 }}
         />
-        <Button variant="contained" color="primary" onClick={handleFilterAttendance}>
+        <Button variant="contained" sx={{backgroundColor:"#77DD77"}} onClick={handleFilterAttendance}>
           Filter Attendance
         </Button>
       </Box>
 
-      <Button variant="contained" color="primary" onClick={handleAddAttendance} sx={{ mb: 2 }}>
+      <Button variant="contained"  onClick={handleAddAttendance} sx={{ mb: 2, backgroundColor:"#77DD77"}}>
         Add Attendance
       </Button>
 
@@ -129,10 +129,10 @@ export default function EstateWorkersAttendance() {
                 <TableCell>{attendance.leave_Reason}</TableCell>
                 <TableCell>{attendance.employee.empId}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleUpdateAttendance(attendance)}>
+                  <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleUpdateAttendance(attendance)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton color="secondary" onClick={() => handleDeleteAttendance(attendance.attId)}>
+                  <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleDeleteAttendance(attendance.attId)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

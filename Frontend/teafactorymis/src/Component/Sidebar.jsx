@@ -65,8 +65,8 @@ const Sidebar = ({ user, onLogout }) => {
             onClick: handleAttendanceClick,
             open:openAttendance,
             items: [
-              { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' },
-              { text: 'Factory Workers Attendance', path: '/FactoryWorkersAttendance' },
+              { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' }
+              
             ],
           }
         ];

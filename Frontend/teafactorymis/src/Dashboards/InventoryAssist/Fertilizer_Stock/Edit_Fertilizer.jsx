@@ -46,7 +46,7 @@ function Edit_Fertilizer({ openEditForm, handleCloseEditForm, onFormSubmit, edit
     >
       <Box sx={{ width: 400, bgcolor: 'background.paper', p: 4, borderRadius: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="h6" mb={1}>Edit Tea Stock  </Typography> 
+        <Typography variant="h6" mb={1}>Edit Fertilizer Stock  </Typography> 
             <CloseIcon  sx={{cursor: 'pointer', color: 'grey', '&:hover': { color: 'black' } }}
             onClick={handleCloseEditForm}/>
         </Box>

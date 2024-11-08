@@ -17,7 +17,7 @@ const NavBar = (user,onLogout) => {
        
     
     <Typography variant="h5" component="div" sx={{ flexGrow: 3, fontWeight: 'bold' }}>
-        Tea Management System
+        Tea Factory Management System
         </Typography>
         <Box sx={{ display: 'flex', gap: 3 }}>
         
