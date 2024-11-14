@@ -32,6 +32,8 @@ import ManageSales from './Dashboards/SalesAssist/ManageSales';
 import AddSales from './Dashboards/SalesAssist/AddSales';
 import ViewSales from './Dashboards/SalesAssist/ViewSales';
 import UpdateSales from './Dashboards/SalesAssist/UpdateSales';
+import { Basics } from './Dashboards/HRAssist/Basics';
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -82,6 +84,7 @@ function App() {
                 <Route path="/AddEmployee" element={<EmpAdd user={user} />} />
                 <Route path="/EditEmployee/:empId" element={<EmpEdit />} /> 
                 <Route path="/Attendance" element={<Attendance user={user} />} />
+                <Route path="/basics" element={<Basics user={user}/>}/>
                 
                 {/* Attendance category routes */}
                 <Route path="/EstateWorkersAttendance" element={<EstateWorkersAttendance user={user} />} />
