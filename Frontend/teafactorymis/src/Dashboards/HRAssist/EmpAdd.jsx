@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export default function EmpAdd() {
+  const navigate = useNavigate(); // Initialize useNavigate
   const [formData, setFormData] = useState({
     empId: '',
     firstname: '',
@@ -34,13 +36,23 @@ export default function EmpAdd() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then((error) => { throw new Error(error); });
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log('Employee added:', data);
-        // Optionally reset form or redirect
+        alert('Employee added successfully!');
+        navigate('/Employee');
       })
-      .catch((error) => console.error('Error creating employee:', error));
-  };
+      .catch((error) => {
+        console.error('Error creating employee:', error);
+        alert(error.message); // Display error message
+      });
+};
+
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, maxWidth: 500, margin: '0 auto' }}>
@@ -130,7 +142,7 @@ export default function EmpAdd() {
           fullWidth
           margin="normal"
         />
-        <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+        <Button variant="contained" color="primary" type="submit" sx={{ mt: 2,backgroundColor:"#77DD77" }}>
           Add Employee
         </Button>
       </form>

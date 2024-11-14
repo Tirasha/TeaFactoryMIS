@@ -1,64 +1,75 @@
 package com.miniProject.TeaFactoryMIS.Controller;
 
-import com.miniProject.TeaFactoryMIS.Exception.FertilizerNotFoundException;
 import com.miniProject.TeaFactoryMIS.Repository.FertilizerRepository;
+import com.miniProject.TeaFactoryMIS.Service.FertilizerService;
 import com.miniProject.TeaFactoryMIS.model.Fertilizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class FertilizerController {
-    @Autowired
-    private FertilizerRepository fertilizerRepo;
 
-    @PostMapping("/fertilizerAdd")
+    @Autowired
+    private FertilizerRepository fertilizeRepo;
+
+    @Autowired
+    private FertilizerService fertilizerService;
+
+    @GetMapping("/fertilizer/Fertilizer_stock_summary")
+    public ResponseEntity<List<Map<String, Object>>> getFertilizerStockSummary(){
+        List<Map<String,Object>> fertilizerSummary =fertilizerService.getFertilizerStockSummary();
+        return ResponseEntity.ok(fertilizerSummary);
+    }
+
+
+    @GetMapping("/fertilizer/deleted_fertilizer_history")
+    public ResponseEntity<List<Map<String, Object>>> getDeletedFertilizer(){
+        List<Map<String,Object>> Deletedfertilizer =fertilizerService.getDeletedFertilizer();
+        return ResponseEntity.ok(Deletedfertilizer);
+    }
+    @PostMapping("/fertilizer/add")
     Fertilizer newFertilizer (@RequestBody Fertilizer newFertilizer)
     {
-        return fertilizerRepo.save(newFertilizer);
+        return fertilizeRepo.save(newFertilizer);
     }
 
-    @GetMapping("/fertilizerGet")
+    @GetMapping("/fertilizer/all")
     List<Fertilizer> getAllFertilizer()
     {
-        return fertilizerRepo.findAll();
+        return fertilizeRepo.findAll();
     }
 
-    @GetMapping("/fertilizerGetById/{Fer_ID}")
-    Fertilizer getFertilizerById(@PathVariable String Fer_ID)
+    @GetMapping("/fertilizer/get/{fer_id}")
+    Fertilizer getFertilizerById(@PathVariable String fer_id)
     {
-        return fertilizerRepo.findById(Fer_ID)
-                .orElseThrow(()-> new FertilizerNotFoundException(Fer_ID));
+        return fertilizeRepo.findById(fer_id)
+                .orElseThrow(()-> new NullPointerException(fer_id));
     }
 
-
-    @PutMapping("/fertilizerEdit/{Fer_ID}")
-    Fertilizer updateFertilizer(@RequestBody Fertilizer newFertilizer,@PathVariable String Fer_ID)
+    @PutMapping("/fertilizer/edit/{fer_id}")
+    Fertilizer updateFertilizer(@RequestBody Fertilizer newFertilizer,@PathVariable String fer_id)
     {
-        return fertilizerRepo.findById(Fer_ID)
+        return fertilizeRepo.findById(fer_id)
                 .map(fertilizer -> {
                     fertilizer.setName(newFertilizer.getName());
                     fertilizer.setQuantity(newFertilizer.getQuantity());
-                    fertilizer.setType(newFertilizer.getType());
-                    return  fertilizerRepo.save(fertilizer);
-                }).orElseThrow(()-> new FertilizerNotFoundException(Fer_ID));
+                    return  fertilizeRepo.save(fertilizer);
+                }).orElseThrow(()-> new NullPointerException(fer_id));
     }
 
-    @DeleteMapping("/fertilizerDelete/{Fer_ID}")
-    String deleteFertilizer(@PathVariable String Fer_ID)
+    @DeleteMapping("/fertilizer/delete/{fer_id}")
+    String deleteFertilizer(@PathVariable String fer_id)
     {
-        if (!fertilizerRepo.existsById(Fer_ID))
+        if (!fertilizeRepo.existsById(fer_id))
         {
-            throw  new FertilizerNotFoundException(Fer_ID);
+            throw  new NullPointerException(fer_id);
         }
-        fertilizerRepo.deleteById(Fer_ID);
-        return "Fertilizer with id :" +Fer_ID+ "has been deleted success.";
+        fertilizeRepo.deleteById(fer_id);
+        return "Fertilizer with id :" +fer_id+ "has been deleted success.";
     }
-
-
-
-
-
-
 }
