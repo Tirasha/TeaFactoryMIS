@@ -11,7 +11,7 @@ export const Salary = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const loadSalary =async()=>{
-    const result=await axios.get("http://localhost:8080/salaryGetAll");
+    const result=await axios.get("http://localhost:8080/salaryGet");
     setSalary(result.data);
   }
 

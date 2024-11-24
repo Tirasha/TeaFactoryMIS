@@ -33,6 +33,7 @@ import AddSales from './Dashboards/SalesAssist/AddSales';
 import ViewSales from './Dashboards/SalesAssist/ViewSales';
 import UpdateSales from './Dashboards/SalesAssist/UpdateSales';
 import { Basics } from './Dashboards/HRAssist/Basics';
+import { Salary } from './Dashboards/HRAssist/Salary';
 
 
 function App() {
@@ -85,6 +86,7 @@ function App() {
                 <Route path="/EditEmployee/:empId" element={<EmpEdit />} /> 
                 <Route path="/Attendance" element={<Attendance user={user} />} />
                 <Route path="/basics" element={<Basics user={user}/>}/>
+                <Route path="/salary" element={<Salary user={user}/>}/>
                 
                 {/* Attendance category routes */}
                 <Route path="/EstateWorkersAttendance" element={<EstateWorkersAttendance user={user} />} />

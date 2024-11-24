@@ -10,10 +10,5 @@ import java.util.Date;
 import java.util.List;
 
 public interface SalaryRepository extends JpaRepository<Salary,String> {
-    @Query(value = "CALL CalculateWorkingDays(:empId)", nativeQuery = true)
-    Integer getWorkingDays(@Param("empId") String empId);
-
-    @Query(value = "CALL GetWorkingDaysInRange(:startDate, :endDate)", nativeQuery = true)
-    List<Object[]> getEstateWorkersSalary(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 }

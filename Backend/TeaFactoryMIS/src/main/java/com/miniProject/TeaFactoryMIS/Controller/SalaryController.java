@@ -44,15 +44,15 @@ public class SalaryController {
         return "Salary detail with ID "+salaryId+"has been deleted Succesfully";
     }
 
-    @GetMapping("/calculateSalaries")
-    public ResponseEntity<String> calculateAndSaveSalaries(
-            @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-
-        List<Object[]> salaryDetails = salaryService.getEstateWorkersSalary(startDate, endDate);
-        salaryService.saveCalculatedSalaries(salaryDetails);
-
-        return ResponseEntity.status(HttpStatus.OK).body("Salaries calculated and saved successfully");
-    }
+//    @GetMapping("/calculateSalaries")
+//    public ResponseEntity<String> calculateAndSaveSalaries(
+//            @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+//            @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+//
+//        List<Object[]> salaryDetails = salaryService.getEstateWorkersSalary(startDate, endDate);
+//        salaryService.saveCalculatedSalaries(salaryDetails);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body("Salaries calculated and saved successfully");
+//    }
 }
 

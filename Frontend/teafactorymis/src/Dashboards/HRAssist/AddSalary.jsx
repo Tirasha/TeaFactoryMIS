@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 
 export const AddSalary = () => {
   const [startDate, setStartDate] = useState('');
@@ -17,30 +17,34 @@ export const AddSalary = () => {
   // Fetch salary details based on date range
   const getSalaryDetails = async () => {
     try {
-        const response = await axios.get('http://localhost:8080/estateWorkersSalary', {
-            params: { startDate, endDate }
-        });
-        setSalaryData(response.data);
+      const response = await axios.get('http://localhost:8080/estateWorkersSalary', {
+        params: { startDate, endDate }
+      });
+      setSalaryData(response.data);  // assuming response.data is an array of salary details
     } catch (error) {
-        console.error('Error fetching salary data:', error.response ? error.response.data : error.message);
+      console.error('Error fetching salary data:', error.response ? error.response.data : error.message);
     }
-};
+  };
 
   // Submit salary data to the backend
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent form default submit behavior
-    if (salaryData) {
+    e.preventDefault();
+    if (salaryData && salaryData.length > 0) {
       try {
-        const response = await axios.post('http://localhost:8080/salaryAdd', {
-          empId: basicId,
-          role,
-          start_date: startDate,
-          end_date: endDate,
-          total_working_days: salaryData.totalWorkingDays, // Assuming totalWorkingDays comes from backend data
-          day_payment: dayPayment,
-          salary: salaryData.salary,  // Assuming salary comes from backend data
-          salary_paid_date: new Date()  // Set the current date for payment
-        });
+        await Promise.all(
+          salaryData.map(async (data) => {
+            await axios.post('http://localhost:8080/salaryAdd', {
+              empId: data[0],
+              role: data[1],
+              start_date: startDate,
+              end_date: endDate,
+              total_working_days: data[4],
+              day_payment: data[5],
+              salary: data[6],
+              salary_paid_date: new Date()
+            });
+          })
+        );
         alert('Salary details added successfully');
       } catch (error) {
         console.error('Error adding salary details:', error);
@@ -49,6 +53,11 @@ export const AddSalary = () => {
   };
 
   return (
+    <Modal
+      open={openForm}
+      onClose={handleCloseForm}
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
     <Box sx={{ width: 400, p: 3, backgroundColor: 'white', borderRadius: 2 }}>
       <Typography variant="h6" gutterBottom>
         Add New Salary Detail
@@ -133,5 +142,6 @@ export const AddSalary = () => {
         </Box>
       </form>
     </Box>
+    </Modal>
   );
 };
