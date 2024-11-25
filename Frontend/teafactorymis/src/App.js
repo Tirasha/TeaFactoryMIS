@@ -13,7 +13,8 @@ import ManageSales from './Dashboards/SalesAssist/ManageSales';
 import AddSales from './Dashboards/SalesAssist/AddSales';
 import ViewSales from './Dashboards/SalesAssist/ViewSales';
 import UpdateSales from './Dashboards/SalesAssist/UpdateSales';
-
+import UserForm from './Dashboards/Admin/UserForm';
+import ProfilePage from './Component/ProfilePage';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     JSON.parse(localStorage.getItem('isAuthenticated')) || false
@@ -47,6 +48,8 @@ function App() {
         <div style={{ flexGrow: 1 }}>
           {isAuthenticated && <NavBar user={user} onLogout={handleLogout} />}
           
+          
+        
           <Routes>
 
             {!isAuthenticated && <Route path="*" element={<Navigate to="/" replace />} />}
@@ -55,8 +58,11 @@ function App() {
             <Route path="/" element={<Login onLogin={handleLogin} />} />
             
             {isAuthenticated && (
+
               <>
+               <Route path="/ProfilePage" element={<ProfilePage user={user} />} />
                 <Route path="/AdminDashboard" element={<AdminDashboard user={user} />} />
+                <Route path="/UserForm" element={<UserForm user={user} />} />
                 <Route path="/UserManage" element={<UserManage user={user} />} />
                 <Route path="/HRDashboard" element={<HRAssistDashboard user={user} />} />
                 <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
@@ -75,7 +81,8 @@ function App() {
             )}
           </Routes>
         </div>
-      </div>
+        </div>
+
     </Router>
   );
 }

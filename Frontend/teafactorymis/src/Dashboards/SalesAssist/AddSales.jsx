@@ -122,18 +122,7 @@ import {
         return (
             <Box sx={{ display: 'flex', p: 5, backgroundColor: '#f5f5f5', minHeight: '100vh', fontFamily: 'Arial' }}>
                 <Box sx={{ flex: 3, pr: 2 }}>
-                    <Typography
-                        variant="h4"
-                        sx={{
-                            textAlign: 'center',
-                            mb: 3,
-                            color: '#4CAF50',
-                            fontFamily: 'Roboto, sans-serif',
-                            fontWeight: 'bold',
-                        }}
-                    >
-                        Add Sales
-                    </Typography>
+                  
     
                     {salesStatus && (
                         <Alert severity={salesStatus.type} sx={{ mb: 3 }}>

@@ -40,7 +40,7 @@ const Sidebar = ({ user, onLogout }) => {
         return [
           { text: 'Dashboard', icon: <Home />, path: '/AdminDashboard' },
           { text: 'Manage Users', icon: <Assignment />, path: '/UserManage' },
-          { text: 'Customers', icon: <People />, path: '/Customers' },
+          { text: 'UserForm', icon: <People />, path: '/UserForm' },
         ];
 
       case 'HRAssist':

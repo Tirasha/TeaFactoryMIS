@@ -129,9 +129,7 @@ const UpdateSales = () => {
   return (
     <Box sx={{ display: 'flex', p: 5, backgroundColor: '#f5f5f5', minHeight: '100vh', fontFamily: 'Arial' }}>
       <Box sx={{ flex: 2, pr: 2 }}>
-        <Typography variant="h4" sx={{ textAlign: 'center', mb: 3, color: '#4CAF50', fontFamily: 'Roboto, sans-serif', fontWeight: 'bold' }}>
-          Update Sales
-        </Typography>
+       
 
         {updateStatus && (
           <Alert severity={updateStatus.type} sx={{ mb: 3 }}>

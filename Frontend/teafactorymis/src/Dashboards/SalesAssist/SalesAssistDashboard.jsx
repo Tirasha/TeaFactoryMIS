@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Card, CardContent, Grid, CardHeader, IconButton, Modal } from '@mui/material';
-import { BarChart, LocalCafe, EventNote } from '@mui/icons-material';
+import { Box, Typography, Card, CardContent, Grid, CardHeader, IconButton, Modal, LinearProgress } from '@mui/material';
+import { BarChart, LocalCafe } from '@mui/icons-material';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -19,7 +19,6 @@ const SalesAssistDashboard = () => {
     weekSales: { 'Pekoe': 0, 'B.O.P': 0, 'B.O.P.F': 0 },
     monthSales: { 'Pekoe': 0, 'B.O.P': 0, 'B.O.P.F': 0 },
   });
-
   const [monthlySalesData, setMonthlySalesData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,28 +27,22 @@ const SalesAssistDashboard = () => {
       const response = await fetch('http://localhost:8080/Sales/getsales');
       if (response.ok) {
         const data = await response.json();
-        console.log("Sales Data from API:", data); // Log to inspect structure
-
         const currentDate = new Date();
         const weekAgo = new Date(currentDate);
         const monthAgo = new Date(currentDate);
-        
+
         weekAgo.setDate(currentDate.getDate() - 7);
         monthAgo.setMonth(currentDate.getMonth() - 1);
 
         const salesByTeaType = data.reduce(
           (acc, sale) => {
             const saleDate = new Date(sale.date);
-
-          
             if (saleDate >= weekAgo) {
               acc.weekSales[sale.teaType] = (acc.weekSales[sale.teaType] || 0) + sale.teaQuantity;
             }
-
             if (saleDate >= monthAgo) {
               acc.monthSales[sale.teaType] = (acc.monthSales[sale.teaType] || 0) + sale.teaQuantity;
             }
-
             return acc;
           },
           {
@@ -70,7 +63,6 @@ const SalesAssistDashboard = () => {
         const response = await fetch('http://localhost:8080/Sales/monthlySales');
         if (response.ok) {
           const data = await response.json();
-          console.log("Monthly Sales Data from API:", data); // Log to inspect structure
           setMonthlySalesData(data);
         }
       }
@@ -88,7 +80,7 @@ const SalesAssistDashboard = () => {
     const datasets = teaTypes.map((teaType) => ({
       label: teaType,
       backgroundColor: teaType === 'Pekoe' ? '#4caf50' : teaType === 'B.O.P' ? '#81c784' : '#388e3c',
-      data: months.map((month) => monthlySalesData[month]?.[teaType] || 0), 
+      data: months.map((month) => monthlySalesData[month]?.[teaType] || 0),
     }));
 
     return { labels: months, datasets };
@@ -100,9 +92,7 @@ const SalesAssistDashboard = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh' }}>
-      <Typography variant="h4" gutterBottom color="#4CAF50">
-        Sales Dashboard
-      </Typography>
+     
 
       <Grid container spacing={2}>
         {['Pekoe', 'B.O.P', 'B.O.P.F'].map((teaType) => (
@@ -124,26 +114,45 @@ const SalesAssistDashboard = () => {
             >
               <CardHeader
                 title={`${teaType} Sales`}
-                titleTypographyProps={{ variant: 'h7', color: 'white' }}
+                titleTypographyProps={{ variant: 'h6', color: 'white' }}
                 avatar={<LocalCafe sx={{ color: 'white' }} />}
               />
               <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                   <Typography variant="subtitle1" sx={{ color: '#ffeb3b' }}>
-                    Current Week Sales: <span style={{ fontWeight: 'bold' }}>{salesData.weekSales[teaType] || 0}</span>
+                   Current Week Sales: <span style={{ fontWeight: 'bold' }}>{salesData.weekSales[teaType] || 0}</span>
                   </Typography>
-                  <Typography variant="subtitle1" sx={{ color: '#ffeb3b' }}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={(salesData.weekSales[teaType] / 100) * 100}
+                    sx={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                      '& .MuiLinearProgress-bar': {
+                        backgroundColor: '#ffeb3b',
+                      },
+                    }}
+                  />
+                  <Typography variant="subtitle1" sx={{ color: '#ffeb3b', mt: 1 }}>
                     Current Month Sales: <span style={{ fontWeight: 'bold' }}>{salesData.monthSales[teaType] || 0}</span>
                   </Typography>
+                  <LinearProgress
+                    variant="determinate"
+                    value={(salesData.monthSales[teaType] / 100) * 100}
+                    sx={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                      '& .MuiLinearProgress-bar': {
+                        backgroundColor: '#ffeb3b',
+                      },
+                    }}
+                  />
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
                   <IconButton
                     sx={{ color: 'white', backgroundColor: '#388e3c', '&:hover': { backgroundColor: '#2e7d32' } }}
                     onClick={fetchMonthlySalesData}
                   >
                     <BarChart />
                   </IconButton>
-                 
                 </Box>
               </CardContent>
             </Card>
@@ -152,8 +161,19 @@ const SalesAssistDashboard = () => {
       </Grid>
 
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Box sx={{ width: 600, p: 4, backgroundColor: 'white', margin: '100px auto', borderRadius: '8px', boxShadow: 24 }}>
-          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>Monthly Sales Chart</Typography>
+        <Box
+          sx={{
+            width: 600,
+            p: 4,
+            backgroundColor: 'white',
+            margin: '100px auto',
+            borderRadius: '8px',
+            boxShadow: 24,
+          }}
+        >
+          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+            Monthly Sales Chart
+          </Typography>
           <Bar data={getChartData()} options={{ responsive: true, scales: { y: { beginAtZero: true } } }} />
         </Box>
       </Modal>
