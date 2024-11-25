@@ -1,4 +1,3 @@
-// NavBar component
 import React from 'react';
 import {
   AppBar,
@@ -8,18 +7,19 @@ import {
   Box,
   Menu,
   MenuItem,
-  Badge,
   Avatar,
   useMediaQuery,
+  useTheme
 } from '@mui/material';
-import { Home, Person, ShoppingCart, Notifications, Menu as MenuIcon } from '@mui/icons-material';
+import { Home, Person, Menu as MenuIcon, LightMode, DarkMode } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import logo from '../Images/logo.png';
 
-const NavBar = ({ user, onLogout }) => {
+const NavBar = ({ user, onLogout, isDarkMode, onToggleDarkMode }) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMobile = useMediaQuery('(max-width:600px)');
+  
+  const theme = useTheme();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,12 +36,11 @@ const NavBar = ({ user, onLogout }) => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#fff', boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)' }}>
+    <AppBar position="static" sx={{ backgroundColor: theme.palette.background.default, boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)' }}>
       <Toolbar sx={{ justifyContent: 'space-between', px: 2 }}>
         {/* Logo and Title */}
         <Box display="flex" alignItems="center" sx={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
-          
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', color: theme.palette.text.primary }}>
             Tea Management System
           </Typography>
         </Box>
@@ -50,13 +49,13 @@ const NavBar = ({ user, onLogout }) => {
         {!isMobile && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <IconButton
-              sx={{ color: '#333', '&:hover': { color: '#4CAF50' }, transition: 'color 0.3s ease' }}
+              sx={{ color: theme.palette.text.primary, '&:hover': { color: '#4CAF50' }, transition: 'color 0.3s ease' }}
               onClick={() => navigate('/SalesDashboard')}
             >
               <Home />
             </IconButton>
             <IconButton
-              sx={{ color: '#333', '&:hover': { color: '#4CAF50' }, transition: 'color 0.3s ease' }}
+              sx={{ color: theme.palette.text.primary, '&:hover': { color: '#4CAF50' }, transition: 'color 0.3s ease' }}
               onClick={() => navigate('/ProfilePage')}
             >
               <Person />
@@ -82,7 +81,7 @@ const NavBar = ({ user, onLogout }) => {
             <Typography
               variant="body1"
               sx={{
-                color: '#333',
+                color: theme.palette.text.primary,
                 fontWeight: '500',
                 cursor: 'pointer',
                 '&:hover': { color: '#4CAF50' },
@@ -107,8 +106,7 @@ const NavBar = ({ user, onLogout }) => {
             },
           }}
         >
-          <MenuItem onClick={() => { handleMenuClose(); navigate('/profile'); }}>Profile</MenuItem>
-          <MenuItem onClick={() => { handleMenuClose(); navigate('/settings'); }}>Settings</MenuItem>
+          <MenuItem onClick={() => { handleMenuClose(); navigate('/ProfilePage'); }}>Profile</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
 
@@ -118,6 +116,11 @@ const NavBar = ({ user, onLogout }) => {
             <MenuIcon />
           </IconButton>
         )}
+
+        {/* Dark Mode / Light Mode Toggle */}
+        <IconButton color="inherit" onClick={onToggleDarkMode}>
+          {isDarkMode ? <LightMode /> : <DarkMode />}
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
