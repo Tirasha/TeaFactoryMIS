@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 
-export const AddSalary = () => {
+export const AddSalary = ({openForm, handleCloseForm, onFormSubmit}) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [salaryData, setSalaryData] = useState(null);
   const [basicId, setBasicId] = useState('');
   const [role, setRole] = useState('');
   const [dayPayment, setDayPayment] = useState('');
+  const [salaryPayment,setSalaryPayment]=useState('');
 
   // Handle date input changes
   const handleStartDateChange = (e) => setStartDate(e.target.value);
@@ -120,6 +121,17 @@ export const AddSalary = () => {
           required
         />
 
+        {/* Role Input */}
+        <TextField
+          label="Role"
+          name="role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+        />
+
         {/* Day Payment Input */}
         <TextField
           label="Day Payment"
@@ -130,13 +142,23 @@ export const AddSalary = () => {
           margin="normal"
           required
         />
+        {/* Salary Payment*/}
+        <TextField
+          label="Salary Payment"
+          name="salary"
+          value={salaryPayment}
+          onChange={(e) => setSalaryPayment(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+        />
 
         {/* Action Buttons */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
           <Button variant="contained" style={{ backgroundColor: '#00AB66' }} type="submit">
             Add Salary
           </Button>
-          <Button variant="outlined" style={{ backgroundColor: 'red' }} onClick={() => alert('Cancel')}>
+          <Button variant="outlined" style={{ backgroundColor: 'red' }} onClick={handleCloseForm}>
             Cancel
           </Button>
         </Box>

@@ -4,11 +4,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { AddSalary } from './AddSalary';
 
 export const Salary = () => {
   let navigate=useNavigate();
   const [salary,setSalary]=useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [openAddForm, setOpenAddForm] = useState(false);
 
   const loadSalary =async()=>{
     const result=await axios.get("http://localhost:8080/salaryGet");
@@ -24,8 +26,12 @@ export const Salary = () => {
   };
 
   const handleAddNewBasic=()=>{
-    navigate('/addSalary');
+    setOpenAddForm(true);
   }
+
+  const handleCloseAddForm = () => {
+    setOpenAddForm(false);
+  };
 
   const filteredSalary = salary.filter(salary =>
     (salary.salary_id && salary.salary_id.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -93,13 +99,13 @@ export const Salary = () => {
           <TableBody>
           {filteredSalary.map((salary) => (
               <TableRow key={salary.salary_id}>
-                <TableCell>{salary.salary_id}</TableCell>
+                <TableCell>{salary.salaryId}</TableCell>
                 <TableCell>{salary.employee.empId}</TableCell>
                 <TableCell>{salary.role}</TableCell>
                 <TableCell>{salary.start_date}</TableCell>
                 <TableCell>{salary.end_date}</TableCell>
                 <TableCell>{salary.total_working_days}</TableCell>
-                <TableCell>{salary.dayPayment}</TableCell>
+                <TableCell>{salary.day_payment}</TableCell>
                 <TableCell>{salary.salary_paid_date}</TableCell>
                 <TableCell>{salary.salary}</TableCell>
                 <TableCell>
@@ -112,6 +118,7 @@ export const Salary = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <AddSalary openForm={openAddForm} handleCloseForm={handleCloseAddForm} onFormSubmit={loadSalary}/>
     </Box>
   )
 }
