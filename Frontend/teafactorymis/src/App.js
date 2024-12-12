@@ -88,8 +88,7 @@ function App() {
                 <Route path="/Attendance" element={<Attendance user={user} />} />
                 <Route path="/basics" element={<Basics user={user}/>}/>
                 <Route path="/salary" element={<Salary user={user}/>}/>
-                
-                
+                <Route path="/addSalary" element={<AddSalary user={user}/>}/>                
                 {/* Attendance category routes */}
                 <Route path="/EstateWorkersAttendance" element={<EstateWorkersAttendance user={user} />} />
                 <Route path="/FactoryWorkersAttendance" element={<FactoryWorkersAttendance user={user} />} />

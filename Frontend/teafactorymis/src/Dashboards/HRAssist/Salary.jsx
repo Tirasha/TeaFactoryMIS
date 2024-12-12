@@ -26,7 +26,7 @@ export const Salary = () => {
   };
 
   const handleAddNewBasic=()=>{
-    setOpenAddForm(true);
+    navigate("/addSalary");
   }
 
   const handleCloseAddForm = () => {
@@ -118,7 +118,7 @@ export const Salary = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <AddSalary openForm={openAddForm} handleCloseForm={handleCloseAddForm} onFormSubmit={loadSalary}/>
+      {/* <AddSalary openForm={openAddForm} handleCloseForm={handleCloseAddForm} onFormSubmit={loadSalary}/> */}
     </Box>
   )
 }
