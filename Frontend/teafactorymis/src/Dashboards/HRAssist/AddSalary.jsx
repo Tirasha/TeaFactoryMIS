@@ -4,8 +4,6 @@ import { Box, Button, Modal, Paper, Table, TableBody, TableCell, TableContainer,
 import { useNavigate } from 'react-router-dom';
 
 export const AddSalary = () => {
-  let navigate=useNavigate();
-
   const [emp_id,setEmp_id]=useState("");
   const [role,setRole]=useState("");
   const [day_payment,setDayPayment]=useState("");
@@ -17,8 +15,6 @@ export const AddSalary = () => {
   const [basic,setBasic]=useState([]);
   const [employees, setEmployees] = useState([]);
   const [attendance,setAttendance]=useState([]);
-  const [addSalary,setAddSalary]=useState("");
-
 
   const loadEmployee=async()=>{
     try{
@@ -38,10 +34,6 @@ export const AddSalary = () => {
     }
   }
 
-  // Handle date input changes
-  const handleStartDateChange = (e) => setStartDate(e.target.value);
-  const handleEndDateChange = (e) => setEndDate(e.target.value);
-
   const calculateTotalWorkingDays =()=>{
     if (!start_date || !end_date) {
       window.alert("Please select both start date and end date.");
@@ -50,7 +42,7 @@ export const AddSalary = () => {
 
     const start = new Date(start_date);
     const end = new Date(end_date);
-    const diffInDays = (end - start) / (1000 * 60 * 60 * 24);
+    const diffInDays = (end - start) / (1000 * 60 * 60);
 
     if (diffInDays > 31) {
       window.alert("The date range must be 31 days or less than 31.");
@@ -63,18 +55,25 @@ export const AddSalary = () => {
       new Date(record.date) <= end
     ));
 
-    let totalHours = 0;
+    let totalDays = 0;
     filteredAttendance.forEach(record => {
-      totalHours += parseFloat(record.workingHours);
+      totalDays += parseFloat(record.workingDays);
     });
 
-    setTotalWorkingDays(totalHours.toFixed(2));
+    setTotalWorkingDays(totalDays.toFixed(2));
 
   }
 
   //handle cancel
   const handleCancel = async ()=>{
-      navigate("/salary");
+      setEmp_id("");
+      setRole("");
+      setDayPayment("");
+      setStartDate("");
+      setEndDate("");
+      setTotalWorkingDays("");
+      setSalary("");
+      setSalaryPaidDate("");
   }
 
   const fetchBasic = async ()=>{
@@ -95,18 +94,45 @@ export const AddSalary = () => {
 
 
   //load empId and role automatically to the form from employee table
-  const handleSalaryClick = (day_payment,role) => {
+  const handleSalaryClick = (role,dayPayment) => {
     // Set the selected employee ID when the salary button is clicked
     setRole(role);
-    setDayPayment(day_payment);
+    setDayPayment(dayPayment);
+  }
+
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'start_date') {
+      setStartDate(value);
+    } else if (name === 'end_date') {
+      if (new Date(value) > new Date()) {
+        window.alert("End date cannot be in the future.");
+      } else {
+        setEndDate(value);
+      }
+    }
+  }
+
+  const calculateSalary = () => {
+    const salary = parseFloat(total_working_days) * parseFloat(day_payment);
+    setSalary(salary.toFixed(2));
   }
 
   // Submit salary data to the backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      await axios.post("http://localhost:8080/",addSalary);
-      navigate("/salary");
+      await axios.post("http://localhost:8080/salaryAdd",{
+        emp_id:emp_id,
+        role:role,
+        start_date:start_date,
+        end_date:end_date,
+        total_working_days:total_working_days,
+        day_payment:day_payment,
+        salary:salary,
+        salary_paid_date:salary_paid_date
+      });
+      window.alert("Salary Saved");
     }catch(error){
       window.alert("Error in adding salary");
       console.log("Error",error);
@@ -135,7 +161,7 @@ export const AddSalary = () => {
               <TableCell>{basics.role}</TableCell>
               <TableCell>{basics.dayPayment}</TableCell>
               <TableCell>
-                <Button variant="contained" style={{ backgroundColor: '#00AB66', marginRight: "10px" }} onClick={handleSalaryClick}>
+                <Button variant="contained" style={{ backgroundColor: '#00AB66', marginRight: "10px" }} onClick={()=>handleSalaryClick(basics.role,basics.dayPayment)}>
                   Add
                 </Button>
               </TableCell>
@@ -151,16 +177,16 @@ export const AddSalary = () => {
     <Typography variant="h6" gutterBottom>
       Add New Salary Detail
     </Typography>
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => e.preventDefault()}>
     <TextField
         label="ID"
-        name="EmployeeId"
+        name="emp_id"
         value={emp_id}
         onChange={(e) => setEmp_id(e.target.value)}
         fullWidth
         margin="normal"
         required
-        InputProps={{ readOnly: true }}
+        // InputProps={{ readOnly: true }}
       />
 
       <TextField
@@ -175,7 +201,7 @@ export const AddSalary = () => {
 
       <TextField
         label="Day Payment"
-        name="dayPayment"
+        name="day_payment"
         value={day_payment}
         onChange={(e) => setDayPayment(e.target.value)}
         fullWidth
@@ -187,7 +213,7 @@ export const AddSalary = () => {
         label="Start Date"
         type="date"
         value={start_date}
-        onChange={handleStartDateChange}
+        onChange={handleDateChange}
         fullWidth
         margin="normal"
         required
@@ -201,7 +227,7 @@ export const AddSalary = () => {
         label="End Date"
         type="date"
         value={end_date}
-        onChange={handleEndDateChange}
+        onChange={handleDateChange}
         fullWidth
         margin="normal"
         required
@@ -215,13 +241,17 @@ export const AddSalary = () => {
       </Button>
 
       <TextField
-        name="Total Working Hours"
+        name="Total Working Days"
         value={total_working_days}
         onChange={(e) => setTotalWorkingDays(e.target.value)}
         fullWidth
         margin="normal"
         required
       />
+
+      <Button variant="contained" onClick={calculateSalary} sx={{ mt: 2, width: '200px', backgroundColor: "#00AB66", alignItems:"center" }}>
+        Calculate Salary
+      </Button>
 
       <TextField
         label="Salary Payment"
@@ -234,7 +264,7 @@ export const AddSalary = () => {
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-        <Button variant="contained" style={{ backgroundColor: '#00AB66' }} type="submit">
+        <Button variant="contained" style={{ backgroundColor: '#00AB66' }} type="submit" onClick={handleSubmit}>
           Add Salary
         </Button>
         <Button variant="outlined" style={{ backgroundColor: 'red', color: '#fff' }} onClick={handleCancel}>
