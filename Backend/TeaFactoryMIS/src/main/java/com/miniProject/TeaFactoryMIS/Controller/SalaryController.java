@@ -22,11 +22,9 @@ import java.util.Map;
 public class SalaryController {
     @Autowired
     private SalaryRepository salaryRepository;
-    @Autowired
-    private SalaryService salaryService;
 
     @PostMapping("/salaryAdd")
-    public Salary newSalary(@RequestBody Salary newSalary){
+    Salary newSalary(@RequestBody Salary newSalary){
         return salaryRepository.save(newSalary);
     }
 
@@ -36,9 +34,9 @@ public class SalaryController {
     }
 
     @DeleteMapping("/salaryDelete/{salaryId}")
-    String deleteSalary(@PathVariable String salaryId){
+    String deleteSalary(@PathVariable Long salaryId){
         if (!salaryRepository.existsById(salaryId)){
-            throw new BasicNotFoundException(salaryId);
+            throw new SalaryNotFoundException(salaryId);
         }
         salaryRepository.deleteById(salaryId);
         return "Salary detail with ID "+salaryId+"has been deleted Succesfully";

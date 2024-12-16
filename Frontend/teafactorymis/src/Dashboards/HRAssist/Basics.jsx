@@ -94,8 +94,8 @@ export const Basics = () => {
       </Box>
 
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="salary basic table" size="small">
-          <TableHead sx={{ backgroundColor: "#77DD77" }}>
+        <Table sx={{ minWidth: 650}} aria-label="salary basic table" size="small">
+          <TableHead sx={{ backgroundColor: "#77DD77",alignContent:'center' }}>
             <TableRow>
               <TableCell>Basic ID</TableCell>
               <TableCell>Role</TableCell>

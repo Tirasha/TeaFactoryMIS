@@ -14,7 +14,7 @@ export const AddSalary = () => {
   const [salary_paid_date,setSalaryPaidDate]=useState("");
   const [basic,setBasic]=useState([]);
   const [employees, setEmployees] = useState([]);
-  const [attendance,setAttendance]=useState([]);
+  const [estateWorkersAttendance,setAttendance]=useState([]);
 
   const loadEmployee=async()=>{
     try{
@@ -42,14 +42,14 @@ export const AddSalary = () => {
 
     const start = new Date(start_date);
     const end = new Date(end_date);
-    const diffInDays = (end - start) / (1000 * 60 * 60);
+    const diffInDays = (end - start) / (1000 * 60 * 60*24);
 
     if (diffInDays > 31) {
       window.alert("The date range must be 31 days or less than 31.");
       return;
     }
 
-    const filteredAttendance = attendance.filter(record => (
+    const filteredAttendance = estateWorkersAttendance.filter(record => (
       record.emp_id === emp_id &&
       new Date(record.date) >= start &&
       new Date(record.date) <= end
@@ -57,10 +57,10 @@ export const AddSalary = () => {
 
     let totalDays = 0;
     filteredAttendance.forEach(record => {
-      totalDays += parseFloat(record.workingDays);
+      totalDays += parseInt(record.workingDays);
     });
 
-    setTotalWorkingDays(totalDays.toFixed(2));
+    setTotalWorkingDays(diffInDays);
 
   }
 
@@ -101,17 +101,25 @@ export const AddSalary = () => {
   }
 
   const handleDateChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'start_date') {
-      setStartDate(value);
-    } else if (name === 'end_date') {
-      if (new Date(value) > new Date()) {
-        window.alert("End date cannot be in the future.");
-      } else {
-        setEndDate(value);
-      }
+  const { name, value } = e.target;
+  
+  // Parse the entered date
+  const enteredDate = new Date(value);
+  const today = new Date(); // Get today's date
+  
+  if (name === 'start_date') {
+    setStartDate(value); // Update the start date
+  } else if (name === 'end_date') {
+    if (enteredDate > today) {
+      window.alert("End date cannot be in the future.");
+    } else if (start_date && enteredDate < new Date(start_date)) {
+      window.alert("End date cannot be earlier than start date.");
+    } else {
+      setEndDate(value); // Update the end date if it's valid
     }
   }
+};
+
 
   const calculateSalary = () => {
     const salary = parseFloat(total_working_days) * parseFloat(day_payment);
@@ -212,6 +220,7 @@ export const AddSalary = () => {
       <TextField
         label="Start Date"
         type="date"
+        name='start_date'
         value={start_date}
         onChange={handleDateChange}
         fullWidth
@@ -226,6 +235,7 @@ export const AddSalary = () => {
       <TextField
         label="End Date"
         type="date"
+        name="end_date"
         value={end_date}
         onChange={handleDateChange}
         fullWidth
@@ -237,7 +247,7 @@ export const AddSalary = () => {
       />
 
       <Button variant="contained" onClick={calculateTotalWorkingDays} sx={{ mt: 2, width: '200px', backgroundColor: "#00AB66", alignItems:"center" }}>
-        Get Total Working hours
+        Get Total Working Days
       </Button>
 
       <TextField
@@ -261,6 +271,20 @@ export const AddSalary = () => {
         fullWidth
         margin="normal"
         required
+      />
+
+      <TextField
+        label="Salary Paid Date"
+        type="date"
+        name="salary_paid_date"
+        value={salary_paid_date}
+        onChange={(e) => setSalaryPaidDate(e.target.value)}
+        fullWidth
+        margin="normal"
+        required
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
