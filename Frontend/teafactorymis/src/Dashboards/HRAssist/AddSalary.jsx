@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Button, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 export const AddSalary = () => {
@@ -186,7 +186,7 @@ export const AddSalary = () => {
       Add New Salary Detail
     </Typography>
     <form onSubmit={(e) => e.preventDefault()}>
-    <TextField
+    {/* <TextField
         label="ID"
         name="emp_id"
         value={emp_id}
@@ -195,7 +195,28 @@ export const AddSalary = () => {
         margin="normal"
         required
         // InputProps={{ readOnly: true }}
-      />
+      /> */}
+<FormControl fullWidth variant="outlined" margin="normal">
+<InputLabel id="employee-select-label">Select Employee</InputLabel>
+      <Select
+        labelId="employee-select-label"
+        id="employee-select"
+        name='emp_id'
+        value={emp_id} // Current selected value
+        onChange={(e) => setEmp_id(e.target.value)} // Update state on change
+        label="Select Employee"
+      >
+        <MenuItem value="">
+          <em>Select Employee</em>
+        </MenuItem>
+        {employees.map((employee) => (
+          <MenuItem key={employee.emp_id} value={employee.emp_id}>
+            {employee.name} ({employee.emp_id})
+          </MenuItem>
+        ))}
+      </Select>
+      </FormControl>
+    
 
       <TextField
         label="Role"
