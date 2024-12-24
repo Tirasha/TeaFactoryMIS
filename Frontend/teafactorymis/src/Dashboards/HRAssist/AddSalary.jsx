@@ -16,19 +16,30 @@ export const AddSalary = () => {
   const [employees, setEmployees] = useState([]);
   const [estateWorkersAttendance,setAttendance]=useState([]);
 
-  const loadEmployee=async()=>{
-    try{
-      const result=await axios.get("http://localhost:8080/api/employees/all");
-    setEmployees(result.data);
-    }catch(error){
+  const loadEmployee = async () => {
+    try {
+      const result = await axios.get("http://localhost:8080/api/employees/all");
+      if (Array.isArray(result.data)) {
+        setEmployees(result.data);
+        console.log("Employee fetched succuessfully");
+      } else {
+        console.error("Unexpected data format: ", result.data);
+      }
+    } catch (error) {
       console.error("Error loading employees:", error);
     }
-  }
+  };
+  
+
+  useEffect(()=>{
+    loadEmployee();
+  },[]);
 
   const loadAttendance=async ()=>{
     try{
       const result=await axios.get("http://localhost:8080/api/attendance/all");
       setAttendance(result.data);
+      console.log("Attendance loaded");
     }catch(error){
       console.error("Error loading employees:", error);
     }
@@ -88,8 +99,10 @@ export const AddSalary = () => {
 
   useEffect(()=>{
     fetchBasic();
+  },[]);
+
+  useEffect(()=>{
     loadAttendance();
-    loadEmployee();
   },[]);
 
 
@@ -197,26 +210,27 @@ export const AddSalary = () => {
         // InputProps={{ readOnly: true }}
       /> */}
 <FormControl fullWidth variant="outlined" margin="normal">
-<InputLabel id="employee-select-label">Select Employee</InputLabel>
-      <Select
-        labelId="employee-select-label"
-        id="employee-select"
-        name='emp_id'
-        value={emp_id} // Current selected value
-        onChange={(e) => setEmp_id(e.target.value)} // Update state on change
-        label="Select Employee"
-      >
-        <MenuItem value="">
-          <em>Select Employee</em>
-        </MenuItem>
-        {employees.map((employee) => (
-          <MenuItem key={employee.emp_id} value={employee.emp_id}>
-            {employee.name} ({employee.emp_id})
-          </MenuItem>
-        ))}
-      </Select>
-      </FormControl>
+  <InputLabel id="employee-select-label">Select Employee</InputLabel>
+  <Select
+    labelId="employee-select-label"
+    id="employee-select"
+    name="emp_id"
+    value={emp_id || ""} // Default value to avoid errors
+    onChange={(e) => setEmp_id(e.target.value)} // Update state on change
     
+  >
+    {employees.length === 0 ? (
+      <MenuItem disabled>No Employees Found</MenuItem>
+    ) : (
+      employees.map((employee) => (
+        <MenuItem key={employee.emp_id} value={employee.emp_id}>
+          {employee.name} ({employee.emp_id})
+        </MenuItem>
+      ))
+    )}
+  </Select>
+</FormControl>
+   
 
       <TextField
         label="Role"
