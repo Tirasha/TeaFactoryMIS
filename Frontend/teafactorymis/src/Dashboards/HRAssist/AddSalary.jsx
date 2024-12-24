@@ -4,7 +4,8 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Paper, Select, T
 import { useNavigate } from 'react-router-dom';
 
 export const AddSalary = () => {
-  const [emp_id,setEmp_id]=useState("");
+  let navigate=useNavigate();
+  const [empId,setEmp_id]=useState("");
   const [role,setRole]=useState("");
   const [day_payment,setDayPayment]=useState("");
   const [start_date,setStartDate]=useState("");
@@ -17,14 +18,16 @@ export const AddSalary = () => {
   const [estateWorkersAttendance,setAttendance]=useState([]);
 
   const loadEmployee = async () => {
+    const result = await axios.get("http://localhost:8080/api/employees/all");
     try {
-      const result = await axios.get("http://localhost:8080/api/employees/all");
-      if (Array.isArray(result.data)) {
-        setEmployees(result.data);
-        console.log("Employee fetched succuessfully");
-      } else {
-        console.error("Unexpected data format: ", result.data);
-      }
+      setEmployees(result.data);
+      console.log("Employee fetched");
+      // if (Array.isArray(result.data)) {
+      //   setEmployees(result.data);
+      //   console.log("Employee fetched succuessfully");
+      // } else {
+      //   console.error("Unexpected data format: ", result.data);
+      // }
     } catch (error) {
       console.error("Error loading employees:", error);
     }
@@ -61,7 +64,7 @@ export const AddSalary = () => {
     }
 
     const filteredAttendance = estateWorkersAttendance.filter(record => (
-      record.emp_id === emp_id &&
+      record.empId === empId &&
       new Date(record.date) >= start &&
       new Date(record.date) <= end
     ));
@@ -134,31 +137,48 @@ export const AddSalary = () => {
 };
 
 
-  const calculateSalary = () => {
-    const salary = parseFloat(total_working_days) * parseFloat(day_payment);
-    setSalary(salary.toFixed(2));
+const calculateSalary = () => {
+  if (!total_working_days || !day_payment) {
+    window.alert("Day payment or total working days is missing!");
+    return;
   }
+  const salary = parseFloat(total_working_days) * parseFloat(day_payment);
+  setSalary(salary.toFixed(2));
+};
+
 
   // Submit salary data to the backend
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      await axios.post("http://localhost:8080/salaryAdd",{
-        emp_id:emp_id,
-        role:role,
-        start_date:start_date,
-        end_date:end_date,
-        total_working_days:total_working_days,
-        day_payment:day_payment,
-        salary:salary,
-        salary_paid_date:salary_paid_date
+    try {
+      console.log("Submitting salary data:", {
+        empId,
+        role,
+        start_date,
+        end_date,
+        total_working_days,
+        day_payment,
+        salary,
+        salary_paid_date,
+      });
+      await axios.post("http://localhost:8080/salaryAdd", {
+        empId,
+        role,
+        start_date,
+        end_date,
+        total_working_days,
+        day_payment,
+        salary,
+        salary_paid_date,
       });
       window.alert("Salary Saved");
-    }catch(error){
+      navigate("/salary");
+    } catch (error) {
+      console.error("Error in adding salary:", error.response?.data || error.message);
       window.alert("Error in adding salary");
-      console.log("Error",error);
     }
   };
+  
 
   return (
     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, p: 3, backgroundColor: 'white', borderRadius: 2 }}>
@@ -199,17 +219,17 @@ export const AddSalary = () => {
       Add New Salary Detail
     </Typography>
     <form onSubmit={(e) => e.preventDefault()}>
-    {/* <TextField
+    <TextField
         label="ID"
-        name="emp_id"
-        value={emp_id}
+        name="empId"
+        value={empId}
         onChange={(e) => setEmp_id(e.target.value)}
         fullWidth
         margin="normal"
         required
         // InputProps={{ readOnly: true }}
-      /> */}
-<FormControl fullWidth variant="outlined" margin="normal">
+      />
+{/* <FormControl fullWidth variant="outlined" margin="normal">
   <InputLabel id="employee-select-label">Select Employee</InputLabel>
   <Select
     labelId="employee-select-label"
@@ -217,7 +237,7 @@ export const AddSalary = () => {
     name="emp_id"
     value={emp_id || ""} // Default value to avoid errors
     onChange={(e) => setEmp_id(e.target.value)} // Update state on change
-    
+    label="Select Employee"
   >
     {employees.length === 0 ? (
       <MenuItem disabled>No Employees Found</MenuItem>
@@ -229,7 +249,7 @@ export const AddSalary = () => {
       ))
     )}
   </Select>
-</FormControl>
+</FormControl> */}
    
 
       <TextField

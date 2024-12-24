@@ -15,7 +15,7 @@ public class Salary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salaryId;
     @ManyToOne
-    @JoinColumn(name = "empId", referencedColumnName = "empId", nullable = false)
+    @JoinColumn(name = "empId")
     private Employee employee;
 
     private String role;

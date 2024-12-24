@@ -10,6 +10,7 @@ export const Salary = () => {
   let navigate=useNavigate();
   const [salary,setSalary]=useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [employees,setEmployees]=useState([]);
   const [openAddForm, setOpenAddForm] = useState(false);
 
   const loadSalary =async()=>{
@@ -17,8 +18,18 @@ export const Salary = () => {
     setSalary(result.data);
   }
 
+  const loadEmployee =async ()=>{
+    const result=await axios.get("http://localhost:8080/api/employees/all")
+    try{
+      setEmployees(result.data);
+    }catch(error){
+      window.alert("Error in loading employee");
+    }
+  }
+
   useEffect(()=>{
     loadSalary();
+    loadEmployee();
   },[]);
 
   const handleSearchInputChange = (e) => {
@@ -41,10 +52,10 @@ export const Salary = () => {
   const deleteSalary = async (salary_id) => {
     if (window.confirm("Are you sure you want to delete this?")) {
       try {
-        await axios.delete(`http://localhost:8080/deleteMApping/${salary_id}`);
+        await axios.delete(`http://localhost:8080/salaryDelete/${salary_id}`);
         loadSalary();
       } catch (error) {
-        window.alert("The basic detail cannot be deleted...!");
+        window.alert("The salary detail cannot be deleted...!");
       }
     }
   };
@@ -100,7 +111,7 @@ export const Salary = () => {
           {filteredSalary.map((salary) => (
               <TableRow key={salary.salary_id}>
                 <TableCell>{salary.salaryId}</TableCell>
-                <TableCell>{salary.employee.empId}</TableCell>
+                <TableCell>{salary.employee ? salary.employee.empId: 'N/A'}</TableCell>
                 <TableCell>{salary.role}</TableCell>
                 <TableCell>{salary.start_date}</TableCell>
                 <TableCell>{salary.end_date}</TableCell>
@@ -109,7 +120,7 @@ export const Salary = () => {
                 <TableCell>{salary.salary_paid_date}</TableCell>
                 <TableCell>{salary.salary}</TableCell>
                 <TableCell>
-                  <Button variant="contained" style={{ backgroundColor: '#00AB66' }} onClick={() => deleteSalary(salary.salary_id)}>
+                  <Button variant="contained" style={{ backgroundColor: '#00AB66' }} onClick={() => deleteSalary(salary.salaryId)}>
                     <DeleteIcon />
                   </Button>
                 </TableCell>
