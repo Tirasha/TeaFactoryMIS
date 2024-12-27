@@ -14,9 +14,7 @@ public class Salary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salaryId;
-    @ManyToOne
-    @JoinColumn(name = "empId")
-    private Employee employee;
+    private String empId;
 
     private String role;
     @Temporal(TemporalType.DATE)

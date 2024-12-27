@@ -37,11 +37,11 @@ public class SalaryController {
     Salary newSalary(@RequestBody Salary newSalary){
         return salaryRepository.save(newSalary);
     }
-//    Salary newSalary(@RequestParam ("day_payment") double day_payment,
-//                     @RequestParam ("role") String role,
+//    Salary newSalary(@RequestParam ("role") String role,
 //                     @RequestParam ("empId") String empId,
 //                     @RequestParam ("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_date,
 //                     @RequestParam ("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date,
+//                     @RequestParam ("day_payment") double day_payment,
 //                     @RequestParam ("total_working_days") int total_working_days,
 //                     @RequestParam ("salary") double salary,
 //                     @RequestParam ("salary _paid_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date salary_paid_date){

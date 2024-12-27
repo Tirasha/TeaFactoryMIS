@@ -10,14 +10,16 @@ import java.util.Date;
 @Setter
 public class EPFETF {
     @Id
-    private String epf_etfId;
-
-    @ManyToOne
-    @JoinColumn(name = "empId", referencedColumnName = "empId", nullable = false)
-    private Employee employee;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long epf_etfId;
+    private String empId;
 
     @Temporal(TemporalType.DATE)
     private Date date;
-    private double epf;
-    private double etf;
+    private double basicSalary;
+    private double employeeContributionEPF;
+    private double employerContributionEPF;
+    private double epfAmount;
+    private double employerContributionETF;
+
 }

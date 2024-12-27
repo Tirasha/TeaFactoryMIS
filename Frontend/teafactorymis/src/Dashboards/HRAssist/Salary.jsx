@@ -10,26 +10,25 @@ export const Salary = () => {
   let navigate=useNavigate();
   const [salary,setSalary]=useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [employees,setEmployees]=useState([]);
   const [openAddForm, setOpenAddForm] = useState(false);
 
   const loadSalary =async()=>{
     const result=await axios.get("http://localhost:8080/salaryGet");
-    setSalary(result.data);
-  }
-
-  const loadEmployee =async ()=>{
-    const result=await axios.get("http://localhost:8080/api/employees/all")
     try{
-      setEmployees(result.data);
+      const updatedData = result.data.map((item) => ({
+        ...item,
+        employee: item.employee || { empId: 'N/A', name: 'Unknown' },
+      }));
+      setSalary(updatedData);
+      console.log(result.data);
     }catch(error){
-      window.alert("Error in loading employee");
+      window.alert("Error loading in salary")
+      setSalary([]);
     }
   }
 
   useEffect(()=>{
     loadSalary();
-    loadEmployee();
   },[]);
 
   const handleSearchInputChange = (e) => {
@@ -40,9 +39,6 @@ export const Salary = () => {
     navigate("/addSalary");
   }
 
-  const handleCloseAddForm = () => {
-    setOpenAddForm(false);
-  };
 
   const filteredSalary = salary.filter(salary =>
     (salary.salary_id && salary.salary_id.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -87,7 +83,7 @@ export const Salary = () => {
           onClick={handleAddNewBasic}
           sx={{ width: '200px', backgroundColor: "#00AB66" }}
         >
-          Add New Salary
+          Calculate Basic Salary
         </Button>
       </Box>
 
@@ -108,10 +104,10 @@ export const Salary = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-          {filteredSalary.map((salary) => (
-              <TableRow key={salary.salary_id}>
+          {filteredSalary.map((salary,index) => (
+              <TableRow key={index}>
                 <TableCell>{salary.salaryId}</TableCell>
-                <TableCell>{salary.employee ? salary.employee.empId: 'N/A'}</TableCell>
+                <TableCell>{salary.empId}</TableCell>
                 <TableCell>{salary.role}</TableCell>
                 <TableCell>{salary.start_date}</TableCell>
                 <TableCell>{salary.end_date}</TableCell>

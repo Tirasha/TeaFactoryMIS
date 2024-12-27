@@ -10,7 +10,6 @@ import { AddEpfEtf } from './AddEpfEtf';
 const EpfEtf = () => {
     const [epfEtf, setEpfEtf]=useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [openAddForm, setOpenAddForm] = useState(false);
 
     const navigate = useNavigate();
 
@@ -35,21 +34,13 @@ const EpfEtf = () => {
         }
       };
 
-      const handleAddNewEpfEtf = () => {
-        setOpenAddForm(true);
-      };
-
-      const handleCloseAddForm = () => {
-        setOpenAddForm(false);
-      };
-
       const handleSearchInputChange = (e) => {
         setSearchQuery(e.target.value);
       };
     
       const filteredEpfEtf = epfEtf.filter(EPFETF =>
-        (epfEtf.epf_etfId && epfEtf.epf_etfId.toLowerCase().includes(searchQuery.toLowerCase())) 
-        //(epfEtf.employee.empId && epfEtf.employee.empId.toLowerCase().includes(searchQuery.toLowerCase()))
+        // (epfEtf.epf_etfId && epfEtf.epf_etfId.toLowerCase().includes(searchQuery.toLowerCase())) 
+        (epfEtf.empId && epfEtf.empId.toLowerCase().includes(searchQuery.toLowerCase()))
       );
 
   return (
@@ -74,24 +65,20 @@ const EpfEtf = () => {
             ),
           }}
         />
-        <Button 
-          variant="contained" 
-          onClick={handleAddNewEpfEtf}
-          sx={{ width: '200px', backgroundColor: "#00AB66" }}
-        >
-          Add EPF and ETF
-        </Button>
       </Box>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="EpfAndEtf table" size="small">
-            <TableHead>
+            <TableHead sx={{ backgroundColor: "#77DD77",alignContent:'center' }}>
                 <TableRow>
                     <TableCell>ID</TableCell>
                     <TableCell>Employee ID</TableCell>
                     <TableCell>Date</TableCell>
-                    <TableCell>EPF Amount</TableCell>
-                    <TableCell>ETF Amount</TableCell>
+                    <TableCell>Basic Salary</TableCell>
+                    <TableCell>Employee Contributed(EPF)</TableCell>
+                    <TableCell>Employer Contributed(EPF)</TableCell>
+                    <TableCell>Total EPF Amount</TableCell>
+                    <TableCell>Employer Contributed(ETF)</TableCell>
                     <TableCell>Action</TableCell>
                 </TableRow>
             </TableHead>
@@ -99,10 +86,13 @@ const EpfEtf = () => {
               {epfEtf.map((EPFETF) => (
                 <TableRow key={EPFETF.epf_etfId}>
                   <TableCell>{EPFETF.epf_etfId}</TableCell>
-                  <TableCell>{EPFETF.employee.empId}</TableCell>
+                  <TableCell>{EPFETF.empId}</TableCell>
                   <TableCell>{EPFETF.date}</TableCell>
-                  <TableCell>{EPFETF.epf}</TableCell>
-                  <TableCell>{EPFETF.etf}</TableCell>
+                  <TableCell>{EPFETF.basicSalary}</TableCell>
+                  <TableCell>{EPFETF.employeeContributionEPF}</TableCell>
+                  <TableCell>{EPFETF.employerContributionEPF}</TableCell>
+                  <TableCell>{EPFETF.epfAmount}</TableCell>
+                  <TableCell>{EPFETF.employerContributionETF}</TableCell>
                   <TableCell>
                   <Button variant="contained" style={{ backgroundColor: '#00AB66' }} onClick={() => deleteEpfEtf(EPFETF.epf_etfId)}>
                     <DeleteIcon />
@@ -113,7 +103,6 @@ const EpfEtf = () => {
             </TableBody>
         </Table>
       </TableContainer>
-      <AddEpfEtf openForm={openAddForm} handleCloseForm={handleCloseAddForm} />
     </Box>
   )
 }

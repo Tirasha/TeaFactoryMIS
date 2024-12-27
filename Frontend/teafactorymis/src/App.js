@@ -35,6 +35,7 @@ import UpdateSales from './Dashboards/SalesAssist/UpdateSales';
 import { Basics } from './Dashboards/HRAssist/Basics';
 import { Salary } from './Dashboards/HRAssist/Salary';
 import { AddSalary } from './Dashboards/HRAssist/AddSalary';
+import EpfEtf from './Dashboards/HRAssist/EpfEtf';
 
 
 function App() {
@@ -88,7 +89,8 @@ function App() {
                 <Route path="/Attendance" element={<Attendance user={user} />} />
                 <Route path="/basics" element={<Basics user={user}/>}/>
                 <Route path="/salary" element={<Salary user={user}/>}/>
-                <Route path="/addSalary" element={<AddSalary user={user}/>}/>                
+                <Route path="/addSalary" element={<AddSalary user={user}/>}/>   
+                <Route path="/epfetf" element={<EpfEtf user={user}/>}/>    
                 {/* Attendance category routes */}
                 <Route path="/EstateWorkersAttendance" element={<EstateWorkersAttendance user={user} />} />
                 <Route path="/FactoryWorkersAttendance" element={<FactoryWorkersAttendance user={user} />} />

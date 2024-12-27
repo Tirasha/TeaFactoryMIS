@@ -5,14 +5,20 @@ import { useNavigate } from 'react-router-dom';
 
 export const AddSalary = () => {
   let navigate=useNavigate();
-  const [empId,setEmp_id]=useState("");
-  const [role,setRole]=useState("");
-  const [day_payment,setDayPayment]=useState("");
-  const [start_date,setStartDate]=useState("");
-  const [end_date,setEndDate]=useState("");
-  const [total_working_days,setTotalWorkingDays]=useState("");
-  const [salary,setSalary]=useState("");
-  const [salary_paid_date,setSalaryPaidDate]=useState("");
+  const [selectedEmpId,setEmp_id]=useState('');
+  const [role,setRole]=useState('');
+  const [day_payment,setDayPayment]=useState('');
+  const [start_date,setStartDate]=useState('');
+  const [end_date,setEndDate]=useState('');
+  const [total_working_days,setTotalWorkingDays]=useState('');
+  const [salary,setSalary]=useState('');
+  const [salary_paid_date,setSalaryPaidDate]=useState('');
+  const [date,setDate]=useState('');
+  const [basicSalary,setBasicSalary]=useState('');
+  const [employeeContributionEPF,setEmployeeContributionEPF]=useState('');
+  const [employerContributionEPF,setEmployerContributionEPF]=useState('');
+  const [employerContributionETF,setEmployerContributionETF]=useState('');
+  const [epfAmount,setEpfAmount]=useState('');
   const [basic,setBasic]=useState([]);
   const [employees, setEmployees] = useState([]);
   const [estateWorkersAttendance,setAttendance]=useState([]);
@@ -22,12 +28,6 @@ export const AddSalary = () => {
     try {
       setEmployees(result.data);
       console.log("Employee fetched");
-      // if (Array.isArray(result.data)) {
-      //   setEmployees(result.data);
-      //   console.log("Employee fetched succuessfully");
-      // } else {
-      //   console.error("Unexpected data format: ", result.data);
-      // }
     } catch (error) {
       console.error("Error loading employees:", error);
     }
@@ -48,35 +48,69 @@ export const AddSalary = () => {
     }
   }
 
-  const calculateTotalWorkingDays =()=>{
+  // const calculateTotalWorkingDays =()=>{
+  //   if (!start_date || !end_date) {
+  //     window.alert("Please select both start date and end date.");
+  //     return;
+  //   }
+
+  //   const start = new Date(start_date);
+  //   const end = new Date(end_date);
+  //   const diffInDays = (end - start) / (1000 * 60 * 60*24) + 1;
+
+  //   if (diffInDays > 31) {
+  //     window.alert("The date range must be 31 days or less than 31.");
+  //     return;
+  //   }
+
+  //   const filteredAttendance = estateWorkersAttendance.filter(record => (
+  //     record.employee.empId === selectedEmpId &&
+  //     new Date(record.date) >= start &&
+  //     new Date(record.date) <= end
+  //   ));
+
+  //   let totalDays = 0;
+  //   filteredAttendance.forEach(record => {
+  //     totalDays += parseInt(record.workingDays);
+  //   });
+
+  //   setTotalWorkingDays(diffInDays);
+
+  // }
+
+
+  const calculateTotalWorkingDays = () => {
     if (!start_date || !end_date) {
       window.alert("Please select both start date and end date.");
       return;
     }
-
+  
     const start = new Date(start_date);
     const end = new Date(end_date);
-    const diffInDays = (end - start) / (1000 * 60 * 60*24);
-
-    if (diffInDays > 31) {
-      window.alert("The date range must be 31 days or less than 31.");
+  
+    if (start > end) {
+      window.alert("Start date cannot be after end date.");
       return;
     }
-
-    const filteredAttendance = estateWorkersAttendance.filter(record => (
-      record.empId === empId &&
-      new Date(record.date) >= start &&
-      new Date(record.date) <= end
-    ));
-
-    let totalDays = 0;
-    filteredAttendance.forEach(record => {
-      totalDays += parseInt(record.workingDays);
+  
+    // Filter attendance records for the selected employee within the date range
+    const filteredAttendance = estateWorkersAttendance.filter(record => {
+      const recordDate = new Date(record.date);
+      return (
+        record.employee.empId === selectedEmpId &&
+        recordDate >= start &&
+        recordDate <= end &&
+        record.status === "Present" // Adjust based on how 'Present' or 'working' days are indicated
+      );
     });
-
-    setTotalWorkingDays(diffInDays);
-
-  }
+  
+    // Calculate total working days
+    const totalDays = filteredAttendance.length;
+  
+    // Update the state
+    setTotalWorkingDays(totalDays);
+  };
+  
 
   //handle cancel
   const handleCancel = async ()=>{
@@ -142,8 +176,25 @@ const calculateSalary = () => {
     window.alert("Day payment or total working days is missing!");
     return;
   }
-  const salary = parseFloat(total_working_days) * parseFloat(day_payment);
-  setSalary(salary.toFixed(2));
+  const salaryAmount = parseFloat(total_working_days) * parseFloat(day_payment);
+  setBasicSalary(salaryAmount.toFixed(2));
+  //EPF and ETF calculation
+  const employeeContributionEPF=(salaryAmount*0.08);
+  setEmployeeContributionEPF(employeeContributionEPF.toFixed(2));
+
+  const employerContributionEPF=(salaryAmount*0.12);
+  setEmployerContributionEPF(employerContributionEPF.toFixed(2));
+
+  const epfAmount=employeeContributionEPF + employerContributionEPF;
+  setEpfAmount(epfAmount.toFixed(2));
+
+  const employerContributionETF=(salaryAmount*0.03);
+  setEmployerContributionETF(employerContributionETF.toFixed(2));
+
+  const NetSalaryAmount= salaryAmount-employeeContributionEPF;
+  //Net Salary calculation
+  setSalary(NetSalaryAmount.toFixed(2));
+
 };
 
 
@@ -152,7 +203,7 @@ const calculateSalary = () => {
     e.preventDefault();
     try {
       console.log("Submitting salary data:", {
-        empId,
+        selectedEmpId,
         role,
         start_date,
         end_date,
@@ -162,14 +213,32 @@ const calculateSalary = () => {
         salary_paid_date,
       });
       await axios.post("http://localhost:8080/salaryAdd", {
-        empId,
-        role,
-        start_date,
-        end_date,
-        total_working_days,
-        day_payment,
-        salary,
-        salary_paid_date,
+        empId:selectedEmpId,
+        role:role,
+        start_date:start_date,
+        end_date:end_date,
+        total_working_days:total_working_days,
+        day_payment:day_payment,
+        salary:salary,
+        salary_paid_date:salary_paid_date,
+      });
+      console.log("Submitting epf and etf", {
+        date:salary_paid_date,
+        empId:selectedEmpId,
+        basicSalary:basicSalary,
+        employeeContributionEPF,
+        employerContributionEPF,
+        epfAmount,
+        employerContributionETF
+      });
+      await axios.post("http://localhost:8080/epfetfAdd",{
+        date:salary_paid_date,
+        empId:selectedEmpId,
+        basicSalary:basicSalary,
+        employeeContributionEPF,
+        employerContributionEPF,
+        epfAmount,
+        employerContributionETF,
       });
       window.alert("Salary Saved");
       navigate("/salary");
@@ -219,7 +288,7 @@ const calculateSalary = () => {
       Add New Salary Detail
     </Typography>
     <form onSubmit={(e) => e.preventDefault()}>
-    <TextField
+    {/* <TextField
         label="ID"
         name="empId"
         value={empId}
@@ -228,14 +297,14 @@ const calculateSalary = () => {
         margin="normal"
         required
         // InputProps={{ readOnly: true }}
-      />
-{/* <FormControl fullWidth variant="outlined" margin="normal">
+      /> */}
+<FormControl fullWidth variant="outlined" margin="normal">
   <InputLabel id="employee-select-label">Select Employee</InputLabel>
   <Select
     labelId="employee-select-label"
     id="employee-select"
-    name="emp_id"
-    value={emp_id || ""} // Default value to avoid errors
+    name="empId"
+    value={selectedEmpId || ""} // Default value to avoid errors
     onChange={(e) => setEmp_id(e.target.value)} // Update state on change
     label="Select Employee"
   >
@@ -243,13 +312,13 @@ const calculateSalary = () => {
       <MenuItem disabled>No Employees Found</MenuItem>
     ) : (
       employees.map((employee) => (
-        <MenuItem key={employee.emp_id} value={employee.emp_id}>
-          {employee.name} ({employee.emp_id})
+        <MenuItem key={employee.empId} value={employee.empId}>
+          {employee.name} ({employee.empId})
         </MenuItem>
       ))
     )}
   </Select>
-</FormControl> */}
+</FormControl>
    
 
       <TextField
