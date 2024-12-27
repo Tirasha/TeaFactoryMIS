@@ -56,7 +56,7 @@ export default function EstateWorkersAttendance() {
   const handleDeleteAttendance = (attId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
     if (confirmDelete) {
-       axios.delete(`/api/attendance/delete/${attId}`)
+       axios.delete(`http://localhost:8080/api/attendance/delete/${attId}`)
         .then(response => {
           setAttendanceData(attendanceData.filter(attendance => attendance.attId !== attId));
           alert('Attendance record deleted successfully!');

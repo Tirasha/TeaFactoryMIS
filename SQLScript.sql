@@ -25,7 +25,6 @@ insert into users(user_id,password,username)values
 Create Table vehicle(
 	vehicle_No varchar(50) primary key not null,
     vehicle_type varchar(255) not null,
-    vehicle_image BLOB not null,
     vehicle_availability varchar(255) not null,
     fuel_id varchar(255) not null,
     FOREIGN KEY (fuel_id) REFERENCES fuel(fuel_id)
@@ -139,6 +138,9 @@ DELIMITER //
 CREATE PROCEDURE spGetDetailsByEmpID(IN empid VARCHAR(255))
 BEGIN
     SELECT * FROM employee e WHERE e.emp_id = empid; 
+END //
+DELIMITER ;
+
 select * from inventory;
 
 
@@ -150,6 +152,9 @@ BEGIN
     SELECT SUM(available_stock) INTO total_Tea_stock FROM inventory;
 END //
 DELIMITER ;
+CALL Tea_Stock_Summary(@total_Tea_stock);
+SELECT @total_Tea_stock AS TotalTeaStock;
+drop procedure Tea_Stock_Summary;
 
 
 CREATE INDEX idx_attendance_filters ON estate_workers_attendance (date, status, emp_id);
@@ -163,9 +168,7 @@ WHERE category = 'Labour';
 
 
 CREATE INDEX idx_empid_date ON Estate_Workers_Attendance(emp_id, date);
-CALL Tea_Stock_Summary(@total_Tea_stock);
-SELECT @total_Tea_stock AS TotalTeaStock;
-drop procedure Tea_Stock_Summary;
+
 
 
 -- view to get type and stock of tea
@@ -297,6 +300,8 @@ BEGIN
     -- Insert the calculated age and empId into Log_table
     INSERT INTO Log_table (empId, age)
     VALUES (NEW.emp_id, calculated_age);
+END $$
+DELIMITER ;
 
 
 UPDATE Sales
@@ -330,12 +335,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-
-
-
-
-
-
 DELIMITER $$
 
 CREATE TRIGGER before_sales_delete
@@ -357,23 +356,6 @@ SELECT * FROM Employee;
 
 -- View the Log_table to check the inserted log record
 SELECT * FROM Log_table;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ALTER TABLE deleted_sales MODIFY history_id INT NOT NULL DEFAULT 0;
 UPDATE deleted_sales SET deleted_saleshistory_id = 0 WHERE history_id IS NULL;

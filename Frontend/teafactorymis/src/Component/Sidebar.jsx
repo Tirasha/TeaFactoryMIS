@@ -68,7 +68,17 @@ const Sidebar = ({ user, onLogout }) => {
               { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' }
               
             ],
-          }
+          },
+          {
+            text: "Salary",
+            icon: <Event sx={{color:'#FFFFFF'}}/>,
+            dropdown: true,
+            items: [
+              {text: 'Basics', path: '/basics'},
+              {text: 'View Salary', path: '/salary'},
+              {text: 'EPF & ETF', path: '/epfEtf'}
+            ],
+          },
         ];
 
         case 'InventoryAssist':

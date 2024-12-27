@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/attendance")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EstWorkersAttController {
 
     @Autowired

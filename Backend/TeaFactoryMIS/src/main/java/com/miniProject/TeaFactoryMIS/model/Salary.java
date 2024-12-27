@@ -1,16 +1,34 @@
 package com.miniProject.TeaFactoryMIS.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 public class Salary {
     @Id
-    private String salaryId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long salaryId;
+    private String empId;
+
+    private String role;
+    @Temporal(TemporalType.DATE)
+    private Date start_date;
+    @Temporal(TemporalType.DATE)
+    private Date end_date;
+    private int total_working_days;
+    private double day_payment;
+    private double salary;
+    @Temporal(TemporalType.DATE)
+    private Date salary_paid_date;
+
+
+
+
 
 }
