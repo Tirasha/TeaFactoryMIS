@@ -45,7 +45,7 @@ const Login = ({ onLogin }) => { // Accept onLogin prop
           break;
 
           case 'HRAssist':
-          navigate('/HRDashboard');
+          navigate('/Employee');
           break;
 
           case 'TechnicalAssist':

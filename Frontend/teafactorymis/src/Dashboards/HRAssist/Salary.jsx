@@ -42,7 +42,8 @@ export const Salary = () => {
 
   const filteredSalary = salary.filter(salary =>
     (salary.salary_id && salary.salary_id.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    (salary.salary_paid_date && salary.salary_paid_date.toLowerCase().includes(searchQuery.toLowerCase()))
+    (salary.salary_paid_date && salary.salary_paid_date.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (salary.empId && salary.empId.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const deleteSalary = async (salary_id) => {
