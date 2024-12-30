@@ -49,9 +49,15 @@ const Sidebar = ({ user, onLogout }) => {
     switch (role) {
       case 'Admin':
         return [
+
+          { text: 'Dashboard', icon: <Home />, path: '/AdminDashboard' },
+          { text: 'Manage Users', icon: <Assignment />, path: '/UserManage' },
+          { text: 'UserForm', icon: <People />, path: '/UserForm' },
+
           { text: 'Dashboard', icon: <Home sx={{color:'#FFFFFF'}}/>, path: '/AdminDashboard' },
           { text: 'Manage Users', icon: <Assignment sx={{color:'#FFFFFF'}}/>, path: '/UserManage' },
           { text: 'Customers', icon: <People sx={{color:'#FFFFFF'}}/>, path: '/Customers' },
+
         ];
 
       case 'HRAssist':

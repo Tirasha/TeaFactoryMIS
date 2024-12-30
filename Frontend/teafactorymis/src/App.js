@@ -32,10 +32,16 @@ import ManageSales from './Dashboards/SalesAssist/ManageSales';
 import AddSales from './Dashboards/SalesAssist/AddSales';
 import ViewSales from './Dashboards/SalesAssist/ViewSales';
 import UpdateSales from './Dashboards/SalesAssist/UpdateSales';
+
+import UserForm from './Dashboards/Admin/UserForm';
+import ProfilePage from './Component/ProfilePage';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import { Basics } from './Dashboards/HRAssist/Basics';
 import { Salary } from './Dashboards/HRAssist/Salary';
 import { AddSalary } from './Dashboards/HRAssist/AddSalary';
 import EpfEtf from './Dashboards/HRAssist/EpfEtf';
+
 
 
 function App() {
@@ -45,11 +51,15 @@ function App() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem('user')) || null
   );
+  const [isDarkMode, setIsDarkMode] = useState(
+    JSON.parse(localStorage.getItem('isDarkMode')) || false
+  );
 
   useEffect(() => {
     localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
     localStorage.setItem('user', JSON.stringify(user));
-  }, [isAuthenticated, user]);
+    localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
+  }, [isAuthenticated, user, isDarkMode]);
 
   const handleLogin = (userResponse) => {
     setIsAuthenticated(true);
@@ -63,24 +73,33 @@ function App() {
     localStorage.removeItem('user');
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+  };
+
+  const theme = createTheme({
+    palette: {
+      mode: isDarkMode ? 'dark' : 'light',
+    },
+  });
+
   return (
     <Router>
-      <div style={{ display: 'flex',width: '100%', minHeight: '100vh',zIndex: 1 }}>
-        {isAuthenticated && <Sidebar user={user} onLogout={handleLogout} />}
-
-        <div style={{ flexGrow: 1 }}>
-          {isAuthenticated && <NavBar user={user} onLogout={handleLogout} />}
-          
-          <Routes>
-
-            {!isAuthenticated && <Route path="*" element={<Navigate to="/" replace />} />}
-            
-          
-            <Route path="/" element={<Login onLogin={handleLogin} />} />
-            
-            {isAuthenticated && (
-              <>
+      <ThemeProvider theme={theme}>
+        <div style={{ display: 'flex', width: '100%', minHeight: '100vh' }}>
+          {isAuthenticated && <Sidebar user={user} onLogout={handleLogout} />}
+          <div style={{ flexGrow: 1 }}>
+            {isAuthenticated && <NavBar user={user} onLogout={handleLogout} onToggleDarkMode={toggleDarkMode} />}
+            <Routes>
+              {!isAuthenticated && <Route path="*" element={<Navigate to="/" replace />} />}
+              <Route path="/" element={<Login onLogin={handleLogin} />} />
+              {isAuthenticated && (
+                <>
+                
+           
                 <Route path="/AdminDashboard" element={<AdminDashboard user={user} />} />
+                <Route path="/ProfilePage" element={<ProfilePage user={user} />} />
+                <Route path="/UserForm" element={<UserForm user={user} />} />
                 <Route path="/UserManage" element={<UserManage user={user} />} />
                 <Route path="/HRDashboard" element={<HRAssistDashboard user={user} />} />
                 <Route path="/Employee" element={<Employee user={user} />} />
@@ -131,8 +150,9 @@ function App() {
             
         
           </Routes>
+</div>
         </div>
-      </div>
+      </ThemeProvider>
     </Router>
   );
 }
