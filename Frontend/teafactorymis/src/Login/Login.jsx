@@ -51,8 +51,14 @@ const Login = ({ onLogin }) => {
             navigate('/AdminDashboard');
             break;
           case 'HRAssist':
+
             navigate('/HRDashboard');
             break;
+
+          navigate('/Employee');
+          break;
+
+
           case 'TechnicalAssist':
             navigate('/TechnicalDashboard');
             break;

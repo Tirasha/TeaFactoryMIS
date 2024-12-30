@@ -25,7 +25,7 @@ import {
     
         const fetchInventoryData = async () => {
             try {
-                const response = await fetch('http://localhost:8080/all');
+                const response = await fetch('http://localhost:8080/inventory/all');
                 if (response.ok) {
                     const data = await response.json();
                     setInventoryData(data);
@@ -178,8 +178,8 @@ import {
                                 size="small"
                             >
                                 {inventoryData.map((item) => (
-                                    <MenuItem key={item.inventory_id} value={item.type}>
-                                        {item.type}
+                                    <MenuItem key={item.inventory_id} value={item.tea_type}>
+                                        {item.tea_type}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -232,7 +232,7 @@ import {
                                 {filteredInventory.map((item) => (
                                     <TableRow key={item.inventory_id}>
                                         <TableCell>{item.inventory_id}</TableCell>
-                                        <TableCell>{item.type}</TableCell>
+                                        <TableCell>{item.tea_type}</TableCell>
                                         <TableCell>{item.available_stock}</TableCell>
                                         <TableCell>{item.price_per_kg}</TableCell>
                                     </TableRow>

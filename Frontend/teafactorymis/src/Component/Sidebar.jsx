@@ -11,13 +11,17 @@ import {
   Divider,
   Collapse,
 } from '@mui/material';
-import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Home, Assignment, Dashboard, Settings, Logout, People, Event, ExpandLess, ExpandMore, MonetizationOn } from '@mui/icons-material'; // Added Expand icons
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import TableViewIcon from '@mui/icons-material/TableView';
 import UpdateIcon from '@mui/icons-material/Update';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import Commute from '@mui/icons-material/Commute';
+import Factory from '@mui/icons-material/Factory';
+import LocalGasStation from '@mui/icons-material/LocalGasStation';
 import logo from '../Images/logo.png';
+
 const drawerWidth = 240;
 
 const Sidebar = ({ user, onLogout }) => {
@@ -25,61 +29,146 @@ const Sidebar = ({ user, onLogout }) => {
   const navigate = useNavigate();
   const userRole = user?.employee?.role;
   
+  // State to control the dropdown for attendance
+  const [openAttendance, setOpenAttendance] = useState(false);
   const [openMenus, setOpenMenus] = useState({});
+
+  const handleAttendanceClick = () => {
+    setOpenAttendance(!openAttendance); // Toggle dropdown
+  };
 
   const handleMenuClick = (menu) => {
     setOpenMenus((prevState) => ({
       ...prevState,
       [menu]: !prevState[menu],
-    }));
-  };
+    }));
+  };
+
 
   const getSidebarItems = (role) => {
     switch (role) {
       case 'Admin':
         return [
+
           { text: 'Dashboard', icon: <Home />, path: '/AdminDashboard' },
           { text: 'Manage Users', icon: <Assignment />, path: '/UserManage' },
           { text: 'UserForm', icon: <People />, path: '/UserForm' },
+
+          { text: 'Dashboard', icon: <Home sx={{color:'#FFFFFF'}}/>, path: '/AdminDashboard' },
+          { text: 'Manage Users', icon: <Assignment sx={{color:'#FFFFFF'}}/>, path: '/UserManage' },
+          { text: 'Customers', icon: <People sx={{color:'#FFFFFF'}}/>, path: '/Customers' },
+
         ];
 
       case 'HRAssist':
         return [
-          { text: 'Dashboard', icon: <Dashboard />, path: '/HRAssistDashboard' },
-          { text: 'Employee', icon: <People />, path: '/Employee' },
+          { text: 'Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/HRAssistDashboard' },
+          { text: 'Employee', icon: <People sx={{color:'#FFFFFF'}}/>, path: '/Employee'},
           {
             text: 'Attendance',
-            icon: <Event />,
+            icon: <Event sx={{color:'#FFFFFF'}}/>,
+            dropdown: true, // Indicates this item has nested links
+            onClick: handleAttendanceClick,
+            open:openAttendance,
+            items: [
+              { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' }
+              
+            ],
+          },
+          {
+            text: "Salary",
+            icon: <Event sx={{color:'#FFFFFF'}}/>,
             dropdown: true,
             items: [
-              { text: 'Estate Workers Attendance', path: '/EstateWorkersAttendance' },
-              { text: 'Factory Workers Attendance', path: '/FactoryWorkersAttendance' },
+              {text: 'Basics', path: '/basics'},
+              {text: 'View Salary', path: '/salary'},
+              {text: 'EPF & ETF', path: '/epfEtf'}
             ],
           },
         ];
 
-      case 'InventoryAssist':
-        return [{ text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryDashboard' }];
+        case 'InventoryAssist':
+          return [
+            { text: 'Inventory Dashboard', icon: <Dashboard />, path: '/InventoryAssistDashboard' },
+            {
+              text: 'Inventory',
+              icon: <Event/>,
+              dropdown: true, // Indicates this item has nested links
+              items: [
+                { text: 'Tea Stock', path: '/TeaStock' },
+                { text: 'Fertilizer Stock', path: '/FertilizerStock' },
+              ],
+            },
+  
+          ];
+        case 'SalesAssist':
+          return [
+            { text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' },
+            {
+              text: 'Manage Sales',
+              icon: <ManageAccountsIcon />,
+              dropdown: true,
+              items: [
+                { text: 'Add Sales', icon: <NoteAddIcon />, path: '/AddSales' },
+                { text: 'View Sales', icon: <TableViewIcon />, path: '/ViewSales' },
+                { text: 'Update Sales', icon: <UpdateIcon />, path: '/UpdateSales' },
+              ],
+            },
+            
+          ];
       
-      case 'SalesAssist':
-        return [
-          { text: 'Sales Dashboard', icon: <Dashboard />, path: '/SalesDashboard' },
+  case "TechnicalAssist":
+    return [
+      {
+        text: "Technical Dashboard",
+        icon: <Dashboard />,
+        path: "/TechnicalDashboard",
+      },
+      {
+        text: "Vehicle",
+        icon: <Commute />,
+        dropdown: true, // Indicates this item has nested links
+        items: [
           {
-            text: 'Manage Sales',
-            icon: <ManageAccountsIcon />,
-            dropdown: true,
+            text: "Add Vehicle",
+            path: "/VehicleAdd",
+          },
+          {
+            text: "View Vehicle Details",
+            path: "/VehicleDetails",
+          },
+        ],
+      },
+      {
+        text: "Machine",
+        icon: <Factory />,
+        dropdown: true, // Indicates this item has nested links
             items: [
-              { text: 'Add Sales', icon: <NoteAddIcon />, path: '/AddSales' },
-              { text: 'View Sales', icon: <TableViewIcon />, path: '/ViewSales' },
-              { text: 'Update Sales', icon: <UpdateIcon />, path: '/UpdateSales' },
+              {
+                text: "Add Machine",
+                path: "/MachineAdd",
+              },
+              {
+                text: "View Machine Details",
+                path: "/MachineDetails",
+              },
             ],
           },
-          
-        ];
-      
-      case 'TechnicalAssist':
-        return [{ text: 'Technical Dashboard', icon: <Dashboard />, path: '/TechnicalDashboard' }];
-      
+          {
+            text: "Fuel",
+            icon: <LocalGasStation />,
+            dropdown: true, // Indicates this item has nested links
+            items: [
+              {
+                text: "Add Fuel Type",
+                path: "/FuelAdd",
+              },
+              {
+                text: "View Fuel Types",
+                path: "/FuelDetails",
+              },
+            ],
+          },]
       default:
         return [];
     }

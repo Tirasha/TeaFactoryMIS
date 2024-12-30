@@ -36,6 +36,7 @@ const NavBar = ({ user, onLogout, isDarkMode, onToggleDarkMode }) => {
   };
 
   return (
+
     <AppBar position="static" sx={{ backgroundColor: theme.palette.background.default, boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)' }}>
       <Toolbar sx={{ justifyContent: 'space-between', px: 2 }}>
         {/* Logo and Title */}
@@ -121,6 +122,7 @@ const NavBar = ({ user, onLogout, isDarkMode, onToggleDarkMode }) => {
         <IconButton color="inherit" onClick={onToggleDarkMode}>
           {isDarkMode ? <LightMode /> : <DarkMode />}
         </IconButton>
+
       </Toolbar>
     </AppBar>
   );
