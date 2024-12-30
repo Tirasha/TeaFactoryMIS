@@ -55,10 +55,6 @@ const Login = ({ onLogin }) => {
             navigate('/HRDashboard');
             break;
 
-          navigate('/Employee');
-          break;
-
-
           case 'TechnicalAssist':
             navigate('/TechnicalDashboard');
             break;

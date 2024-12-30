@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../Component/Sidebar";
@@ -13,8 +14,8 @@ import {
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import axios from "axios";
 
-export const FuelAdd = () => { 
-  const [fuel_id, setFuel_id] = useState("");
+export const AddFuel = () => {
+    const [fuel_id, setFuel_id] = useState("");
   const [fuel_name, setFuel_name] = useState("");
   const [fuel_type, setFuel_type] = useState("");
   const [fuel_quantity, setFuel_quantity] = useState("");
@@ -136,6 +137,5 @@ export const FuelAdd = () => {
         </form>{" "}
       </Box>{" "}
     </Container>
-  );
+  )
 }
-export default FuelAdd;

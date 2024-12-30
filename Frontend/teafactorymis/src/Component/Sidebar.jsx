@@ -62,7 +62,7 @@ const Sidebar = ({ user, onLogout }) => {
 
       case 'HRAssist':
         return [
-          { text: 'Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/HRAssistDashboard' },
+          { text: 'Dashboard', icon: <Dashboard sx={{color:'#FFFFFF'}}/>, path: '/HRDashboard' },
           { text: 'Employee', icon: <People sx={{color:'#FFFFFF'}}/>, path: '/Employee'},
           {
             text: 'Attendance',
@@ -119,11 +119,7 @@ const Sidebar = ({ user, onLogout }) => {
       
   case "TechnicalAssist":
     return [
-      {
-        text: "Technical Dashboard",
-        icon: <Dashboard />,
-        path: "/TechnicalDashboard",
-      },
+      { text: "Technical Dashboard", icon: <Dashboard />, path: "/TechnicalDashboard"},
       {
         text: "Vehicle",
         icon: <Commute />,
@@ -161,7 +157,8 @@ const Sidebar = ({ user, onLogout }) => {
             items: [
               {
                 text: "Add Fuel Type",
-                path: "/FuelAdd",
+                // path: "/FuelAdd",
+                path : "/FuelAdd",
               },
               {
                 text: "View Fuel Types",

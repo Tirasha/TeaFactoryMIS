@@ -83,9 +83,9 @@ export const Employee = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh' }}>
-      <Typography variant="h4" gutterBottom>
+      {/* <Typography variant="h4" gutterBottom>
         HR Assist Dashboard
-      </Typography>
+      </Typography> */}
 
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <TextField
