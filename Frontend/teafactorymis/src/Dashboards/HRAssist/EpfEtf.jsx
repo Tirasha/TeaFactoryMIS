@@ -40,7 +40,7 @@ const EpfEtf = () => {
     
       const filteredEpfEtf = epfEtf.filter(EPFETF =>
         // (epfEtf.epf_etfId && epfEtf.epf_etfId.toLowerCase().includes(searchQuery.toLowerCase())) 
-        (epfEtf.empId && epfEtf.empId.toLowerCase().includes(searchQuery.toLowerCase()))
+        (EPFETF.empId && EPFETF.empId.toLowerCase().includes(searchQuery.toLowerCase()))
       );
 
   return (
@@ -71,7 +71,7 @@ const EpfEtf = () => {
         <Table sx={{ minWidth: 650 }} aria-label="EpfAndEtf table" size="small">
             <TableHead sx={{ backgroundColor: "#77DD77",alignContent:'center' }}>
                 <TableRow>
-                    <TableCell>ID</TableCell>
+                    {/* <TableCell>ID</TableCell> */}
                     <TableCell>Employee ID</TableCell>
                     <TableCell>Date</TableCell>
                     <TableCell>Basic Salary</TableCell>
@@ -83,9 +83,9 @@ const EpfEtf = () => {
                 </TableRow>
             </TableHead>
             <TableBody>
-              {epfEtf.map((EPFETF) => (
+              {filteredEpfEtf.map((EPFETF) => (
                 <TableRow key={EPFETF.epf_etfId}>
-                  <TableCell>{EPFETF.epf_etfId}</TableCell>
+                  {/* <TableCell>{EPFETF.epf_etfId}</TableCell> */}
                   <TableCell>{EPFETF.empId}</TableCell>
                   <TableCell>{EPFETF.date}</TableCell>
                   <TableCell>{EPFETF.basicSalary}</TableCell>

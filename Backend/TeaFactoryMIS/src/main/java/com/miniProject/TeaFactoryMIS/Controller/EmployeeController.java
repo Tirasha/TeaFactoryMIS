@@ -65,7 +65,7 @@ public class EmployeeController {
             employeeToUpdate.setDob(employeeDetails.getDob());
             employeeToUpdate.setHouseNo(employeeDetails.getHouseNo());
             employeeToUpdate.setLineNo(employeeDetails.getLineNo());
-            employeeToUpdate.setNic(employeeDetails.getNic());
+//            employeeToUpdate.setNic(employeeDetails.getNic());
             employeeToUpdate.setCategory(employeeDetails.getCategory());
             employeeToUpdate.setRole(employeeDetails.getRole());
             employeeToUpdate.setImage(employeeDetails.getImage());

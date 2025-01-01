@@ -36,6 +36,7 @@ export default function FuelDetails() {
       .get(`http://localhost:8080/fuel/view`)
       .then((res) => setTableData(res.data.content))
       .catch((err) => alert(err.message));
+     
   }, [deleteFuel]);
 
   const handleDeleteBtn = async (fuel_id) => {

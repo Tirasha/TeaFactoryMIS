@@ -41,7 +41,6 @@ export const Salary = () => {
 
 
   const filteredSalary = salary.filter(salary =>
-    (salary.salary_id && salary.salary_id.toLowerCase().includes(searchQuery.toLowerCase())) ||
     (salary.salary_paid_date && salary.salary_paid_date.toLowerCase().includes(searchQuery.toLowerCase())) ||
     (salary.empId && salary.empId.toLowerCase().includes(searchQuery.toLowerCase()))
   );
@@ -92,7 +91,6 @@ export const Salary = () => {
         <Table sx={{ minWidth: 650 }} aria-label="salary basic table" size="small">
           <TableHead sx={{ backgroundColor: "#77DD77" }}>
             <TableRow>
-              <TableCell>Salary ID</TableCell>
               <TableCell>Employee Id</TableCell>
               <TableCell>Role</TableCell>
               <TableCell>Start Date</TableCell>
@@ -107,7 +105,6 @@ export const Salary = () => {
           <TableBody>
           {filteredSalary.map((salary,index) => (
               <TableRow key={index}>
-                <TableCell>{salary.salaryId}</TableCell>
                 <TableCell>{salary.empId}</TableCell>
                 <TableCell>{salary.role}</TableCell>
                 <TableCell>{salary.start_date}</TableCell>

@@ -116,7 +116,7 @@ function App() {
                 <Route path="/AddAttendance" element={<AttendanceAddEst user={user} />} />
               
 
-                <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} />
+                {/* <Route path="/InventoryDashboard" element={<InventoryAssistDashboard user={user} />} /> */}
                 <Route path="/SalesDashboard" element={<SalesAssistDashboard user={user} />} />
                 <Route path="/ManageSales" element={<ManageSales user={user} />} />
                 <Route path="/AddSales" element={<AddSales user={user} />} />
@@ -137,9 +137,6 @@ function App() {
                 <Route path="/AttendanceupdateEs/:attId" element={<AttendanceupdateEs />} />
                 <Route path="/Attendanceupdatefac/:attId" element={<AttendanceupdateFac />} />
                 
-
-              
-
               {/* inventory routes */}
                 <Route path="/InventoryAssistDashboard" element={<InventoryAssistDashboard user={user} />} />
                 <Route path ="/TeaStock" element={<TeaStock/>}/>

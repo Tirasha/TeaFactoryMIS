@@ -45,6 +45,9 @@ const HRAssistDashboard = (user) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, backgroundColor: '#f5f5f5', height: '100vh' }}>
+      <Typography variant="h4" gutterBottom>
+        Dashboard
+      </Typography>
          {/* Bar Chart for Employee Roles */}
          <ResponsiveContainer width="100%" height={400}>
         <BarChart data={roleData} margin={{ top: 20, right: 20, left: 20, bottom: 5 }}>

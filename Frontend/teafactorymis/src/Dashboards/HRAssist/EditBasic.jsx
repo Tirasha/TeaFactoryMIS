@@ -22,7 +22,7 @@ export const EditBasic = ({ openForm, handleCloseForm, basicId, onFormSubmit }) 
     e.preventDefault();
     try{
         await axios.put(`http://localhost:8080/basicUpdate/${basicId}`, basics);
-        window.alert("Updated successfully...!");
+        // window.alert("Updated successfully...!");
         onFormSubmit();
         handleCloseForm();
         navigate("/Basics");

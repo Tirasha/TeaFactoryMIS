@@ -92,7 +92,7 @@ export default function AttendanceupdateEs() {
           fullWidth
           margin="normal"
         />
-        <TextField
+        {/* <TextField
           label="Employee ID"
           name="empId"
           value={formData.empId}
@@ -100,7 +100,7 @@ export default function AttendanceupdateEs() {
           fullWidth
           margin="normal"
           required
-        />
+        /> */}
         <Button type="submit" variant="contained" sx={{backgroundColor:"#77DD77"}} >
           Update Attendance
         </Button>

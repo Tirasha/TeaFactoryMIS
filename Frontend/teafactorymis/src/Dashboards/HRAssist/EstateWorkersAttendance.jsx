@@ -132,9 +132,9 @@ export default function EstateWorkersAttendance() {
                   <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleUpdateAttendance(attendance)}>
                     <EditIcon />
                   </IconButton>
-                  <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleDeleteAttendance(attendance.attId)}>
+                  {/* <IconButton sx={{backgroundColor:"#77DD77"}} onClick={() => handleDeleteAttendance(attendance.attId)}>
                     <DeleteIcon />
-                  </IconButton>
+                  </IconButton> */}
                 </TableCell>
               </TableRow>
             ))}

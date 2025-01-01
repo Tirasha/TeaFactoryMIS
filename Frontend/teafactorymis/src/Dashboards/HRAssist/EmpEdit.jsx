@@ -13,7 +13,6 @@ export default function EmpEdit() {
     dob: '',
     houseNo: '',
     lineNo: '',
-    nic: '',
     category: '',
     role: '',
   });
@@ -117,7 +116,7 @@ export default function EmpEdit() {
           margin="normal"
           required
         />
-        <TextField
+        {/* <TextField
           label="NIC"
           name="nic"
           value={formData.nic}
@@ -125,7 +124,7 @@ export default function EmpEdit() {
           fullWidth
           margin="normal"
           required
-        />
+        /> */}
         <TextField
           label="Category"
           name="category"

@@ -59,7 +59,7 @@ const Login = ({ onLogin }) => {
             navigate('/TechnicalDashboard');
             break;
           case 'InventoryAssist':
-            navigate('/InventoryDashboard');
+            navigate('/InventoryAssistDashboard');
             break;
           case 'SalesAssist':
             navigate('/SalesDashboard');
