@@ -10,11 +10,11 @@ insert into employee(emp_id,category,dob,firstname,house_no,lastname,line_no,nic
 ("e005", "SalesAssist", "2000-12-04", "Tharu", "78", "Rashmika", "74", "200074859625", "SalesAssist", null);
 
 insert into users(user_id,password,username)values
-("u001", "12345", "Isuru"),
-("u002", "12345", "Madhu"),
-("u003", "12345", "Hiru"),
-("u004", "12345", "Tirasha"),
-("u005", "12345", "Tharu");
+("u001", "12345", "Admin"),
+("u002", "12345", "HRAssist"),
+("u003", "12345", "TechAssist"),
+("u004", "12345", "StockAssist"),
+("u005", "12345", "SalesAssist");
 
 
 
@@ -121,11 +121,11 @@ Delimiter ;
 
 
 insert into users(user_id,password,username,emp_id)values
-("u001", "12345", "Isuru","e001"),
-("u002", "12345", "Madhu","e002"),
-("u003", "12345", "Hiru","e003"),
-("u004", "12345", "Tirasha","e004"),
-("u005", "12345", "Tharu","e005");
+("u001", "12345", "Admin","e001"),
+("u002", "12345", "HRAssist","e002"),
+("u003", "12345", "TechAssist","e003"),
+("u004", "12345", "StockAssist","e004"),
+("u005", "12345", "SalesAssist","e005");
 
 
 
